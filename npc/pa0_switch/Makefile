@@ -1,16 +1,15 @@
 TOPNAME = top
 VSRC = $(shell find $(abspath ./vsrc) -name "*.v")
-TBVSRC = $(shell find $(abspath ./tb) -name "*.v")
 CSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
 CSRC += $(SRC_AUTO_BIND)
-CONSTR = ./constr/top.nxdc
+CONSTR = constr/top.nxdc
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
 
-VERIARG = --cc -MMD --build 
+VERIARG = -Wall --cc -MMD --build 
 
 LDFLAGS += -lSDL2 -lSDL2_image
 
@@ -38,14 +37,5 @@ run: $(BIN)
 
 clr: 
 	rm -rf $(BUILD_DIR)
-	rm -rf *.vcd
-
-sim: 
-	iverilog -o run.out $(VSRC) $(TBVSRC)
-	vvp -n run.out
-	rm -rf *.out
-
-wave: 
-	gtkwave *.vcd
 
 
