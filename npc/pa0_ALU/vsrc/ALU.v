@@ -22,7 +22,7 @@ always @(*) begin
         end
         3'b001         : begin
             {CF, result} = b_comp + a;
-            OF = (a[3] == b[3]) && (result[3] != a[3]);
+            OF = (a[3] == b_comp[3]) && (result[3] != a[3]);
         end
         3'b010         : begin
             result = ~a;

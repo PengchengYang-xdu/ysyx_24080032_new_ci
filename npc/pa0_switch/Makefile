@@ -27,6 +27,7 @@ $(BIN):  $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 		$^ \
 		$(addprefix -LDFLAGS , $(LDFLAGS)) \
 		$(addprefix -CFLAGS , $(CFLAGS)) \
+		--trace \
 		--Mdir $(OBJ_DIR)  --exe -o $(abspath $(BIN))
 
 $(SRC_AUTO_BIND): $(CONSTR) 

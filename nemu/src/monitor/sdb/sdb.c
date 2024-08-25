@@ -12,12 +12,12 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
-
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -42,6 +42,81 @@ static char* rl_gets() {
   return line_read;
 }
 
+static int cmd_si(char *args) {
+  int step = 0;
+  if(args == NULL)
+    step = 1;
+  else
+    sscanf(args, "%d", &step);
+  cpu_exec(step);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  if(args == NULL)
+    printf("no args.\n");
+  else if(strcmp(args, "r") == 0)
+    isa_reg_display();
+  else if(strcmp(args, "w") == 0)
+    wp_display();
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  if(args == NULL)
+    printf("no args.\n");
+  int num = strtol(args, NULL, 10);
+  wp_delete(num);
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  if(args == NULL)
+    printf("no args.\n");
+  bool succcess;
+  word_t exp = expr(args, &succcess);
+  printf("%u\n",exp);
+  if(!succcess)
+    printf("illegal exp\n");
+  else
+    wp_set(args, exp);
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  if(args == NULL)
+    printf("no args.\n");
+  char *N = strtok(args, " ");
+  char *EXPR = strtok(NULL, " ");
+  int len = 0;
+  vaddr_t addr = 0;
+  sscanf(N, "%d", &len);
+  sscanf(EXPR, "%x", &addr);
+  for(int i = 0; i < len; i ++){
+    printf("0x%x : ", addr);
+    uint32_t data = vaddr_read(addr, 4);
+    for(int j = 0; j < 4; j ++){
+      printf("0x%02x ", data & 0xff);
+      data = data >> 8;
+    }
+    printf("\n");
+    addr += 4;
+  }
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  bool success;
+  word_t result = expr(args, &success);
+  if(!success){
+    printf("illegal expression!\n");
+  }
+  else{
+    printf("result : %u\n", result);
+  }
+  return 0;
+}
+
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
@@ -49,6 +124,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
@@ -62,7 +138,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Step run", cmd_si},
+  { "info", "info r(w) : print regs(watchpoint)", cmd_info},
+  { "d", "d N : Delete N watchpoint", cmd_d},
+  { "w", "w EXPR : Set EXPR watchpoint", cmd_w},
+  { "x", "Scan memory", cmd_x},
+  { "p", "Calculate the expression", cmd_p},
   /* TODO: Add more commands */
 
 };
@@ -134,9 +215,44 @@ void sdb_mainloop() {
   }
 }
 
+void test_expr() {
+  FILE *fp = fopen("/home/ypc/Desktop/ysyx/ysyx-workbench/nemu/tools/gen-expr/input", "r");
+  if (fp == NULL) perror("test_expr error");
+
+  char *e = NULL;
+  word_t correct_res;
+  size_t len = 0;
+  ssize_t read;
+  bool success = false;
+
+  while (true) {
+    if(fscanf(fp, "%u ", &correct_res) == -1) break;
+    read = getline(&e, &len, fp);
+    e[read-1] = '\0';
+    
+    word_t res = expr(e, &success);
+    
+    assert(success);
+    if (res != correct_res) {
+      puts(e);
+      printf("expected: %u, got: %u, expression: %s\n", correct_res, res, e);
+      assert(0);
+    }
+  }
+
+  fclose(fp);
+  if (e) free(e);
+
+  printf("all passed!\n");
+  Log("expr test pass");
+}
+
+
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
+
+  // test_expr();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
