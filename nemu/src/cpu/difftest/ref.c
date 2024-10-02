@@ -18,16 +18,40 @@
 #include <difftest-def.h>
 #include <memory/paddr.h>
 
+struct diff_context_t {
+  word_t gpr[32];
+  word_t pc;
+  // word_t csr[4];
+};
+
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  assert(0);
+  void *nemu_buf = (void *)guest_to_host(addr);
+  if(direction == DIFFTEST_TO_REF)  //dut -> ref (buf -> addr(nemu_buf))
+    memcpy(nemu_buf , buf , n);
+  else                              //ref -> dut (addr(nemu_buf) -> buf)
+    memcpy(buf , nemu_buf, n);
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
-  assert(0);
+  int i = 0;
+  struct diff_context_t *dut_state = (struct diff_context_t *)dut;
+  if(direction == DIFFTEST_TO_REF){
+    for(i = 0;i < 32 ; i++){
+      cpu.gpr[i] = dut_state->gpr[i];
+    }
+    cpu.pc = dut_state->pc;
+  }
+  else{
+    for(i = 0;i < 32 ; i++){
+      dut_state->gpr[i] = cpu.gpr[i];
+    }
+    dut_state->pc = cpu.pc;
+  }
+
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
-  assert(0);
+  cpu_exec(n);
 }
 
 __EXPORT void difftest_raise_intr(word_t NO) {
@@ -39,4 +63,11 @@ __EXPORT void difftest_init(int port) {
   init_mem();
   /* Perform ISA dependent initialization. */
   init_isa();
+}
+
+__EXPORT bool difftest_skip() {
+  extern bool skip;
+  bool skip_temp = skip;
+  skip = false;
+  return skip_temp;
 }

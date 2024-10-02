@@ -29,10 +29,28 @@ int atoi(const char* nptr) {
   return x;
 }
 
+static char *addr = NULL;  // 用来跟踪上次分配的内存位置
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
+  // 初始化addr为heap.start
+  if (addr == NULL) {
+    addr = heap.start;
+  }
+  // 确保size是按sizeof(void*)对齐的
+  size = (size + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
+  // 检查是否还有足够的空间
+  if (addr + size > (char*)heap.end) {
+    return NULL;  // 如果空间不足，返回NULL
+  }
+  // 返回当前的addr，并更新它
+  void *allocated_memory = (void *)addr;
+  addr += size;
+
+  return allocated_memory;
+
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   panic("Not implemented");
 #endif

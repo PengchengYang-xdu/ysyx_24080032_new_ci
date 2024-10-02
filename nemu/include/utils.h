@@ -17,6 +17,7 @@
 #define __UTILS_H__
 
 #include <common.h>
+#include <device/map.h>
 
 // ----------- state -----------
 
@@ -29,6 +30,7 @@ typedef struct {
 } NEMUState;
 
 extern NEMUState nemu_state;
+int is_exit_status_bad();
 
 // ----------- timer -----------
 
@@ -75,3 +77,20 @@ uint64_t get_time();
 
 
 #endif
+
+// ----------- itrace -----------
+
+void itrace_init(word_t pc, uint32_t inst);
+void display_inst();
+
+// ----------- mtrace -----------
+
+void display_pread(paddr_t addr, int len);
+void display_pwrite(paddr_t addr, int len, word_t data);
+
+// ----------- ftrace -----------
+void parse_elf(const char *elf_file);
+void display_call_func(word_t pc, word_t func_addr);
+void display_ret_func(word_t pc);
+
+
