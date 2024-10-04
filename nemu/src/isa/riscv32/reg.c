@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <cpu/difftest.h>
 #include "local-include/reg.h"
 
 const char *regs[] = {
@@ -26,8 +27,14 @@ const char *regs[] = {
 void isa_reg_display() {
   int length = sizeof(regs) / sizeof(regs[0]);
   for(int i = 0; i < length; i ++)
-    printf("reg %s ---> %u ---- 0x%x\n", regs[i], cpu.gpr[i], cpu.gpr[i]);
+    printf("reg %s ---> 0x%x\n", regs[i], cpu.gpr[i]);
+  printf("\n");
+  printf("csr-mtvec   --->  0x%x\n",cpu.csr[MTVEC]);
+  printf("csr-mepc    --->  0x%x\n",cpu.csr[MEPC]);
+  printf("csr-mstatus --->  0x%x\n",cpu.csr[MSTATUS]);
+  printf("csr-mcause  --->  0x%x\n",cpu.csr[MCAUSE]);
 }
+
 
 word_t isa_reg_str2val(const char *s, bool *success) {
   *success = false;

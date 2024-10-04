@@ -152,6 +152,12 @@ config ITRACE_COND
   default "true"
 
 #added by yangpengcheng begin
+config ETRACE
+bool "Enable exception tracer"
+default y
+#added by yangpengcheng end
+
+#added by yangpengcheng begin
 config FTRACE
   bool "Enable func tracer"
   default y

@@ -20,6 +20,7 @@
 #include <memory/paddr.h>
 #include <utils.h>
 #include <difftest-def.h>
+#include "/home/ypc/Desktop/ysyx/ysyx-workbench/nemu/src/isa/riscv32/local-include/reg.h"
 
 void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
@@ -95,8 +96,23 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
-    // printf("!!! difftest checkregs abort at pc = 0x%x !!!\n", pc);
-    // // isa_reg_display();
+    printf(ANSI_FMT("!!! difftest checkregs abort at pc = 0x%x !!!\n", ANSI_FG_RED), pc);
+
+    for(int i = 0; i < 32; i ++){
+    printf("reg %s ---> 0x%-11x", regs[i], cpu.gpr[i]);
+    printf("ref-reg %s ---> 0x%x\n", regs[i], ref->gpr[i]);
+    printf("\n");
+    }
+    printf("\n");
+    printf("csr-mtvec   --->  0x%-11x\n",cpu.csr[MTVEC]);
+    printf("csr-mepc    --->  0x%-11x\n",cpu.csr[MEPC]);
+    printf("csr-mstatus --->  0x%-11x\n",cpu.csr[MSTATUS]);
+    printf("csr-mcause  --->  0x%-11x\n",cpu.csr[MCAUSE]);
+    printf("\n");
+    printf("ref-csr-mtvec   --->  0x%-11x\n",ref->csr[MTVEC]);
+    printf("ref-csr-mepc    --->  0x%-11x\n",ref->csr[MEPC]);
+    printf("ref-csr-mstatus --->  0x%-11x\n",ref->csr[MSTATUS]);
+    printf("ref-csr-mcause  --->  0x%-11x\n",ref->csr[MCAUSE]);
   }
 }
 

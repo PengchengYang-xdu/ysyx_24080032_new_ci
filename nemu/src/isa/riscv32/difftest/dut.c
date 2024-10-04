@@ -18,6 +18,7 @@
 #include "../local-include/reg.h"
 
 #define REGNUM 32
+#define CSRNUM 4
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   bool flag = true;
@@ -27,6 +28,10 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
     if(ref_r->gpr[i] != cpu.gpr[i])
       flag = false;
   }
+  // if(ref_r->csr[MSTATUS] != cpu.csr[MSTATUS])
+  //   flag = false;
+  if(ref_r->csr[MEPC] != cpu.csr[MEPC] || ref_r->csr[MCAUSE] != cpu.csr[MCAUSE] || ref_r->csr[MTVEC] != cpu.csr[MTVEC])
+    flag = false;
   return flag;
 }
 
