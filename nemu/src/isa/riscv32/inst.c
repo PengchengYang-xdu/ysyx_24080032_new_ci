@@ -24,6 +24,10 @@
 #define Mr vaddr_read
 #define Mw vaddr_write
 
+#define MRET() { \
+  s->dnpc = CSR(MEPC); \
+}
+
 enum {
   TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B,
   TYPE_N, // none
@@ -123,8 +127,8 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, R(rd) = ((uint64_t)src1 * (uint32_t)src2) >> 32);
   INSTPAT("0000000 ????? ????? 010 ????? 01100 11", slt    , R, R(rd) = (sword_t)src1 < (sword_t)src2);
 
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, etrace(R(17) == -1 ? 0xb : 0, s->pc); s->dnpc = isa_raise_intr(R(17) == -1 ? 0xb : 0, s->pc));//
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s->dnpc = CSR(MEPC));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, etrace(0xb, s->pc); s->dnpc = isa_raise_intr(0xb, s->pc));//
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, MRET());
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, R(rd) = CSR(imm); CSR(imm) = src1);
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, R(rd) = CSR(imm); CSR(imm) |= src1);
 
