@@ -166,6 +166,7 @@ run: $(BIN)
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
 LOG = $(shell cat $(PERF_MD) | sed ':a;N;$!ba;s/\n/\\n/g')
+EXPLAIN = "这只是测试"
 
 perf: checkout save_perf
 
@@ -174,5 +175,5 @@ checkout:
 	@echo "现在切换到了perf分支,用于评估性能并commit"
 
 save_perf:
-	@git commit --allow-empty -am "$(LOG)"
+	@git commit --allow-empty -am "$(EXPLAIN), $(LOG)"
 	@echo "已保存性能数据为提交日志"
