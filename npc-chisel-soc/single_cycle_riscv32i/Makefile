@@ -162,9 +162,17 @@ run: $(BIN)
 # run: $(NV_BIN)
 # 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(NV_BIN) $(ARGS) $(IMG)
 
-#如果想要评估性能，使用指令 make -C /home/ypc/Desktop/ysyx/ysyx-workbench/am-kernels/benchmarks/microbench ARCH=riscv32e-ysyxsoc perf
+#如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
+#所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
+LOG = $(shell cat $(PERF_MD))
+
 perf: checkout save_perf
 
 checkout:
-	@git checkout 
+	@git checkout perf
+	@echo "现在切换到了perf分支,用于评估性能并commit"
+
+save_perf:
+	@git commit --allow-empty -am "$(LOG)"
+	@echo "已保存性能数据为提交日志"
