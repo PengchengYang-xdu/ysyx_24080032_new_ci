@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <difftest-def.h>
 #include <memory/paddr.h>
+#include <ysyxsoc.h>
 
 #define MSTATUS 0x300
 #define MTVEC   0x305
@@ -75,6 +76,7 @@ __EXPORT void difftest_raise_intr(word_t NO) {
 __EXPORT void difftest_init(int port) {
   void init_mem();
   init_mem();
+  init_ysyxsoc_mem();
   /* Perform ISA dependent initialization. */
   init_isa();
 }

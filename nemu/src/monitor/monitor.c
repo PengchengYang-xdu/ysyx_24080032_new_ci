@@ -15,6 +15,8 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include <ysyxsoc.h>
+#include "../ysyxsoc/include/ysyxsoc_mem.h"
 
 void init_rand();
 void init_log(const char *log_file);
@@ -60,7 +62,7 @@ static long load_img() {
   Log("The image is %s, size = %ld", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+  int ret = fread(guest_to_host(FLASH_BASE), size, 1, fp);
   assert(ret == 1);
 
   fclose(fp);
@@ -117,6 +119,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize memory. */
   init_mem();
+  init_ysyxsoc_mem();//attention: have to init_ysyxsoc_mem() in ref.c difftest_init(), otherwise nemu as ref cannot work in ysyxsoc
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());

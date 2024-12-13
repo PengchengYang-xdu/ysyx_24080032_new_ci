@@ -18,7 +18,7 @@ PRJ_PATH = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_ris
 ################################        FLAG        ################################
 VSRC += $(shell find $(abspath $(SOC_DIR)/build) -name "*.sv" -or -name "*.v")
 VSRC += $(shell find $(abspath $(SOC_DIR)/perip) -name "*.sv" -or -name "*.v")
-VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 8 --autoflush
+VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 8 --autoflush
 LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH += $(PRJ_PATH)/include
 INCFLAGS = $(addprefix -I, $(INC_PATH))
@@ -62,6 +62,7 @@ clr:
 	rm -rf $(BUILD_DIR)
 	rm -rf *.vcd
 	rm -rf $(GEN_DIR)
+	rm -rf *.fst
 
 
 
@@ -143,7 +144,7 @@ clean_nv:
 
 
 
-# CFLAGS += -DNPCCONFIG_ITRACE 
+CFLAGS += -DNPCCONFIG_ITRACE 
 # CFLAGS += -DNPCCONFIG_FTRACE 
 # CFLAGS += -DNPCCONFIG_MTRACE 
 # CFLAGS += -DNPCCONFIG_DUMPWAVE 
@@ -153,10 +154,17 @@ clean_nv:
 
 
 # if you want to just run the ysyxsoc 
-# run: $(BIN)
-# 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(BIN) $(ARGS) $(IMG) 
+run: $(BIN)
+	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(BIN) $(ARGS) $(IMG) 
 
 #if you want to run the nvboard
-CFLAGS += -DNV_BOARD 
-run: $(NV_BIN)
-	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(NV_BIN) $(ARGS) $(IMG)
+# CFLAGS += -DNV_BOARD 
+# run: $(NV_BIN)
+# 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(NV_BIN) $(ARGS) $(IMG)
+
+#如果想要评估性能，使用指令 make -C /home/ypc/Desktop/ysyx/ysyx-workbench/am-kernels/benchmarks/microbench ARCH=riscv32e-ysyxsoc perf
+PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
+perf: checkout save_perf
+
+checkout:
+	@git checkout 
