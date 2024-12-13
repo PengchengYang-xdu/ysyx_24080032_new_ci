@@ -165,7 +165,7 @@ run: $(BIN)
 #如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
-LOG = $(shell cat $(PERF_MD) | sed ':a;N;$!ba;s/\n/ /g')
+LOG = $(shell cat $(PERF_MD) | sed ':a;N;$!ba;s/\n/\\n/g')
 
 perf: checkout save_perf
 
@@ -174,5 +174,9 @@ checkout:
 	@echo "现在切换到了perf分支,用于评估性能并commit"
 
 save_perf:
-	@git commit --allow-empty -am "$(LOG)"
+	@$(foreach line, $(LOG), \
+		echo "$(line)"; \
+		git commit --amend -am "$(line)"; \
+		echo "已追加一行：$(line)"; \
+	)
 	@echo "已保存性能数据为提交日志"
