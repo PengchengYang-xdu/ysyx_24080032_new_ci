@@ -174,9 +174,5 @@ checkout:
 	@echo "现在切换到了perf分支,用于评估性能并commit"
 
 save_perf:
-	@$(foreach line, $(LOG), \
-		echo "$(line)"; \
-		git commit --amend -am "$(line)"; \
-		echo "已追加一行：$(line)"; \
-	)
+	@git commit --allow-empty -am "$(LOG)"
 	@echo "已保存性能数据为提交日志"
