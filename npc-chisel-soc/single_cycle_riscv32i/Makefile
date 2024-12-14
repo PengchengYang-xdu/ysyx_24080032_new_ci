@@ -162,13 +162,21 @@ run: $(BIN)
 # run: $(NV_BIN)
 # 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(NV_BIN) $(ARGS) $(IMG)
 
+
+
+
+
+
+
+
+
 #如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
 LOG = $(shell cat $(PERF_MD) | sed ':a;N;$!ba;s/\n/\\n/g')
 EXPLAIN = "这只是测试"
 
-perf: checkout save_perf
+perf: checkout run save_perf
 
 checkout:
 	@git checkout perf

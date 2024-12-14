@@ -1,5 +1,6 @@
 #include <am.h>
 #include <klib-macros.h>
+#include <klib.h>
 #include "npc.h"
 
 extern char _heap_start;
@@ -26,6 +27,6 @@ void halt(int code) {
 }
 
 void _trm_init() {
-  int ret = main(mainargs);
-  halt(ret);
+    int ret = main(mainargs);
+    halt(ret);
 }
