@@ -186,6 +186,6 @@ checkout:
 save_perf:
 	@git commit --allow-empty -am "$(EXPLAIN)"
 	@echo "已提交并保存这次的perf数据"
-	@CURRENT_HASH=$$(git rev-parse HEAD); 
+	@CURRENT_HASH=$(shell git rev-parse HEAD)
 	@cat $(PERF_MD) > $(SAVE_MD)
-	@echo -e 本次提交哈希值:$$CURRENT_HASH $(EXPLAIN) >> $(SAVE_MD)
+	@echo -e 本次提交哈希值:$(CURRENT_HASH) $(EXPLAIN) >> $(SAVE_MD)
