@@ -175,8 +175,8 @@ run: $(BIN)
 
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
 SAVE_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-# EXPLAIN = "任务进度:完成icache的实现 属性:icache开启"
-EXPLAIN = 只是测试 测试一下
+CURRENT_HASH := $(shell git rev-parse HEAD)
+EXPLAIN = 本次提交哈希值:$(CURRENT_HASH) 任务进度:完成icache的实现 属性:icache开启
 
 perf: checkout run save_perf
 
