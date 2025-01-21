@@ -144,7 +144,7 @@ clean_nv:
 
 
 
-CFLAGS += -DNPCCONFIG_ITRACE 
+# CFLAGS += -DNPCCONFIG_ITRACE 
 # CFLAGS += -DNPCCONFIG_FTRACE 
 # CFLAGS += -DNPCCONFIG_MTRACE 
 # CFLAGS += -DNPCCONFIG_DUMPWAVE 
@@ -172,9 +172,11 @@ run: $(BIN)
 
 #如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
+
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
-LOG = $(shell cat $(PERF_MD) | sed ':a;N;$!ba;s/\n/\\n/g')
-EXPLAIN = "这只是测试"
+SAVE_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
+# EXPLAIN = "任务进度:完成icache的实现 属性:icache开启"
+EXPLAIN = 只是测试 测试一下
 
 perf: checkout run save_perf
 
@@ -183,5 +185,7 @@ checkout:
 	@echo "现在切换到了perf分支,用于评估性能并commit"
 
 save_perf:
-	@git commit --allow-empty -am "$(EXPLAIN), $(LOG)"
-	@echo "已保存性能数据为提交日志"
+	@git commit --allow-empty -am "$(EXPLAIN)"
+	@echo "已提交并保存这次的perf数据"
+	@cat $(PERF_MD) > $(SAVE_MD)
+	@echo -e $(EXPLAIN) >> $(SAVE_MD)

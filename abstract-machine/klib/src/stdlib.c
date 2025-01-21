@@ -37,18 +37,14 @@ void *malloc(size_t size) {
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
   // 初始化addr为heap.start
   if (addr == NULL) {
-    addr = heap.start;
+    addr = (void *)ROUNDUP(heap.start, 8);
   }
-  // 确保size是按sizeof(void*)对齐的
-  size = (size + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
-  // 检查是否还有足够的空间
-  if (addr + size > (char*)heap.end) {
-    return NULL;  // 如果空间不足，返回NULL
-  }
-  // 返回当前的addr，并更新它
-  void *allocated_memory = (void *)addr;
+  size = (size_t)ROUNDUP(size, 8);
+  char *allocated_memory = addr;
   addr += size;
-
+  assert((uintptr_t)heap.start <= (uintptr_t)addr && (uintptr_t)addr < (uintptr_t)heap.end);
+  for(uint64_t *p = (uint64_t *)allocated_memory; p != (uint64_t *)addr; p ++)
+    *p = 0;
   return allocated_memory;
 
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
