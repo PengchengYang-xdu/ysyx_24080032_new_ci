@@ -175,7 +175,7 @@ run: $(BIN)
 
 PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
 SAVE_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:完成icache的实现 属性:icache开启
+EXPLAIN = 任务进度:完成icache的实现 属性:icache未开启
 
 perf: checkout run save_perf
 
