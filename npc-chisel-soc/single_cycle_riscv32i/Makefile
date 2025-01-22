@@ -173,9 +173,9 @@ run: $(BIN)
 #如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 
-PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/Perf/perf.md
+PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:完成icache的实现 属性:icache未开启
+EXPLAIN = 任务进度:完成icache的实现,添加了icache相关计数器 属性:icache开启,b=4,k=16
 
 perf: checkout run save_perf
 
