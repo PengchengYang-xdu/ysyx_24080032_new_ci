@@ -12,11 +12,14 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <isa.h>
 #include <memory/paddr.h>
 #include <ysyxsoc.h>
 #include "../ysyxsoc/include/ysyxsoc_mem.h"
+
 
 void init_rand();
 void init_log(const char *log_file);
@@ -53,16 +56,20 @@ static long load_img() {
     return 4096; // built-in image size
   }
 
+
+
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
-
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
+  Log("The image is %s, size = %ld", img_file, size); 
 
-  Log("The image is %s, size = %ld", img_file, size);
+
+
+
 
   fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(FLASH_BASE), size, 1, fp);
+  int ret = fread(guest_to_host(CONFIG_MBASE), size, 1, fp);
   assert(ret == 1);
 
   fclose(fp);

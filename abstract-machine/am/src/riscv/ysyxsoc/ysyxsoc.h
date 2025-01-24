@@ -26,4 +26,4 @@
 #define VGA_HIGHT 480
 
 /*RTC*/
-#define RTC_BASE 0x02000000
+#define RTC_BASE 0x02000000 //as same as CLINT BASE

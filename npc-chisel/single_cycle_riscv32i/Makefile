@@ -14,7 +14,7 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 PRJ_PATH = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i
 
 ################################        FLAG        ################################
-VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace --no-timing --timescale "1ns/1ns"
+VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns"
 LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH += $(PRJ_PATH)/include
 INCFLAGS = $(addprefix -I, $(INC_PATH))
@@ -59,6 +59,7 @@ clr:
 	rm -rf $(BUILD_DIR)
 	rm -rf *.vcd
 	rm -rf $(GEN_DIR)
+	rm -rf *.fst
 
 
 

@@ -59,3 +59,7 @@ else
 # Include rules to build NEMU
 include $(NEMU_HOME)/scripts/native.mk
 endif
+
+ifeq ($(ADD_CFLAGS), 1)  # 如果 ADD_CFLAGS 等于 1, 添加 CFLAGS
+  CFLAGS += -DCONFIG_ICACHESIM
+endif

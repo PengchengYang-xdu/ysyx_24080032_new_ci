@@ -9,8 +9,7 @@ AM_SRCS := platform/nemu/trm.c \
 
 CFLAGS    += -fdata-sections -ffunction-sections
 LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
-             --defsym=_pmem_start=0x20000000 --defsym=_entry_offset=0x0 \
-			 --defsym=_sram_start=0x0f000000 --defsym=_sram_size=0x2000 
+             --defsym=_pmem_start=0x30000000 --defsym=_entry_offset=0x0
 LDFLAGS   += --gc-sections -e _start
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 NEMUFLAGS += -b
@@ -31,3 +30,18 @@ run: image
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
+
+
+
+
+
+
+MICROBENCH_HOME = /home/ypc/Desktop/ysyx/ysyx-workbench/am-kernels/benchmarks/microbench
+
+YSYXSOC_IMAGE := $(subst nemu,ysyxsoc,$(IMAGE))
+
+icachesim:
+#首先制作ysyxsoc的microbench train程序流
+	$(MAKE) -C $(MICROBENCH_HOME) ARCH=riscv32e-ysyxsoc mainargs=test
+#之后用nemu执行ysyxsoc的程序流, 从而生成icachesim.log
+	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(YSYXSOC_IMAGE).bin ADD_CFLAGS=1
