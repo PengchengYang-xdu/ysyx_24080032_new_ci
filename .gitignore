@@ -12,7 +12,10 @@
 !README.md
 !.gitignore
 !init.sh
-/fceux-am
-/nvboard
-/am-kernels
-
+# !/fceux-am/*
+# !/nvboard/*
+# !/am-kernels/*
+# !/abstract-machine/*
+# !/c_exp/*
+# !/digital_circuit_exp/*
+# !/ysyxSoC/*
