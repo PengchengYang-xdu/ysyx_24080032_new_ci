@@ -8,6 +8,7 @@
 !/npc/*
 !/npc-chisel/**
 !/npc-chisel-soc/**
+!/icachesim/**
 !Makefile
 !README.md
 !.gitignore
