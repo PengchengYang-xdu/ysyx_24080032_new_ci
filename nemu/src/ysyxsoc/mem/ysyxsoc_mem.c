@@ -45,8 +45,8 @@ void init_ysyxsoc_mem(){
     init_sdram();
     init_psram();
     printf("init soc mem success!\n");
-    init_icachesim();
-    printf("init icachesim success!\n");
+    // init_icachesim();
+    // printf("init icachesim success!\n");
 #elif CONFIG_ICACHESIM
     init_mrom();
     init_sram();
