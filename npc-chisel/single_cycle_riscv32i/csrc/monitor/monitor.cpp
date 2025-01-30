@@ -103,7 +103,11 @@ void init_monitor(int argc, char *argv[]) {
   long img_size = load_img();
 
   /* Initialize differential testing. */
+  #ifdef NPCCONFIG_DIFFTEST
   init_difftest(diff_so_file, img_size);
+  printf("difftest init success\n");
+  #endif
+  
   init_disasm("riscv32-pc-linux-gnu");
 
   /* Initialize the simple debugger. */
