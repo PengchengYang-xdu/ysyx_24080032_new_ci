@@ -15,8 +15,8 @@ LDFLAGS   += -T $(AM_HOME)/scripts/linkernpc.ld \
 LDFLAGS   += --gc-sections -e _start
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 
-NPC_CHISEL_HOME = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel
-NPC_CHISEL_SOC_HOME = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc
+NPC_CHISEL_HOME = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel
+NPC_CHISEL_SOC_HOME = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc
 
 NPCFLAGS += -l $(shell dirname $(IMAGE).elf)/npc-log.txt
 NPCFLAGS += -b
@@ -32,9 +32,9 @@ image: $(IMAGE).elf
 
 
 
-# NPCFLAGS += -d /home/ypc/Desktop/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor/ref/riscv32-nemu-interpreter-so_20241012
-NPCFLAGS += -d /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20250130
-# NPCFLAGS += -d /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20241012
+# NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor/ref/riscv32-nemu-interpreter-so_20241012
+NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20250130
+# NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20241012
 
 
 # run: image

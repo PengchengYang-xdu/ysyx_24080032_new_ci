@@ -63,7 +63,7 @@ static long load_img() {
 
 
 /* just for char-flash-test and xip-flash-test use */
-    // FILE *char_test = fopen("/home/ypc/Desktop/ysyx/ysyx-workbench/am-kernels/tests/char-test/build/chartest-riscv32e-ysyxsoc.bin", "rb");
+    // FILE *char_test = fopen("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/am-kernels/tests/char-test/build/chartest-riscv32e-ysyxsoc.bin", "rb");
     // fseek(char_test, 0, SEEK_END);
     // long size_t = ftell(char_test);
     // fflush(stdout);

@@ -13,7 +13,7 @@ VERIARG = --cc -MMD --build
 
 LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 
-INC_PATH += /home/ypc/Desktop/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor/include
+INC_PATH += /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor/include
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 
 # include $(NVBOARD_HOME)/scripts/nvboard.mk
@@ -83,7 +83,7 @@ CFLAGS += -DNPCCONFIG_DUMPWAVE
 
 
 
-PROJ_PATH = /home/ypc/Desktop/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor
+PROJ_PATH = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor
 
 DESIGN ?= ysyx_24080032_riscv32i
 SDC_FILE ?= $(PROJ_PATH)/syn/sdc/ysyx_24080032_riscv32i.sdc

@@ -1,4 +1,4 @@
-include /home/ypc/Desktop/ysyx/ysyx-workbench/Makefile
+include /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/Makefile
 #自2024-12-05添加这一行makefile, 此时做到GPIO结束, 也就是完成SEG显示学号, 前面由于没有添加导致没有commit追踪, 哭死
 
 ################################################################        VERILATOR        ################################################################
@@ -9,11 +9,11 @@ CSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.
 IMG ?= program.bin #image
 
 ################################        DIR        ################################
-SOC_DIR = /home/ypc/Desktop/ysyx/ysyx-workbench/ysyxSoC
+SOC_DIR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/ysyxSoC
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
-PRJ_PATH = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i
+PRJ_PATH = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i
 
 ################################        FLAG        ################################
 VSRC += $(shell find $(abspath $(SOC_DIR)/build) -name "*.sv" -or -name "*.v")
@@ -53,7 +53,7 @@ verilog:
 	mill -i $(PRJ).runMain Elaborate \
 	$(MILLFLAG)
 
-# IMG_CHAR = /home/ypc/Desktop/ysyx/ysyx-workbench/ysyxSoC/char-test/build/char-test.bin
+# IMG_CHAR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/ysyxSoC/char-test/build/char-test.bin
 
 wave: 
 	gtkwave *.vcd
@@ -106,7 +106,7 @@ clean:
 
 ################################################################        NVBOARD        ################################################################
 ################################        SRC        ################################
-NVBOARD_HOME = /home/ypc/Desktop/ysyx/ysyx-workbench/nvboard
+NVBOARD_HOME = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/nvboard
 WORKSPACE = ./nvboard
 NXDC_FILES = $(WORKSPACE)/constr/$(TOPNAME).nxdc
 NV_INC_PATH ?=
@@ -173,8 +173,8 @@ run: $(BIN)
 #如果想要评估性能,在microbench文件夹下(别忘了把trm.c的mainargs换成train),使用指令 make ARCH=riscv32e-ysyxsoc perf
 #所有评估性能的commit都提交到perf分支上面,这个分支也是用来完成性能优化和缓存的分支
 
-PERF_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
-SAVE_MD = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
+PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
+SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
 EXPLAIN = 任务进度:完成icache的实现,添加了icache相关计数器 属性:icache开启,b=4,k=16
 
 perf: checkout run save_perf
