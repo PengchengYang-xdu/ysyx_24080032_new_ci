@@ -178,7 +178,7 @@ class IDU extends Module {
         val io = IO(new Bundle{
             val inst = Input(UInt(WORD_LEN.W))
         })
-        addPath("/home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i/src/main/core/idu/Ebreak.sv")
+        addPath("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i/src/main/core/idu/Ebreak.sv")
     }
 
     val ebreak = Some(Module(new Ebreak))

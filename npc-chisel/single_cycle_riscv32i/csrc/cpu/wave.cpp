@@ -15,7 +15,7 @@ void init_wave(){
 	// tfp = new VerilatedVcdC();
     tfp = new VerilatedFstC();
 	top->trace(tfp, 5);
-	tfp->open("/mnt/hgfs/share/wave/npc.fst");
+	tfp->open("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i/build/npc.fst");
 } 
 
 void dump_wave(){

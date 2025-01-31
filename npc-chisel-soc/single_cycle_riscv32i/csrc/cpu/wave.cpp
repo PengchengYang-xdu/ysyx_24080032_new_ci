@@ -15,7 +15,7 @@ void init_wave(){
 	// tfp = new VerilatedVcdC();
     tfp = new VerilatedFstC();
 	top->trace(tfp, 5);
-	tfp->open("/mnt/hgfs/share/wave/ysyxsoc.fst");//gen the vcd in share dir, so that memory doesn't get biiiiiiiiiiiiig
+	tfp->open("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/build/ysyxsoc.fst");//gen the vcd in share dir, so that memory doesn't get biiiiiiiiiiiiig
 } 
 
 void dump_wave(){

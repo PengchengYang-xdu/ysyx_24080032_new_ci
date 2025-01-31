@@ -367,7 +367,7 @@ void reset(int i) {
 }
 
 static void statistic() {
-    save2csv("/home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md");
+    save2csv("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md");
 }
 
 void assert_fail_msg() {

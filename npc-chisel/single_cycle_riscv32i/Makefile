@@ -1,4 +1,4 @@
-include /home/ypc/Desktop/ysyx/ysyx-workbench/Makefile
+include /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/Makefile
 
 ################################################################        VERILATOR        ################################################################
 ################################        SRC        ################################
@@ -11,7 +11,7 @@ IMG ?= program.bin #image
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
-PRJ_PATH = /home/ypc/Desktop/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i
+PRJ_PATH = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i
 
 ################################        FLAG        ################################
 VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns"
@@ -100,12 +100,12 @@ clean:
 
 
 
-CFLAGS += -DNPCCONFIG_ITRACE 
+# CFLAGS += -DNPCCONFIG_ITRACE 
 # CFLAGS += -DNPCCONFIG_FTRACE 
 # CFLAGS += -DNPCCONFIG_MTRACE 
 # CFLAGS += -DNPCCONFIG_DUMPWAVE 
 # CFLAGS += -DNPCCONFIG_WATCHPOINT 
-CFLAGS += -DNPCCONFIG_DIFFTEST 
+# CFLAGS += -DNPCCONFIG_DIFFTEST 
 
 
 
