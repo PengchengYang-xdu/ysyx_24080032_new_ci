@@ -10,14 +10,13 @@ INCLUDE_FLAGS = -I$(ICAHCESIM_HOME)/include
 bin = $(BUILD_DIR)/icachesim
 
 $(bin): $(SRCS)
-	@echo "building icachesim..."
-	@mkdir -p $(BUILD_DIR)
-	@g++ $(CPPFLAGS) -o $@ $(INCLUDE_FLAGS) $^
+    @echo "building icachesim..."
+    @mkdir -p $(BUILD_DIR)
+    @g++ $(CPPFLAGS) -o $@ $(INCLUDE_FLAGS) $^
 
 run: $(bin)
-	@echo "running icachesim..."
-	$(bin) $(ICACHESIM_LOG_DIR)/icachesim.log.bz2
+    @echo "running icachesim..."
+    $(bin) $(ICACHESIM_LOG_DIR)/icachesim.log.bz2
 
 clean:
-	rm -rf $(BUILD_DIR)
-	
+    rm -rf $(BUILD_DIR)
