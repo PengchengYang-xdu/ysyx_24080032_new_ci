@@ -1,8 +1,11532 @@
 building icachesim...
 running icachesim...
-../icachesim/build/icachesim
+SETS=16, WAYS=3, BLOCK_SIZE=16, POLICY=LRU
 
-req_num = 195379210
-hit_num = 185643042
-miss_num = 9508551
-命中率 = 0.95%
+
+hit = 0
+addr = a0000124
+tag = a00001
+index = 2
+replace_index = 6
+
+
+hit = 1
+addr = a0000128
+tag = a00001
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a000012c
+tag = a00001
+index = 2
+replace_index = -1
+
+
+hit = 0
+addr = a0000130
+tag = a00001
+index = 3
+replace_index = 9
+
+
+hit = 1
+addr = a0000134
+tag = a00001
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000138
+tag = a00001
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a000013c
+tag = a00001
+index = 3
+replace_index = -1
+
+
+hit = 0
+addr = a0000140
+tag = a00001
+index = 4
+replace_index = 12
+
+
+hit = 1
+addr = a0000144
+tag = a00001
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000148
+tag = a00001
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000014c
+tag = a00001
+index = 4
+replace_index = -1
+
+
+hit = 0
+addr = a0000150
+tag = a00001
+index = 5
+replace_index = 15
+
+
+hit = 1
+addr = a0000154
+tag = a00001
+index = 5
+replace_index = -1
+
+
+hit = 0
+addr = a0000018
+tag = a00000
+index = 1
+replace_index = 3
+
+
+hit = 1
+addr = a000001c
+tag = a00000
+index = 1
+replace_index = -1
+
+
+hit = 0
+addr = a0000020
+tag = a00000
+index = 2
+replace_index = 7
+
+
+hit = 1
+addr = a0000024
+tag = a00000
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000028
+tag = a00000
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a000002c
+tag = a00000
+index = 2
+replace_index = -1
+
+
+hit = 0
+addr = a0000030
+tag = a00000
+index = 3
+replace_index = 10
+
+
+hit = 1
+addr = a0000034
+tag = a00000
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000038
+tag = a00000
+index = 3
+replace_index = -1
+
+
+hit = 0
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = 36
+
+
+hit = 0
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = 39
+
+
+hit = 0
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = 42
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 0
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = 45
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001fc
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 0
+addr = a0000200
+tag = a00002
+index = 0
+replace_index = 0
+
+
+hit = 1
+addr = a0000204
+tag = a00002
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a000003c
+tag = a00000
+index = 3
+replace_index = -1
+
+
+hit = 0
+addr = a0000040
+tag = a00000
+index = 4
+replace_index = 13
+
+
+hit = 0
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = 1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000044
+tag = a00000
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000048
+tag = a00000
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000004c
+tag = a00000
+index = 4
+replace_index = -1
+
+
+hit = 0
+addr = a0000050
+tag = a00000
+index = 5
+replace_index = 16
+
+
+hit = 1
+addr = a0000054
+tag = a00000
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f4
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f8
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a0000058
+tag = a00000
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000005c
+tag = a00000
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 0
+addr = a0000060
+tag = a00000
+index = 6
+replace_index = 18
+
+
+hit = 1
+addr = a0000064
+tag = a00000
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000068
+tag = a00000
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000006c
+tag = a00000
+index = 6
+replace_index = -1
+
+
+hit = 0
+addr = a0000070
+tag = a00000
+index = 7
+replace_index = 21
+
+
+hit = 1
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f4
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f8
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a0000074
+tag = a00000
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000078
+tag = a00000
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a000007c
+tag = a00000
+index = 7
+replace_index = -1
+
+
+hit = 0
+addr = a0000080
+tag = a00000
+index = 8
+replace_index = 24
+
+
+hit = 1
+addr = a0000084
+tag = a00000
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000088
+tag = a00000
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a000008c
+tag = a00000
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f4
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f8
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 0
+addr = a0000090
+tag = a00000
+index = 9
+replace_index = 27
+
+
+hit = 1
+addr = a0000094
+tag = a00000
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000098
+tag = a00000
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000009c
+tag = a00000
+index = 9
+replace_index = -1
+
+
+hit = 0
+addr = a00000a0
+tag = a00000
+index = 10
+replace_index = 30
+
+
+hit = 1
+addr = a00000a4
+tag = a00000
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00000a8
+tag = a00000
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f4
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001f8
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00000ac
+tag = a00000
+index = 10
+replace_index = -1
+
+
+hit = 0
+addr = a00000b0
+tag = a00000
+index = 11
+replace_index = 33
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a00000b4
+tag = a00000
+index = 11
+replace_index = -1
+
+
+hit = 1
+addr = a00000b8
+tag = a00000
+index = 11
+replace_index = -1
+
+
+hit = 1
+addr = a00000bc
+tag = a00000
+index = 11
+replace_index = -1
+
+
+hit = 0
+addr = a00000c0
+tag = a00000
+index = 12
+replace_index = 37
+
+
+hit = 0
+addr = a0000164
+tag = a00001
+index = 6
+replace_index = 19
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 0
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = 22
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000168
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a000016c
+tag = a00001
+index = 6
+replace_index = -1
+
+
+hit = 1
+addr = a0000170
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000174
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a0000178
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a000017c
+tag = a00001
+index = 7
+replace_index = -1
+
+
+hit = 1
+addr = a00000c4
+tag = a00000
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00000c8
+tag = a00000
+index = 12
+replace_index = -1
+
+
+hit = 0
+addr = a0000180
+tag = a00001
+index = 8
+replace_index = 25
+
+
+hit = 1
+addr = a0000184
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000188
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a000018c
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 0
+addr = a0000190
+tag = a00001
+index = 9
+replace_index = 28
+
+
+hit = 1
+addr = a0000194
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000018c
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000190
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000194
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000018c
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000190
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000194
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000018c
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000190
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000194
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000018c
+tag = a00001
+index = 8
+replace_index = -1
+
+
+hit = 1
+addr = a0000190
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000194
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 0
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = 31
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a0000198
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a000019c
+tag = a00001
+index = 9
+replace_index = -1
+
+
+hit = 1
+addr = a00001a0
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a4
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001a8
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00001ac
+tag = a00001
+index = 10
+replace_index = -1
+
+
+hit = 1
+addr = a00000cc
+tag = a00000
+index = 12
+replace_index = -1
+
+
+hit = 0
+addr = a00000d0
+tag = a00000
+index = 13
+replace_index = 40
+
+
+hit = 1
+addr = a00001cc
+tag = a00001
+index = 12
+replace_index = -1
+
+
+hit = 1
+addr = a00001d0
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001e0
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e4
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001e8
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001ec
+tag = a00001
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00001f0
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00001d8
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001dc
+tag = a00001
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00001fc
+tag = a00001
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a0000200
+tag = a00002
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000204
+tag = a00002
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a00000d4
+tag = a00000
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a00000d8
+tag = a00000
+index = 13
+replace_index = -1
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a00000dc
+tag = a00000
+index = 13
+replace_index = -1
+
+
+hit = 0
+addr = a00000e0
+tag = a00000
+index = 14
+replace_index = 43
+
+
+hit = 1
+addr = a00000e4
+tag = a00000
+index = 14
+replace_index = -1
+
+
+hit = 1
+addr = a00000e8
+tag = a00000
+index = 14
+replace_index = -1
+
+
+hit = 0
+addr = a0000210
+tag = a00002
+index = 1
+replace_index = 4
+
+
+hit = 1
+addr = a0000214
+tag = a00002
+index = 1
+replace_index = -1
+
+
+hit = 1
+addr = a0000218
+tag = a00002
+index = 1
+replace_index = -1
+
+
+hit = 1
+addr = a000021c
+tag = a00002
+index = 1
+replace_index = -1
+
+
+hit = 0
+addr = a0000220
+tag = a00002
+index = 2
+replace_index = 8
+
+
+hit = 1
+addr = a0000224
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000228
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000220
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000224
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000228
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000220
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000224
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000228
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000220
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000224
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000228
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000220
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000224
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a0000228
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a000022c
+tag = a00002
+index = 2
+replace_index = -1
+
+
+hit = 1
+addr = a00000ec
+tag = a00000
+index = 14
+replace_index = -1
+
+
+hit = 0
+addr = a00000f0
+tag = a00000
+index = 15
+replace_index = 46
+
+
+hit = 1
+addr = a00000f4
+tag = a00000
+index = 15
+replace_index = -1
+
+
+hit = 0
+addr = a0000230
+tag = a00002
+index = 3
+replace_index = 11
+
+
+hit = 1
+addr = a0000234
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000238
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 0
+addr = a0000240
+tag = a00002
+index = 4
+replace_index = 14
+
+
+hit = 1
+addr = a0000244
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000248
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000024c
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 0
+addr = a0000250
+tag = a00002
+index = 5
+replace_index = 17
+
+
+hit = 1
+addr = a000023c
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000240
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000244
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000248
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000024c
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000250
+tag = a00002
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000023c
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000240
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000244
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000248
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000024c
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000250
+tag = a00002
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000023c
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000240
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000244
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000248
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000024c
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000250
+tag = a00002
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000023c
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a0000240
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000244
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000248
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a000024c
+tag = a00002
+index = 4
+replace_index = -1
+
+
+hit = 1
+addr = a0000250
+tag = a00002
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000023c
+tag = a00002
+index = 3
+replace_index = -1
+
+
+hit = 1
+addr = a000025c
+tag = a00002
+index = 5
+replace_index = -1
+
+
+hit = 0
+addr = a0000260
+tag = a00002
+index = 6
+replace_index = 20
+
+
+hit = 1
+addr = a00000f8
+tag = a00000
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a00000fc
+tag = a00000
+index = 15
+replace_index = -1
+
+
+hit = 1
+addr = a0000000
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000004
+tag = a00000
+index = 0
+replace_index = -1
+
+
+hit = 0
+addr = a0000100
+tag = a00001
+index = 0
+replace_index = 2
+
+
+hit = 1
+addr = a0000104
+tag = a00001
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a0000108
+tag = a00001
+index = 0
+replace_index = -1
+
+
+hit = 1
+addr = a000010c
+tag = a00001
+index = 0
+replace_index = -1
+
+
+hit = 0
+addr = a0000110
+tag = a00001
+index = 1
+replace_index = 5
+
+
+hit = 1
+addr = a0000114
+tag = a00001
+index = 1
+replace_index = -1
+
+
+hit = 1
+addr = a0000158
+tag = a00001
+index = 5
+replace_index = -1
+
+
+hit = 1
+addr = a000015c
+tag = a00001
+index = 5
+replace_index = -1

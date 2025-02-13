@@ -7,14 +7,18 @@
 #include <icache.h>
 
 
-iCache *init_icache(uint32_t sets, uint32_t ways, ReplacementPolicy policy){
+iCache *init_icache(uint32_t sets, uint32_t ways, uint32_t block_size, ReplacementPolicy policy){
     iCache *icache = (iCache *)malloc(sizeof(iCache));
     icache->sets = sets;
     icache->ways = ways;
     icache->policy = policy;
     icache->blocks = (iCacheBlock *)malloc(sets * ways * sizeof(iCacheBlock));
 
-    icache->lru_history = (int *)malloc(sets * sizeof(int));
+    //初始化lru数组
+    icache->lru_history = (int **)malloc(sets * sizeof(int *));
+    for(int i = 0; i < sets; i++)
+        icache->lru_history[i] = (int *)malloc(ways * sizeof(int));
+    //初始化fifo队列
     icache->fifo_queue = (uint *)malloc(sets * sizeof(uint));
 
     for (int i = 0; i < sets; i++) {
@@ -25,7 +29,8 @@ iCache *init_icache(uint32_t sets, uint32_t ways, ReplacementPolicy policy){
     }
     if (policy == LRU) {
         for(int i = 0; i < sets; i++)
-            icache->lru_history[i] = -1;
+            for(int j = 0; j < ways; j++)
+                icache->lru_history[i][j] = -1;
     } else if (policy == FIFO) {
         for(int i = 0; i < sets; i++)
             icache->fifo_queue[i] = 0;
@@ -34,21 +39,21 @@ iCache *init_icache(uint32_t sets, uint32_t ways, ReplacementPolicy policy){
     return icache;
 }
 
-int lookup_icache(iCache *cache, uint32_t address, ReplacementPolicy policy){
-    uint32_t index = get_index(address, BLOCK_SIZE, cache->sets);
-    uint32_t tag = get_tag(address, BLOCK_SIZE, cache->sets);
+int lookup_icache(iCache *cache, uint32_t address, uint32_t block_size, ReplacementPolicy policy){
+    uint32_t index = get_index(address, block_size, cache->sets);
+    uint32_t tag = get_tag(address, block_size, cache->sets);
     int hit = 0;
 
     // printf("\n\n");
     //查找index对应的icache组
     for(int j = 0; j < cache->ways; j++){
         uint32_t idx = index * cache->ways + j;
-        // printf("look up idx = %u\n", idx);
         if (cache->blocks[idx].valid && cache->blocks[idx].tag == tag) {
             hit = 1;
+            // printf("access idx = %u\n", idx);
             if (policy == LRU) {
                 // 更新LRU历史记录
-                cache->lru_history[idx] = time(NULL);
+                update_lru_history(cache, index, j);
             }
             break;
         }
@@ -73,7 +78,7 @@ int lookup_icache(iCache *cache, uint32_t address, ReplacementPolicy policy){
                     replace_index = index * cache->ways + cache->fifo_queue[index];
                     break;
                 case LRU:
-                    replace_index = index * cache->ways + cache->lru_history[index];
+                    replace_index = index * cache->ways + cache->lru_history[index][cache->ways - 1];
                     break;
                 case RANDOM:
                     replace_index = index * cache->ways + (rand() % cache->ways);//这个组里面随机一个cache块
@@ -88,7 +93,7 @@ int lookup_icache(iCache *cache, uint32_t address, ReplacementPolicy policy){
         if(policy == FIFO){
             cache->fifo_queue[index] = (cache->fifo_queue[index] + 1) % cache->ways;
         } else if(policy == LRU){
-            cache->lru_history[index] = time(NULL);
+            update_lru_history(cache, index, replace_index % cache->ways);//替换也算一次访问
         }
     }
     // printf("hit = %u\n", hit);
@@ -116,4 +121,23 @@ void free_cache(iCache *cache) {
     free(cache->lru_history);
     free(cache->fifo_queue);
     free(cache);
+}
+
+void update_lru_history(iCache *cache, uint32_t index, uint32_t accessed_num){
+    //遍历看正在访问的缓存块是否在链表中
+    for(int i = 0; i < cache->ways; i++){
+        //如果在链表中, 移动到头部, 其余依次后移
+        if(cache->lru_history[index][i] == accessed_num){
+            for (int j = i; j > 0; j--) {
+                cache->lru_history[index][j] = cache->lru_history[index][j - 1];
+            }
+            cache->lru_history[index][0] = accessed_num;
+            return;
+        }
+    }
+    //如果不在链表中, 插入到头部, 其余依次后移
+    for (int i = cache->ways - 1; i > 0; i--) {
+        cache->lru_history[index][i] = cache->lru_history[index][i - 1];
+    }
+    cache->lru_history[index][0] = accessed_num;
 }
