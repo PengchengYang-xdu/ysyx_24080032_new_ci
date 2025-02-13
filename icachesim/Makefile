@@ -4,7 +4,7 @@ BUILD_DIR = $(ICAHCESIM_HOME)/build
 ICACHESIM_LOG_DIR = $(ICAHCESIM_HOME)/icachesim_log
 SRCS = $(shell find $(ICAHCESIM_HOME)/src/ -name "*.cpp")
 SRCS += $(shell find $(ICAHCESIM_HOME)/src/ -name "*.c")
-CPPFLAGS = -std=c++17 -O2
+CPPFLAGS = -std=c++17 -O2 -pthread
 INCLUDE_FLAGS = -I$(ICAHCESIM_HOME)/include
 
 bin = $(BUILD_DIR)/icachesim
@@ -19,4 +19,5 @@ run: $(bin)
     $(bin) $(ICACHESIM_LOG_DIR)/icachesim.log.bz2
 
 clean:
-    rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)
+	rm -rf ./printf.log
