@@ -150,7 +150,7 @@ class iCache(val b: Int, val k: Int) extends Module{
         }
     }
 
-    when(c_state === s_i_2){
+    when(c_state === s_i_2 && issdram_raddr){
         icache(req_index).valid := true.B
         icache(req_index).tag := req_tag
         icache(req_index).data(req_offset >> 2) := icache_wdata

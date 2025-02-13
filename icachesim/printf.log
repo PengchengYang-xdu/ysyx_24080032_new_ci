@@ -1,0 +1,8 @@
+building icachesim...
+running icachesim...
+../icachesim/build/icachesim
+
+req_num = 195379210
+hit_num = 185643042
+miss_num = 9508551
+命中率 = 0.95%

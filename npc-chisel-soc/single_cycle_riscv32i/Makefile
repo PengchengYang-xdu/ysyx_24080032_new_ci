@@ -55,10 +55,10 @@ verilog:
 
 # IMG_CHAR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/ysyxSoC/char-test/build/char-test.bin
 
-wave: 
+wave:
 	gtkwave *.vcd
 
-clr: 
+clr:
 	rm -rf $(BUILD_DIR)
 	rm -rf *.vcd
 	rm -rf $(GEN_DIR)
@@ -144,21 +144,21 @@ clean_nv:
 
 
 
-# CFLAGS += -DNPCCONFIG_ITRACE 
-# CFLAGS += -DNPCCONFIG_FTRACE 
-# CFLAGS += -DNPCCONFIG_MTRACE 
-# CFLAGS += -DNPCCONFIG_DUMPWAVE 
-# CFLAGS += -DNPCCONFIG_WATCHPOINT 
-# CFLAGS += -DNPCCONFIG_DIFFTEST 
+# CFLAGS += -DNPCCONFIG_ITRACE
+# CFLAGS += -DNPCCONFIG_FTRACE
+# CFLAGS += -DNPCCONFIG_MTRACE
+# CFLAGS += -DNPCCONFIG_DUMPWAVE
+# CFLAGS += -DNPCCONFIG_WATCHPOINT
+# CFLAGS += -DNPCCONFIG_DIFFTEST
 
 
 
-# if you want to just run the ysyxsoc 
+# if you want to just run the ysyxsoc
 run: $(BIN)
 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(BIN) $(ARGS) $(IMG) 
 
 #if you want to run the nvboard
-# CFLAGS += -DNV_BOARD 
+# CFLAGS += -DNV_BOARD
 # run: $(NV_BIN)
 # 	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(NV_BIN) $(ARGS) $(IMG)
 
@@ -175,7 +175,7 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:完成icache的实现,添加了icache相关计数器 属性:icache开启,b=4,k=16
+EXPLAIN = 任务进度:正在做icachesim,修复了icache没有判断sdram地址的错误 属性:icache开启,b=4,k=16
 
 perf: checkout run save_perf
 
