@@ -12,7 +12,7 @@ bin = $(BUILD_DIR)/icachesim
 # 默认的cache参数
 SETS ?= 16
 WAYS ?= 3
-BLOCK_SIZE ?= 16
+BLOCK_SIZE ?= 4
 POLICY ?= LRU
 
 MD_FILE = icachesim_results.md

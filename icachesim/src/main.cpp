@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     ReplacementPolicy POLICY = get_policy_from_string(argv[4]);
     const char* output_file = argv[5];
 
-    FILE *fp = popen("bzcat /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/icachesim/icachesim_log/icachesim.log.bz2", "r");
+    FILE *fp = popen("bzcat /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/icachesim/icachesim_log/string.log.bz2", "r");
     if(fp == NULL){
         perror("failed to open bz2 file");
         return -1;
