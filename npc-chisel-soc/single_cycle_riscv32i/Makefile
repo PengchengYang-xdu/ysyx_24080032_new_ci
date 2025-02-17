@@ -18,7 +18,7 @@ PRJ_PATH = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cy
 ################################        FLAG        ################################
 VSRC += $(shell find $(abspath $(SOC_DIR)/build) -name "*.sv" -or -name "*.v")
 VSRC += $(shell find $(abspath $(SOC_DIR)/perip) -name "*.sv" -or -name "*.v")
-VERIARG = --cc -MMD --build --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 8 --autoflush
+VERIARG = --cc -MMD --build --trace-threads 2 --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 64 --autoflush
 LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH += $(PRJ_PATH)/include
 INCFLAGS = $(addprefix -I, $(INC_PATH))
@@ -175,7 +175,7 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:正在做icachesim,修复了icache没有判断sdram地址的错误 属性:icache开启,b=4,k=16
+EXPLAIN = 任务进度:icache完成替换逻辑,接下来做更大的块 属性:icache开启,block=4,sets=16,ways=3,policy=lru
 
 perf: checkout run save_perf
 

@@ -12,14 +12,19 @@ class iCacheIO extends Bundle {
     val out = Flipped(new AXI4WithoutClk)
 }
 
-//b = 4字节, k = 4个
-class iCachePacIO(val m: Int, val n: Int) extends Bundle{
+class iCacheBlock(val m: Int, val n: Int) extends Bundle{
     val valid = Bool()
     val tag = UInt((32 - m - n).W)
     val data = Vec((2 << (m - 1)) / 4, UInt(WORD_LEN.W))
 }
 
-class iCache(val b: Int, val k: Int) extends Module{
+class iCacheSet(val m: Int, val n: Int, val ways: Int, val ways_width: Int) extends Bundle{
+    val set = Vec(ways, new iCacheBlock(m, n))
+    val lruMatrix = Vec(ways, Vec(ways, UInt(1.W)))
+    val fifoPtr = UInt(ways_width.W)
+}
+
+class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementPolicy: String) extends Module{
     val io = IO(new iCacheIO)
 
     val in_arready = RegInit(true.B)
@@ -82,11 +87,13 @@ class iCache(val b: Int, val k: Int) extends Module{
     io.out.wlast := out_wlast
     io.out.bready := out_bready
 
-    val m = log2(b).toInt
-    val n = log2(k).toInt
+    val m = log2(block_size).toInt
+    val n = log2(sets).toInt
+    val w = math.ceil(log2(ways)).toInt
     val index_width = n
     val offset_width = m
     val tag_width = 32 - m - n
+    val ways_width = w
 
     val req_index = Wire(UInt(index_width.W))
     req_index := io.in.araddr(m + n - 1, m)
@@ -98,7 +105,7 @@ class iCache(val b: Int, val k: Int) extends Module{
     dontTouch(req_offset)
     dontTouch(req_tag)
 
-    val icache = RegInit(VecInit(Seq.fill(k)(0.U.asTypeOf(new iCachePacIO(m, n)))))
+    val icache = RegInit(VecInit(Seq.fill(sets)(0.U.asTypeOf(new iCacheSet(m, n, ways, ways_width)))))
     dontTouch(icache)
 
     /*-----------------------FSM-----------------------*/
@@ -110,7 +117,18 @@ class iCache(val b: Int, val k: Int) extends Module{
     val issdram_raddr = (io.in.araddr >= "ha000_0000".U(32.W) && io.in.araddr <= "hbfff_ffff".U(32.W))
     val isifu_rreq = io.in.arvalid & in_arready
 
-    val hit0 = RegEnable(icache(req_index).tag === req_tag, n_state === s_icache_lookup)
+    val ways_hit = Wire(Bool())
+    ways_hit := false.B
+    val ways_hit_num = Wire(UInt(ways_width.W))
+    ways_hit_num := 0.U
+    for (i <- 0 until ways) {
+        when (icache(req_index).set(i).tag === req_tag) {
+            ways_hit := true.B
+            ways_hit_num := i.U
+        }
+    }
+
+    val hit0 = RegEnable(ways_hit, n_state === s_icache_lookup)
 
     val icache_wdata = RegInit(0.U(32.W))
     icache_wdata := Mux(n_state === s_i_2, io.out.rdata, icache_wdata)
@@ -132,8 +150,8 @@ class iCache(val b: Int, val k: Int) extends Module{
         }
         is(s_icache_lookup){
             in_arready := false.B
-            in_rvalid := icache(req_index).tag === req_tag
-            in_rdata := icache(req_index).data(req_offset >> 2)
+            in_rvalid := ways_hit
+            in_rdata := icache(req_index).set(ways_hit_num).data(req_offset >> 2)
         }
         is(s_i_0){
             ConnectIn2Out()
@@ -150,10 +168,69 @@ class iCache(val b: Int, val k: Int) extends Module{
         }
     }
 
-    when(c_state === s_i_2 && issdram_raddr){
-        icache(req_index).valid := true.B
-        icache(req_index).tag := req_tag
-        icache(req_index).data(req_offset >> 2) := icache_wdata
+    val policy = replacementPolicy.toUpperCase match {
+        case "LRU" => "LRU"
+        case "FIFO" => "FIFO"
+        case "RANDOM" => "RANDOM"
+        case _ => throw new Exception("Unknown replacement policy!")
+    }
+
+    //检查空闲的cache块
+    val hasEmpty = Wire(Bool())
+    hasEmpty := false.B
+    val emptyIndex = RegInit(0.U(ways_width.W))
+    for (i <- (ways - 1) to 0 by -1) {
+        when(icache(req_index).set(i).valid === false.B) {
+            hasEmpty := true.B
+            emptyIndex := i.U
+        }
+    }
+
+    //命中的时候更新LRU矩阵
+    if(replacementPolicy == "LRU"){
+        when(hit0){
+            updateLRU(icache(req_index), ways_hit_num)
+        }
+    }
+
+    when(c_state === s_i_2 && issdram_raddr){//替换或填充逻辑, 这里需要补充根据配置选择LRU或者FIFO或者RANDOM
+        val set = icache(req_index).set
+
+        when(hasEmpty === true.B) {
+            // 如果有空闲块，填充
+            set(emptyIndex).valid := true.B
+            set(emptyIndex).tag := req_tag
+            set(emptyIndex).data(req_offset >> 2) := icache_wdata
+            //填充的时候更新LRU矩阵
+            if(replacementPolicy == "LRU"){
+                updateLRU(icache(req_index), emptyIndex)
+            } else if(replacementPolicy == "FIFO"){
+                icache(req_index).fifoPtr := (emptyIndex + 1.U) % ways.U
+            }
+        } .otherwise{
+            // 如果没有空闲块，替换逻辑
+            policy match {
+                case "LRU" =>
+                    val lruIndex = getLRUIndex(icache(req_index), ways_width)
+                    set(lruIndex).valid := true.B
+                    set(lruIndex).tag := req_tag
+                    set(lruIndex).data(req_offset >> 2) := icache_wdata
+                    //替换的时候更新LRU矩阵
+                    updateLRU(icache(req_index), lruIndex)
+                case "FIFO" =>
+                    val fifoIndex = icache(req_index).fifoPtr
+                    set(fifoIndex).valid := true.B
+                    set(fifoIndex).tag := req_tag
+                    set(fifoIndex).data(req_offset >> 2) := icache_wdata
+                    //替换的时候更新FIFO指针
+                    icache(req_index).fifoPtr := (fifoIndex + 1.U) % ways.U
+                case "RANDOM" =>
+                    val randomIndex = scala.util.Random.nextInt(ways)
+                    set(randomIndex).valid := true.B
+                    set(randomIndex).tag := req_tag
+                    set(randomIndex).data(req_offset >> 2) := icache_wdata
+            }
+        }
     }
 
 /*-----------------------function-----------------------*/
@@ -228,4 +305,31 @@ class iCache(val b: Int, val k: Int) extends Module{
         out_wlast := io.in.wlast
         out_bready := io.in.bready
     }
+
+   def updateLRU(set: iCacheSet, ways_hit_num: UInt): Unit = {
+       val lruMatrix = set.lruMatrix
+       for(j <- 0 until ways) {
+           when(j.U =/= ways_hit_num){
+               lruMatrix(ways_hit_num)(j) := 1.U
+           }
+       }
+       for(i <- 0 until ways){
+           lruMatrix(i)(ways_hit_num) := 0.U
+       }
+   }
+
+   def getLRUIndex(set: iCacheSet, ways_width: Int): UInt = {
+       val LRUIndex = Wire(UInt(ways_width.W))
+       LRUIndex := 0.U
+       val lruMatrix = set.lruMatrix
+       for(i <- 0 until ways){
+            val isZeroRow = (0 until ways).map(j => lruMatrix(i)(j) === 0.U).reduce(_ && _)
+            when(isZeroRow){
+                LRUIndex := i.U
+            }
+       }
+       LRUIndex
+   }
+
+    
 }

@@ -91,7 +91,7 @@ void PerfAnalysis(){
 
 
     if(EV_IFU_GETINST_FIRE){
-		ev_ifu_getinst_cnt++;
+        ev_ifu_getinst_cnt++;
         ifu_getinst_flag = 1;
         pre_cycle_num_ifu_getinst = cycle_num;
     }
@@ -341,29 +341,29 @@ void single_cycle(){
     if(DUMP_FLAG){
         dump_flag = 1;
     }
-	#ifdef NPCCONFIG_DUMPWAVE
+    #ifdef NPCCONFIG_DUMPWAVE
     if(dump_flag)
-	    dump_wave();
-	#endif
+        dump_wave();
+    #endif
 
-	#ifdef NPCCONFIG_ITRACE
-	if(top->reset == 0 && DIFFVALID == 1)
-		itrace_init(PC, INSTR);
-	#endif
+    #ifdef NPCCONFIG_ITRACE
+    if(top->reset == 0 && DIFFVALID == 1)
+        itrace_init(PC, INSTR);
+    #endif
 
-	top->clock = 1;
+    top->clock = 1;
     top->eval();
-	#ifdef NPCCONFIG_DUMPWAVE
+    #ifdef NPCCONFIG_DUMPWAVE
     if(dump_flag)
-	    dump_wave();
-	#endif
+        dump_wave();
+    #endif
 }
 
 void reset(int i) {
-	top->reset = 1; 
- 	while (i -- > 0)
+    top->reset = 1; 
+     while (i -- > 0)
         single_cycle();
-	top->reset = 0; 
+    top->reset = 0; 
 }
 
 static void statistic() {
@@ -371,41 +371,41 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-	#ifdef NPCCONFIG_ITRACE
-	itrace_init(PC, INSTR);
-	display_inst();
-	#endif
+    #ifdef NPCCONFIG_ITRACE
+    itrace_init(PC, INSTR);
+    display_inst();
+    #endif
 //   isa_reg_display();
-	statistic();
+    statistic();
 }
 
 
 static void trace_and_difftest(){
 
-	#ifdef NPCCONFIG_DIFFTEST
-	difftest_step();
-	#endif
+    #ifdef NPCCONFIG_DIFFTEST
+    difftest_step();
+    #endif
 
-	#ifdef NPCCONFIG_WATCHPOINT
-	wp_difftest();
-	#endif
+    #ifdef NPCCONFIG_WATCHPOINT
+    wp_difftest();
+    #endif
 
-	#ifdef NPCCONFIG_FTRACE
-	opcode = BITS(INSTR, 6, 0);
-	rd = BITS(INSTR, 11, 7);
-	if(opcode == JAL && rd == 0b00001){
-		display_call_func(PC, PC);
-	}
-	else if(opcode == JALR){
-		src1 = BITS(INSTR, 19, 15);
-		if(rd == 0b00001){
-			display_call_func(PC, PC);
-		}
-		else if(rd == 0b00000 && gpr[src1] == gpr[1]){
-			display_ret_func(PC);
-		}
-	}
-	#endif
+    #ifdef NPCCONFIG_FTRACE
+    opcode = BITS(INSTR, 6, 0);
+    rd = BITS(INSTR, 11, 7);
+    if(opcode == JAL && rd == 0b00001){
+        display_call_func(PC, PC);
+    }
+    else if(opcode == JALR){
+        src1 = BITS(INSTR, 19, 15);
+        if(rd == 0b00001){
+            display_call_func(PC, PC);
+        }
+        else if(rd == 0b00000 && gpr[src1] == gpr[1]){
+            display_ret_func(PC);
+        }
+    }
+    #endif
 
 }
 
@@ -415,46 +415,46 @@ static void exec_once(){
     #ifdef NV_BOARD
     nvboard_update();
     #endif
-	single_cycle();
+    single_cycle();
 }
 
 void cpu_exec(uint64_t n){
-	while(n > 0){
+    while(n > 0){
         pre_pc = PC;
-		exec_once();
+        exec_once();
         now_pc = PC;
         
-		get_reg();
+        get_reg();
 
         PerfAnalysis();
-		// if(cycle_num > 100000000){
-		// 	close_wave(88);
-		// 	assert(0);
-		// }
-		if(pre_pc != now_pc){
-			trace_and_difftest();
+        // if(cycle_num > 100000000){
+        //     close_wave(88);
+        //     assert(0);
+        // }
+        if(pre_pc != now_pc){
+            trace_and_difftest();
         }
-		n--;
-	}
+        n--;
+    }
 }
 
 extern "C" void npc_trap(){
-	#ifdef NPCCONFIG_DUMPWAVE
-	dump_wave();
-	close_wave(1);
-	#endif
-	bool success;
-	int code = isa_reg_str2val("a0",&success);
-	if(code == 0)
-		printf("\033[1;32mHIT GOOD TRAP\033[0m at pc = 0x%x\n", PC);
-	else
-		printf("\033[1;31mHIT BAD TRAP\033[0m at pc = 0x%x\nexit code = %d\n",PC, code);
-	
-	#ifdef NPCCONFIG_ITRACE
-	itrace_init(PC, INSTR);
-	display_inst();
-	#endif
-	
-	statistic();
-	exit(0);
+    #ifdef NPCCONFIG_DUMPWAVE
+    dump_wave();
+    close_wave(1);
+    #endif
+    bool success;
+    int code = isa_reg_str2val("a0",&success);
+    if(code == 0)
+        printf("\033[1;32mHIT GOOD TRAP\033[0m at pc = 0x%x\n", PC);
+    else
+        printf("\033[1;31mHIT BAD TRAP\033[0m at pc = 0x%x\nexit code = %d\n",PC, code);
+    
+    #ifdef NPCCONFIG_ITRACE
+    itrace_init(PC, INSTR);
+    display_inst();
+    #endif
+    
+    statistic();
+    exit(0);
 }
