@@ -114,6 +114,9 @@ class LSU extends Module {
         s_AfterPreFire              ->  Mux(io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire)
     ))
 
+    val dmem_rdata = RegInit(0.U)//保存一下读出的数据
+    dmem_rdata := Mux(n_state === s_AfterPreFire, io.dmem.rdata, dmem_rdata)
+
     switch(n_state){//third phase
         is(s_BeforePreFire){
             //between modules
@@ -245,7 +248,7 @@ class LSU extends Module {
     }
 
     //process wmask and read mode
-    val shift_rdata = io.dmem.rdata >> (io_pipe.in.bits.exe2ls_alu_out(1,0) << 3.U)
+    val shift_rdata = dmem_rdata >> (io_pipe.in.bits.exe2ls_alu_out(1,0) << 3.U)
     switch(io_pipe.in.bits.exe2ls_mem_op) {
         is(0.U) {//1s
             dmem_rdata_processed := Cat(Fill(24, shift_rdata(7)), shift_rdata(7,0))
