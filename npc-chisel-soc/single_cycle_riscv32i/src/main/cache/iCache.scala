@@ -101,9 +101,12 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     req_offset := io.in.araddr(m - 1, 0)
     val req_tag = Wire(UInt(tag_width.W))
     req_tag := io.in.araddr(31, m + n)
+    val addr_align = Wire(UInt(WORD_LEN.W))
+    addr_align := io.in.araddr & "hfffffff0".U(WORD_LEN.W)
     dontTouch(req_index)
     dontTouch(req_offset)
     dontTouch(req_tag)
+    dontTouch(addr_align)
 
     val icache = RegInit(VecInit(Seq.fill(sets)(0.U.asTypeOf(new iCacheSet(m, n, ways, ways_width)))))
     dontTouch(icache)
@@ -122,7 +125,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     val ways_hit_num = Wire(UInt(ways_width.W))
     ways_hit_num := 0.U
     for (i <- 0 until ways) {
-        when (icache(req_index).set(i).tag === req_tag) {
+        when (icache(req_index).set(i).tag === req_tag && icache(req_index).set(i).valid === true.B) {
             ways_hit := true.B
             ways_hit_num := i.U
         }
