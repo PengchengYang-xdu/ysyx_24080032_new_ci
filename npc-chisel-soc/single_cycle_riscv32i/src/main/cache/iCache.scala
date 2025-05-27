@@ -90,6 +90,8 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     val m = log2(block_size).toInt
     val n = log2(sets).toInt
     val w = math.ceil(log2(ways)).toInt
+    val c = block_size / 4
+    val count = RegInit(c.U(log2Ceil(c + 1).W))
     val index_width = n
     val offset_width = m
     val tag_width = 32 - m - n
@@ -133,8 +135,14 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
 
     val hit0 = RegEnable(ways_hit, n_state === s_icache_lookup)
 
-    val icache_wdata = RegInit(0.U(32.W))
-    icache_wdata := Mux(n_state === s_i_2, io.out.rdata, icache_wdata)
+
+    val icache_wdata_index = c.U - count - 1.U
+    val icache_wdata = RegInit(VecInit(Seq.fill(c)(0.U(32.W))))
+    icache_wdata(icache_wdata_index(log2Ceil(c)-1, 0)) := Mux((n_state === s_i_2 || n_state === s_i_0) && c_state === s_i_1, io.out.rdata, icache_wdata(icache_wdata_index(log2Ceil(c)-1, 0)))
+
+
+
+
 
     c_state := n_state//first phase
 
@@ -142,9 +150,10 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         s_IDLE           ->  Mux(isifu_rreq, s_icache_lookup, s_IDLE),
         s_icache_lookup  ->  Mux(hit0, s_IDLE, s_i_0),
         s_i_0            ->  Mux(io.out.arready & out_arvalid, s_i_1, s_i_0),
-        s_i_1            ->  Mux(io.out.rvalid & out_rready, s_i_2, s_i_1),
+        s_i_1            ->  Mux((io.out.rvalid & out_rready), Mux(((c.U === 1.U || ~issdram_raddr) || (c.U =/= 1.U && count === 0.U)), s_i_2, Mux((c.U =/= 1.U && count =/= 0.U), s_i_0, s_i_1)), s_i_1),
         s_i_2            ->  Mux(in_rvalid & io.in.rready, s_IDLE, s_i_2)
     ))
+
 
     switch(n_state){//third phase
         is(s_IDLE){
@@ -154,20 +163,30 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         is(s_icache_lookup){
             in_arready := false.B
             in_rvalid := ways_hit
-            in_rdata := icache(req_index).set(ways_hit_num).data(req_offset >> 2)
         }
         is(s_i_0){
             ConnectIn2Out()
+            out_araddr := Mux(issdram_raddr, Mux(c.U === 1.U, io.in.araddr, addr_align + ((c.U - count) << 2)), io.in.araddr)
             out_arvalid := ~hit0
+            out_rready := false.B
+            in_rvalid := hit0
+            in_arready := false.B
         }
         is(s_i_1){
             ConnectIn2Out()
+            out_araddr := 0.U
             out_arvalid := false.B
             out_rready := true.B
+            in_rvalid := false.B
+            in_arready := false.B
         }
         is(s_i_2){
             ConnectIn2Out()
+            out_araddr := 0.U
+            out_arvalid := false.B
             out_rready := false.B
+            in_rvalid := true.B
+            in_arready := false.B
         }
     }
 
@@ -189,6 +208,15 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         }
     }
 
+    in_rdata := Mux(issdram_raddr,
+    Mux(n_state === s_icache_lookup && ways_hit,
+        icache(req_index).set(ways_hit_num).data(req_offset >> 2),
+        Mux(io.out.rvalid & out_rready && ((c.U - 1.U - count) === req_offset >> 2),
+            io.out.rdata,
+            in_rdata)),
+    Mux(n_state === s_i_2, io.out.rdata, in_rdata))
+
+
     //命中的时候更新LRU矩阵
     if(replacementPolicy == "LRU"){
         when(hit0){
@@ -203,7 +231,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
             // 如果有空闲块，填充
             set(emptyIndex).valid := true.B
             set(emptyIndex).tag := req_tag
-            set(emptyIndex).data(req_offset >> 2) := icache_wdata
+            set(emptyIndex).data := icache_wdata
             //填充的时候更新LRU矩阵
             if(replacementPolicy == "LRU"){
                 updateLRU(icache(req_index), emptyIndex)
@@ -217,23 +245,30 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
                     val lruIndex = getLRUIndex(icache(req_index), ways_width)
                     set(lruIndex).valid := true.B
                     set(lruIndex).tag := req_tag
-                    set(lruIndex).data(req_offset >> 2) := icache_wdata
+                    set(lruIndex).data := icache_wdata
                     //替换的时候更新LRU矩阵
                     updateLRU(icache(req_index), lruIndex)
                 case "FIFO" =>
                     val fifoIndex = icache(req_index).fifoPtr
                     set(fifoIndex).valid := true.B
                     set(fifoIndex).tag := req_tag
-                    set(fifoIndex).data(req_offset >> 2) := icache_wdata
+                    set(fifoIndex).data := icache_wdata
                     //替换的时候更新FIFO指针
                     icache(req_index).fifoPtr := (fifoIndex + 1.U) % ways.U
                 case "RANDOM" =>
                     val randomIndex = scala.util.Random.nextInt(ways)
                     set(randomIndex).valid := true.B
                     set(randomIndex).tag := req_tag
-                    set(randomIndex).data(req_offset >> 2) := icache_wdata
+                    set(randomIndex).data := icache_wdata
             }
         }
+    }
+
+
+    when(n_state === s_icache_lookup){
+        count := c.U
+    }.elsewhen(count =/= 0.U && (c_state === s_i_0 && n_state === s_i_1)){
+        count := count - 1.U
     }
 
 /*-----------------------function-----------------------*/
@@ -277,10 +312,10 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     }
 
     def ConnectIn2Out(): Unit = {
-        in_arready := io.out.arready
-        in_rdata := io.out.rdata
+        // in_arready := io.out.arready
+        // in_rdata := io.out.rdata
         in_rresp := io.out.rresp
-        in_rvalid := io.out.rvalid
+        // in_rvalid := io.out.rvalid
         in_rlast := io.out.rlast
         in_rid := io.out.rid
         in_awready := io.out.awready
@@ -289,13 +324,13 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         in_bvalid := io.out.bvalid
         in_bid := io.out.bid
 
-        out_araddr := io.in.araddr
-        out_arvalid := io.in.arvalid
+        // out_araddr := io.in.araddr
+        // out_arvalid := io.in.arvalid
         out_arid := io.in.arid
         out_arlen := io.in.arlen
         out_arsize := io.in.arsize
         out_arburst := io.in.arburst
-        out_rready := io.in.rready
+        // out_rready := io.in.rready
         out_awaddr := io.in.awaddr
         out_awvalid := io.in.awvalid
         out_awid := io.in.awid

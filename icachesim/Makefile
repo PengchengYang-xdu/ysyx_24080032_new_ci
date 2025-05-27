@@ -32,7 +32,9 @@ clean:
 	rm -rf ./printf.log ./$(MD_FILE)
 
 batch_run:
+	rm -rf ./$(MD_FILE)
 	@echo "Running multiple cache configurations..."
-	$(MAKE) run SETS=16 WAYS=3 BLOCK_SIZE=4 POLICY=LRU
-	$(MAKE) run SETS=16 WAYS=3 BLOCK_SIZE=8 POLICY=LRU
+	$(MAKE) run BLOCK_SIZE=4 SETS=4 WAYS=3 POLICY=LRU
+	$(MAKE) run BLOCK_SIZE=8 SETS=4 WAYS=3 POLICY=LRU
+	$(MAKE) run BLOCK_SIZE=16 SETS=4 WAYS=3 POLICY=LRU
 	@echo "Results written to $(MD_FILE)"
