@@ -33,6 +33,14 @@ class IDUIO_pipe_out extends Bundle{
     val id2exe_mem_op = Output(UInt(MEM_OP.W))
 }
 
+class FENCEI_IO extends Bundle{
+    val is_fencei = Output(Bool())
+}
+
+class FENCEI_IO_VR extends Bundle{
+    val is_fencei_io = Irrevocable(new FENCEI_IO)
+}
+
 class IDUIO_pipe extends Bundle {
     val in = Flipped(Decoupled(new IFUIO_pipe_out))
     val out = Decoupled(new IDUIO_pipe_out)
@@ -41,6 +49,8 @@ class IDUIO_pipe extends Bundle {
 class IDU extends Module {
     val io = IO(new IDUIO)
     val io_pipe = IO(new IDUIO_pipe)
+
+    val fencei_io_vr = IO(new FENCEI_IO_VR)
 
 
 
@@ -79,59 +89,60 @@ class IDU extends Module {
     val imm_z_uext = Cat(Fill(27, 0.U), imm_z)
 
     val csignals = ListLookup(inst,
-                        List(ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
+                        List(ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
         Array(
-            LW       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 ),
-            SW       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 ),
-            LB       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1S),
-            LH       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2S),
-            LBU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1U),
-            LHU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2U),
-            SB       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S),
-            SH       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_2S),
+            LW       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 , NO_FENCEI),
+            SW       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 , NO_FENCEI),
+            LB       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1S, NO_FENCEI),
+            LH       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2S, NO_FENCEI),
+            LBU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1U, NO_FENCEI),
+            LHU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2U, NO_FENCEI),
+            SB       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S, NO_FENCEI),
+            SH       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_2S, NO_FENCEI),
 
-            ADD      -> List(ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            ADDI     -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SUB      -> List(ALU_SUB  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            AND      -> List(ALU_AND  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            OR       -> List(ALU_OR   , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            XOR      -> List(ALU_XOR  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            ANDI     -> List(ALU_AND  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            ORI      -> List(ALU_OR   , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            XORI     -> List(ALU_XOR  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLL      -> List(ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SRL      -> List(ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SRA      -> List(ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLLI     -> List(ALU_SLL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SRLI     -> List(ALU_SRL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SRAI     -> List(ALU_SRA  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLT      -> List(ALU_SLT  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLTU     -> List(ALU_SLTU , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLTI     -> List(ALU_SLT  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            SLTIU    -> List(ALU_SLTU , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            BEQ      -> List(BR_BEQ   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            BNE      -> List(BR_BNE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            BGE      -> List(BR_BGE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            BGEU     -> List(BR_BGEU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            BLT      -> List(BR_BLT   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            BLTU     -> List(BR_BLTU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X ),
-            JAL      -> List(ALU_ADD  , OP1_PC , OP2_IMJ, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X ),
-            JALR     -> List(ALU_JALR , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X ),
-            LUI      -> List(ALU_ADD  , OP1_X  , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            AUIPC    -> List(ALU_ADD  , OP1_PC , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X ),
-            CSRRW    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X ),
-            CSRRWI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X ),
-            CSRRS    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X ),
-            CSRRSI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X ),
-            CSRRC    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X ),
-            CSRRCI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X ),
-            ECALL    -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_E, MEM_OP_X ),
-            MRET     -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_M, MEM_OP_X ),//modified by ypc
-            EBREAK   -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X )
+            ADD      -> List(ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            ADDI     -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SUB      -> List(ALU_SUB  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            AND      -> List(ALU_AND  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            OR       -> List(ALU_OR   , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            XOR      -> List(ALU_XOR  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            ANDI     -> List(ALU_AND  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            ORI      -> List(ALU_OR   , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            XORI     -> List(ALU_XOR  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLL      -> List(ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SRL      -> List(ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SRA      -> List(ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLLI     -> List(ALU_SLL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SRLI     -> List(ALU_SRL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SRAI     -> List(ALU_SRA  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLT      -> List(ALU_SLT  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLTU     -> List(ALU_SLTU , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLTI     -> List(ALU_SLT  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            SLTIU    -> List(ALU_SLTU , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            BEQ      -> List(BR_BEQ   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            BNE      -> List(BR_BNE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            BGE      -> List(BR_BGE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            BGEU     -> List(BR_BGEU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            BLT      -> List(BR_BLT   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            BLTU     -> List(BR_BLTU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            JAL      -> List(ALU_ADD  , OP1_PC , OP2_IMJ, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI),
+            JALR     -> List(ALU_JALR , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI),
+            LUI      -> List(ALU_ADD  , OP1_X  , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            AUIPC    -> List(ALU_ADD  , OP1_PC , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI),
+            CSRRW    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI),
+            CSRRWI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI),
+            CSRRS    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI),
+            CSRRSI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI),
+            CSRRC    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI),
+            CSRRCI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI),
+            ECALL    -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_E, MEM_OP_X , NO_FENCEI),
+            MRET     -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_M, MEM_OP_X , NO_FENCEI),//modified by ypc
+            EBREAK   -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI),
+            FENCEI   -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , IS_FENCEI)
         )
     )
 
-    val exe_fun :: op1_sel :: op2_sel :: mem_wen :: rf_wen :: wb_sel :: csr_cmd :: mem_op :: Nil = csignals
+    val exe_fun :: op1_sel :: op2_sel :: mem_wen :: rf_wen :: wb_sel :: csr_cmd :: mem_op :: is_fencei :: Nil = csignals
     
     val op1_data = MuxCase(0.U(WORD_LEN.W), Seq(
         (op1_sel === OP1_RS1)  ->  rs1_data,
@@ -203,10 +214,15 @@ class IDU extends Module {
 
 
     //handshake between modules
+    val is_fencei_valid = RegInit(false.B)
+    fencei_io_vr.is_fencei_io.valid := is_fencei_valid
+    val is_fencei_reg = RegInit(0.U)
+    fencei_io_vr.is_fencei_io.bits.is_fencei := is_fencei_reg
+
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
     io_pipe.in.ready := in_ready
-    io_pipe.out.valid := out_valid
+    io_pipe.out.valid := Mux(is_fencei === 1.U, fencei_io_vr.is_fencei_io.ready, out_valid)
 
     val s_BeforePreFire :: s_AfterPreFire :: Nil = Enum(2)
     val c_state = RegInit(s_BeforePreFire)
@@ -217,18 +233,27 @@ class IDU extends Module {
 
     n_state := MuxLookup(c_state, s_BeforePreFire)(Seq(//second phase
         s_BeforePreFire  ->  Mux(io_pipe.in.fire, s_AfterPreFire, s_BeforePreFire),
-        s_AfterPreFire   ->  Mux(io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire)
+        s_AfterPreFire   ->  Mux(Mux(is_fencei === 1.U, fencei_io_vr.is_fencei_io.fire, io_pipe.out.fire), s_BeforePreFire, s_AfterPreFire)
     ))
 
     switch(n_state){//third phase
         is(s_BeforePreFire){
             in_ready := true.B
             out_valid := false.B
+            is_fencei_valid := false.B
         }
         is(s_AfterPreFire){
             in_ready := false.B
             out_valid := true.B
+            is_fencei_valid := Mux(is_fencei === 1.U, true.B, false.B)
         }
     }
+
+
+
+
+
+
+    is_fencei_reg := Mux(fencei_io_vr.is_fencei_io.fire, 0.U, Mux(io_pipe.in.valid, is_fencei, is_fencei_reg))
 }
 

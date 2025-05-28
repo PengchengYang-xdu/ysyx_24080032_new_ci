@@ -147,7 +147,7 @@ clean_nv:
 # CFLAGS += -DNPCCONFIG_ITRACE
 # CFLAGS += -DNPCCONFIG_FTRACE
 # CFLAGS += -DNPCCONFIG_MTRACE
-# CFLAGS += -DNPCCONFIG_DUMPWAVE
+CFLAGS += -DNPCCONFIG_DUMPWAVE
 # CFLAGS += -DNPCCONFIG_WATCHPOINT
 # CFLAGS += -DNPCCONFIG_DIFFTEST
 
@@ -175,7 +175,7 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:icache完成替换逻辑,接下来做更大的块 属性:icache开启,block=4,sets=16,ways=3,policy=lru
+EXPLAIN = 任务进度:完成icache的突发传输以及访存延迟校准 接下来跑突发传输的性能评估 属性:icache开启,block=16,sets=16,ways=3,policy=lru
 
 perf: checkout run save_perf
 
