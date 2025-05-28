@@ -69,7 +69,7 @@ clr:
 DESIGN ?= NPC
 SDC_FILE ?= $(PRJ_PATH)/syn/sdc/NPC.sdc
 RTL_FILES ?= $(shell find $(PRJ_PATH)/vsrc -name "*.sv" -or -name "*.v")
-export CLK_FREQ_MHZ ?= 100
+export CLK_FREQ_MHZ ?= 450
 
 RESULT_DIR = $(PRJ_PATH)/syn/result/$(DESIGN)-$(CLK_FREQ_MHZ)MHz
 SCRIPT_DIR = $(PRJ_PATH)/syn/scripts

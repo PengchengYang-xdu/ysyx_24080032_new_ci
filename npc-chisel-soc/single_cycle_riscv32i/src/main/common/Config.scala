@@ -113,4 +113,8 @@ object Config{
     val CSR_MCAUSE_ADDR = 3.U(CSR_ADDR.W)
     val CSR_MVENDORID_ADDR = 4.U(CSR_ADDR.W)
     val CSR_MARCHID_ADDR = 5.U(CSR_ADDR.W)
+
+    val IS_FENCEI_LEN = 1
+    val IS_FENCEI   = 1.U(IS_FENCEI_LEN.W)
+    val NO_FENCEI   = 0.U(IS_FENCEI_LEN.W)
 }

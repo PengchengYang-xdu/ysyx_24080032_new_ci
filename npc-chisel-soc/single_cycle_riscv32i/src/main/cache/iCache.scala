@@ -27,6 +27,9 @@ class iCacheSet(val m: Int, val n: Int, val ways: Int, val ways_width: Int) exte
 class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementPolicy: String) extends Module{
     val io = IO(new iCacheIO)
 
+    val fencei_io_vr = IO(Flipped(new npc.core.idu.FENCEI_IO_VR))
+    dontTouch(fencei_io_vr)
+
     val in_arready = RegInit(true.B)
     val in_rdata = RegInit(0.U)
     val in_rresp = RegInit(0.U)
@@ -104,7 +107,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     val req_tag = Wire(UInt(tag_width.W))
     req_tag := io.in.araddr(31, m + n)
     val addr_align = Wire(UInt(WORD_LEN.W))
-    addr_align := io.in.araddr & "hfffffff0".U(WORD_LEN.W)
+    addr_align := io.in.araddr - req_offset
     dontTouch(req_index)
     dontTouch(req_offset)
     dontTouch(req_tag)
@@ -114,7 +117,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     dontTouch(icache)
 
     /*-----------------------FSM-----------------------*/
-    val s_IDLE :: s_icache_lookup :: s_i_0 :: s_i_1 :: s_i_2 :: Nil = Enum(5)
+    val s_IDLE :: s_icache_lookup :: s_i_0 :: s_i_1 :: s_i_2 :: s_fencei :: Nil = Enum(6)
     val c_state = RegInit(s_IDLE)
     val n_state = WireDefault(c_state)
     dontTouch(n_state)
@@ -142,19 +145,31 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         Mux((n_state === s_i_2 || n_state === s_i_0) && c_state === s_i_1, io.out.rdata, icache_wdata(icache_wdata_index(log2Ceil(c)-1, 0))),
         Mux(out_rready && io.out.rvalid, io.out.rdata, icache_wdata(icache_wdata_index(log2Ceil(c)-1, 0))))
 
-
+    val fencei_counter = RegInit(0.U(n.W))
+    val is_fencei = fencei_io_vr.is_fencei_io.valid && fencei_io_vr.is_fencei_io.bits.is_fencei
+    val fencei_fsh = fencei_counter === sets.U - 1.U
 
 
     c_state := n_state//first phase
 
     n_state := MuxLookup(c_state, s_IDLE)(Seq(//second phase
-        s_IDLE           ->  Mux(isifu_rreq, s_icache_lookup, s_IDLE),
+        s_IDLE           ->  Mux(isifu_rreq, s_icache_lookup, Mux(is_fencei, s_fencei, s_IDLE)),
         s_icache_lookup  ->  Mux(hit0, s_IDLE, s_i_0),
         s_i_0            ->  Mux(io.out.arready & out_arvalid, s_i_1, s_i_0),
         s_i_1            ->  Mux((io.out.rvalid & out_rready), Mux(((c.U === 1.U || ~issdram_raddr) || (c.U =/= 1.U && count === 0.U)), s_i_2, Mux((c.U =/= 1.U && count =/= 0.U && out_arlen === 0.U), s_i_0, s_i_1)), s_i_1),
-        s_i_2            ->  Mux(in_rvalid & io.in.rready, s_IDLE, s_i_2)
+        s_i_2            ->  Mux(in_rvalid & io.in.rready, s_IDLE, s_i_2),
+        s_fencei         ->  Mux(fencei_fsh, s_IDLE, s_fencei)
     ))
 
+    when(is_fencei && ~fencei_fsh){
+        fencei_counter := fencei_counter + 1.U
+    }.otherwise{
+        fencei_counter := 0.U
+    }
+    fencei_io_vr.is_fencei_io.ready := fencei_fsh
+    when(is_fencei){
+        icache(fencei_counter) := 0.U.asTypeOf(new iCacheSet(m, n, ways, ways_width))
+    }
 
     switch(n_state){//third phase
         is(s_IDLE){
