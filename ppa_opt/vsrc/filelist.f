@@ -1,0 +1,16 @@
+gpr_32x32.sv
+GPR.sv
+csr_6x32.sv
+CSR.sv
+IFU.sv
+extern_modules.sv
+IDU.sv
+EXU.sv
+LSU.sv
+WBU.sv
+iCache.sv
+Core.sv
+Xbar.sv
+NPC.sv
+./Ebreak.sv
+./Clint.sv

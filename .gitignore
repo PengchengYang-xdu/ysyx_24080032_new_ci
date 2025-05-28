@@ -9,6 +9,7 @@
 !/npc-chisel/**
 !/npc-chisel-soc/**
 !/icachesim/**
+!/ppa_opt/**
 !Makefile
 !README.md
 !.gitignore
