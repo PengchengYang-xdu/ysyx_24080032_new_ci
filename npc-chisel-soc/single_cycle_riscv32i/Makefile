@@ -147,7 +147,7 @@ clean_nv:
 # CFLAGS += -DNPCCONFIG_ITRACE
 # CFLAGS += -DNPCCONFIG_FTRACE
 # CFLAGS += -DNPCCONFIG_MTRACE
-CFLAGS += -DNPCCONFIG_DUMPWAVE
+# CFLAGS += -DNPCCONFIG_DUMPWAVE
 # CFLAGS += -DNPCCONFIG_WATCHPOINT
 # CFLAGS += -DNPCCONFIG_DIFFTEST
 
@@ -175,13 +175,13 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:完成icache的突发传输以及访存延迟校准 接下来跑突发传输的性能评估 属性:icache开启,block=16,sets=16,ways=3,policy=lru
+EXPLAIN = 任务进度:完成所有的简易缓存实验，接下来做流水线 属性:icache开启,block=8,sets=4,ways=1,policy=lru
 
 perf: checkout run save_perf
 
 checkout:
-	@git checkout perf
-	@echo "现在切换到了perf分支,用于评估性能并commit"
+	@git checkout pipe
+	@echo "现在切换到了pipe分支,用于评估性能并commit"
 
 save_perf:
 	@git commit --allow-empty -am "$(EXPLAIN)"

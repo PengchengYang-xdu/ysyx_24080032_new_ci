@@ -4,6 +4,7 @@ import chisel3._
 import chisel3.util._
 
 object Config{
+    val ENABLE_DELAY      = false
     val IFU_DELAY         = 0.U(4.W)
     val LSU_DELAY         = 0.U(4.W)
 
