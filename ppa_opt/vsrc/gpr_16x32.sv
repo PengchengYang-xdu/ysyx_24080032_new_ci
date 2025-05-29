@@ -55,34 +55,40 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
-module GPR(	// @[src/main/core/GPR.scala:19:7]
-  input         clock,	// @[src/main/core/GPR.scala:19:7]
-  input  [4:0]  io_gpr_rs1_addr,	// @[src/main/core/GPR.scala:20:16]
-                io_gpr_rs2_addr,	// @[src/main/core/GPR.scala:20:16]
-  output [31:0] io_gpr_rs1_data,	// @[src/main/core/GPR.scala:20:16]
-                io_gpr_rs2_data,	// @[src/main/core/GPR.scala:20:16]
-  input  [1:0]  io_gpr_wen,	// @[src/main/core/GPR.scala:20:16]
-  input  [4:0]  io_gpr_addr,	// @[src/main/core/GPR.scala:20:16]
-  input  [31:0] io_gpr_wdata	// @[src/main/core/GPR.scala:20:16]
+// VCS coverage exclude_file
+module gpr_16x32(	// @[src/main/core/GPR.scala:23:18]
+  input  [3:0]  R0_addr,
+  input         R0_en,
+                R0_clk,
+  output [31:0] R0_data,
+  input  [3:0]  R1_addr,
+  input         R1_en,
+                R1_clk,
+  output [31:0] R1_data,
+  input  [3:0]  W0_addr,
+  input         W0_en,
+                W0_clk,
+  input  [31:0] W0_data
 );
 
-  wire [31:0] _gpr_ext_R0_data;	// @[src/main/core/GPR.scala:23:18]
-  wire [31:0] _gpr_ext_R1_data;	// @[src/main/core/GPR.scala:23:18]
-  gpr_16x32 gpr_ext (	// @[src/main/core/GPR.scala:23:18]
-    .R0_addr (io_gpr_rs2_addr[3:0]),	// @[src/main/core/GPR.scala:26:70]
-    .R0_en   (1'h1),	// @[src/main/core/GPR.scala:19:7]
-    .R0_clk  (clock),
-    .R0_data (_gpr_ext_R0_data),
-    .R1_addr (io_gpr_rs1_addr[3:0]),	// @[src/main/core/GPR.scala:25:70]
-    .R1_en   (1'h1),	// @[src/main/core/GPR.scala:19:7]
-    .R1_clk  (clock),
-    .R1_data (_gpr_ext_R1_data),
-    .W0_addr (io_gpr_addr[3:0]),	// @[src/main/core/GPR.scala:29:12]
-    .W0_en   (io_gpr_wen == 2'h1 & (|io_gpr_addr)),	// @[src/main/core/GPR.scala:28:{21,31,46}]
-    .W0_clk  (clock),
-    .W0_data (io_gpr_wdata)
-  );
-  assign io_gpr_rs1_data = (|io_gpr_rs1_addr) ? _gpr_ext_R1_data : 32'h0;	// @[src/main/core/GPR.scala:19:7, :23:18, :25:{27,45}]
-  assign io_gpr_rs2_data = (|io_gpr_rs2_addr) ? _gpr_ext_R0_data : 32'h0;	// @[src/main/core/GPR.scala:19:7, :23:18, :25:27, :26:{27,45}]
+  reg [31:0] Memory[0:15];	// @[src/main/core/GPR.scala:23:18]
+  always @(posedge W0_clk) begin	// @[src/main/core/GPR.scala:23:18]
+    if (W0_en & 1'h1)	// @[src/main/core/GPR.scala:23:18]
+      Memory[W0_addr] <= W0_data;	// @[src/main/core/GPR.scala:23:18]
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_MEM_	// @[src/main/core/GPR.scala:23:18]
+    reg [31:0] _RANDOM_MEM;	// @[src/main/core/GPR.scala:23:18]
+    initial begin	// @[src/main/core/GPR.scala:23:18]
+      `INIT_RANDOM_PROLOG_	// @[src/main/core/GPR.scala:23:18]
+      `ifdef RANDOMIZE_MEM_INIT	// @[src/main/core/GPR.scala:23:18]
+        for (logic [4:0] i = 5'h0; i < 5'h10; i += 5'h1) begin
+          _RANDOM_MEM = `RANDOM;	// @[src/main/core/GPR.scala:23:18]
+          Memory[i[3:0]] = _RANDOM_MEM;	// @[src/main/core/GPR.scala:23:18]
+        end	// @[src/main/core/GPR.scala:23:18]
+      `endif // RANDOMIZE_MEM_INIT
+    end // initial
+  `endif // ENABLE_INITIAL_MEM_
+  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[src/main/core/GPR.scala:23:18]
+  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[src/main/core/GPR.scala:23:18]
 endmodule
 

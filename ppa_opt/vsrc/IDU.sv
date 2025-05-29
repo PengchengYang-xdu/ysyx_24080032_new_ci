@@ -294,11 +294,11 @@ module IDU(	// @[src/main/core/idu/IDU.scala:49:7]
   wire        io_pipe_out_valid_0 =
     csignals_8 ? fencei_io_vr_is_fencei_io_ready : out_valid;	// @[src/main/core/idu/IDU.scala:223:28, :225:29, src/main/scala/chisel3/util/Lookup.scala:34:39]
   reg         c_state;	// @[src/main/core/idu/IDU.scala:228:26]
-  wire        _n_state_T_1 = in_ready & io_pipe_in_valid;	// @[src/main/core/idu/IDU.scala:222:27, src/main/scala/chisel3/util/Decoupled.scala:51:35]
   wire        _is_fencei_reg_T = fencei_io_vr_is_fencei_io_ready & is_fencei_valid;	// @[src/main/core/idu/IDU.scala:217:34, src/main/scala/chisel3/util/Decoupled.scala:51:35]
-  wire        _n_state_T_5 =
-    csignals_8 ? _is_fencei_reg_T : io_pipe_out_ready & io_pipe_out_valid_0;	// @[src/main/core/idu/IDU.scala:225:29, :236:37, src/main/scala/chisel3/util/Decoupled.scala:51:35, src/main/scala/chisel3/util/Lookup.scala:34:39]
-  wire        n_state = c_state ? ~_n_state_T_5 : _n_state_T_1;	// @[src/main/core/idu/IDU.scala:83:25, :228:26, :234:51, :236:{33,37}, src/main/scala/chisel3/util/Decoupled.scala:51:35, src/main/scala/chisel3/util/Lookup.scala:34:39]
+  wire        n_state =
+    c_state
+      ? ~(csignals_8 ? _is_fencei_reg_T : io_pipe_out_ready & io_pipe_out_valid_0)
+      : in_ready & io_pipe_in_valid;	// @[src/main/core/idu/IDU.scala:83:25, :222:27, :225:29, :228:26, :229:30, :234:51, :236:{33,37}, src/main/scala/chisel3/util/Decoupled.scala:51:35, src/main/scala/chisel3/util/Lookup.scala:34:39]
   always @(posedge clock) begin	// @[src/main/core/idu/IDU.scala:49:7]
     if (reset) begin	// @[src/main/core/idu/IDU.scala:49:7]
       is_fencei_valid <= 1'h0;	// @[src/main/core/idu/IDU.scala:49:7, :217:34]
@@ -308,15 +308,12 @@ module IDU(	// @[src/main/core/idu/IDU.scala:49:7]
       c_state <= 1'h0;	// @[src/main/core/idu/IDU.scala:49:7, :228:26]
     end
     else begin	// @[src/main/core/idu/IDU.scala:49:7]
-      is_fencei_valid <= n_state & (n_state ? csignals_8 : is_fencei_valid);	// @[src/main/core/idu/IDU.scala:217:34, :234:51, :239:20, :243:29, :248:29, src/main/scala/chisel3/util/Lookup.scala:34:39]
+      is_fencei_valid <= n_state & (n_state ? csignals_8 : is_fencei_valid);	// @[src/main/core/idu/IDU.scala:217:34, :229:30, :239:20, :243:29, :248:29, src/main/scala/chisel3/util/Lookup.scala:34:39]
       is_fencei_reg <=
         ~_is_fencei_reg_T & (io_pipe_in_valid ? csignals_8 : is_fencei_reg);	// @[src/main/core/idu/IDU.scala:219:32, :257:{25,66}, src/main/scala/chisel3/util/Decoupled.scala:51:35, src/main/scala/chisel3/util/Lookup.scala:34:39]
-      in_ready <= ~n_state | ~n_state & in_ready;	// @[src/main/core/idu/IDU.scala:222:27, :234:51, :239:20, :241:22, :246:22]
-      out_valid <= n_state & (n_state | out_valid);	// @[src/main/core/idu/IDU.scala:223:28, :234:51, :239:20, :242:23, :247:23]
-      if (c_state)	// @[src/main/core/idu/IDU.scala:228:26]
-        c_state <= ~_n_state_T_5;	// @[src/main/core/idu/IDU.scala:83:25, :228:26, :236:{33,37}, src/main/scala/chisel3/util/Lookup.scala:34:39]
-      else	// @[src/main/core/idu/IDU.scala:228:26]
-        c_state <= _n_state_T_1;	// @[src/main/core/idu/IDU.scala:228:26, src/main/scala/chisel3/util/Decoupled.scala:51:35]
+      in_ready <= ~n_state | ~n_state & in_ready;	// @[src/main/core/idu/IDU.scala:222:27, :229:30, :239:20, :241:22, :246:22]
+      out_valid <= n_state & (n_state | out_valid);	// @[src/main/core/idu/IDU.scala:223:28, :229:30, :239:20, :242:23, :247:23]
+      c_state <= n_state;	// @[src/main/core/idu/IDU.scala:228:26, :229:30]
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[src/main/core/idu/IDU.scala:49:7]

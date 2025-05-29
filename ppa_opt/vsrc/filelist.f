@@ -1,4 +1,4 @@
-gpr_32x32.sv
+gpr_16x32.sv
 GPR.sv
 csr_6x32.sv
 CSR.sv
