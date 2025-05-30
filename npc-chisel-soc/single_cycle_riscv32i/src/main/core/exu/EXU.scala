@@ -6,6 +6,12 @@ import npc.common.Config._
 import npc.common.Instructions._
 import npc.core.idu._
 
+
+class EXUIO_HAZARD extends Bundle {
+    val flush_flg = Input(Bool())
+}
+
+
 class EXUIO extends Bundle {
     val br_flg = Output(Bool())
     val jmp_flg = Output(Bool())
@@ -36,6 +42,10 @@ class EXUIO_pipe extends Bundle {
 class EXU extends Module {
     val io = IO(new EXUIO)
     val io_pipe = IO(new EXUIO_pipe)
+
+
+    val io_hazard = IO(new EXUIO_HAZARD)
+
 
 
 

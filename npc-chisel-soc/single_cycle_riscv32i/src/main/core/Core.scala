@@ -32,10 +32,17 @@ class Core extends Module {
     val lsu = Module(new LSU)
     val wbu = Module(new WBU)
 
-    StageConnect(ifu.io_pipe.out, idu.io_pipe.in)
-    StageConnect(idu.io_pipe.out, exu.io_pipe.in)
-    StageConnect(exu.io_pipe.out, lsu.io_pipe.in)
-    StageConnect(lsu.io_pipe.out, wbu.io_pipe.in)
+    // StageConnect(ifu.io_pipe.out, idu.io_pipe.in)
+    // StageConnect(idu.io_pipe.out, exu.io_pipe.in)
+    // StageConnect(exu.io_pipe.out, lsu.io_pipe.in)
+    // StageConnect(lsu.io_pipe.out, wbu.io_pipe.in)
+    // StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
+
+    pipelineConnect(ifu.io_pipe.out, idu.io_pipe.in)
+    pipelineConnect(idu.io_pipe.out, exu.io_pipe.in)
+    pipelineConnect(exu.io_pipe.out, lsu.io_pipe.in)
+    pipelineConnect(lsu.io_pipe.out, wbu.io_pipe.in)
+
     StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
 
     val icache = Module(new iCache(8, 4, 1, "LRU"))
@@ -43,9 +50,10 @@ class Core extends Module {
     icache.io.in <> ifu.io.imem
 
     idu.fencei_io_vr.is_fencei_io <> icache.fencei_io_vr.is_fencei_io
-    // StageConnect(idu.fencei_io_vr.is_fencei_io, icache.fencei_io_vr.is_fencei_io)
-    
-    // io.imem <> ifu.io.imem
+
+
+
+
 
     ifu.io.br_flg := exu.io.br_flg
     ifu.io.jmp_flg := exu.io.jmp_flg
@@ -70,7 +78,82 @@ class Core extends Module {
     gpr.io.gpr_addr := wbu.io.gpr_addr
     gpr.io.gpr_wdata := wbu.io.gpr_wdata
 
+    //data hazard
+    val exu_raw = dataConflictWithStage(idu, exu.io_pipe.in.valid, exu.io_pipe.in.bits.id2exe_wb_addr, exu.io_pipe.in.bits.id2exe_rf_wen === REN_S)
+    val lsu_raw = dataConflictWithStage(idu, lsu.io_pipe.in.valid, lsu.io_pipe.in.bits.exe2ls_wb_addr, lsu.io_pipe.in.bits.exe2ls_rf_wen === REN_S)
+    val wbu_raw = dataConflictWithStage(idu, wbu.io_pipe.in.valid, wbu.io_pipe.in.bits.ls2wb_wb_addr, wbu.io_pipe.in.bits.ls2wb_rf_wen === REN_S)
+    val is_raw = exu_raw || lsu_raw || wbu_raw
+    dontTouch(exu_raw)
+    dontTouch(lsu_raw)
+    dontTouch(wbu_raw)
+    dontTouch(is_raw)
+    idu.io_hazard.stall_flg := is_raw
+
+    //control hazard
+    val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc + 4.U) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc + 4.U)) && exu.io_pipe.out.valid
+    dontTouch(is_ctrl_hazard)
+    ifu.io_hazard.flush_flg := is_ctrl_hazard
+    idu.io_hazard.flush_flg := is_ctrl_hazard
+    exu.io_hazard.flush_flg := is_ctrl_hazard
+    //auto fetch logic begin
+    // wbu.io_pipe.out.ready := true.B
+
+    // val auto_valid = RegInit(false.B)
+    // auto_valid := Mux(ifu.io_hazard.flush_flg, true.B, RegEnable(true.B, false.B, ifu.io_pipe.in.ready))
+    // ifu.io_pipe.in.valid := auto_valid
+    // //auto fetch logic end
+    // when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
+    // when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
+
+
+
+
+
+
+
+
+
+
+    def pipelineConnect[T <: Data, T2 <: Data](prevOut: DecoupledIO[T], thisIn: DecoupledIO[T]) = {
+        prevOut.ready := thisIn.ready
+        thisIn.bits := RegEnable(prevOut.bits, prevOut.valid && thisIn.ready)
+        thisIn.valid := RegEnable(prevOut.valid, thisIn.ready);
+    }
+
+    def dataConflict(rs: UInt, rd: UInt) = (rs === rd)
+    def dataConflictWithStage(stage_left: IDU, stage_right_valid: Bool, rd: UInt, is_w: Bool) = {
+        val rs1 = stage_left.io.gpr_rs1_addr
+        val rs2 = stage_left.io.gpr_rs2_addr
+        val is_working = stage_left.io_pipe.in.valid && stage_right_valid
+        val rs1_is_zero = rs1 === 0.U
+        val rs2_is_zero = rs2 === 0.U
+        val rs1_is_read = stage_left.io.gpr_rs1_is_read
+        val rs2_is_read = stage_left.io.gpr_rs2_is_read
+        ((rs1_is_read && ~rs1_is_zero && dataConflict(rs1, rd)) || (rs2_is_read && ~rs2_is_zero && dataConflict(rs2, rd))) && is_working && is_w
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 object StageConnect {
   def apply[T <: Data](left: DecoupledIO[T], right: DecoupledIO[T]) = {

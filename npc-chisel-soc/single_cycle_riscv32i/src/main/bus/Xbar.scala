@@ -490,11 +490,13 @@ class Xbar extends Module {
     val isclint_raddr = (io.dmem.araddr >= "h0200_0000".U(32.W) && io.dmem.araddr <= "h0200_ffff".U(32.W))
     val isclint_waddr = (io.dmem.awaddr >= "h0200_0000".U(32.W) && io.dmem.awaddr <= "h0200_ffff".U(32.W))
 
-    val isimem_req_soc = io.imem.arvalid === true.B
     val isdmem_req_r = io.dmem.arvalid === true.B
     val isdmem_req_w = io.dmem.awvalid === true.B
     val isdmem_req_soc = (isdmem_req_r & !isclint_raddr) | (isdmem_req_w & !isclint_waddr)
     val isdmem_req_clint = (isdmem_req_r & isclint_raddr) | (isdmem_req_w & isclint_waddr)
+    val isimem_req_soc = Mux(io.imem.arvalid === true.B, Mux(isdmem_req_r || isdmem_req_w, false.B, true.B), false.B)
+
+
 
     val soc_i_done = ~io.soc.rvalid & soc_rvalid_r & soc_rready & burstCnt === 0.U
     val soc_d_done = (~io.soc.rvalid & soc_rvalid_r & soc_rready) | (soc_bvalid_r & soc_bready)

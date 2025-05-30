@@ -28,7 +28,7 @@ class WBU extends Module {
     val io = IO(new WBUIO)
     val io_pipe = IO(new WBUIO_pipe)
 
-
+    dontTouch(io_pipe)
 
 
 

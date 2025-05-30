@@ -118,4 +118,9 @@ object Config{
     val IS_FENCEI_LEN = 1
     val IS_FENCEI   = 1.U(IS_FENCEI_LEN.W)
     val NO_FENCEI   = 0.U(IS_FENCEI_LEN.W)
+
+    val RS1_IS_READ = true.B
+    val RS1_NO_READ = false.B
+    val RS2_IS_READ = true.B
+    val RS2_NO_READ = false.B
 }
