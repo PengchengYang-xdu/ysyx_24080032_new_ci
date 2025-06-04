@@ -5,6 +5,12 @@
 #include <utils.h>
 #include <debug.h>
 
+int one_inst_working = 0;
+
+word_t ref_pre_pc = 0x30000000;
+word_t comp_pc = 0x30000000;
+int first_diff = 0;
+
 struct CPU_state {
   word_t gpr[REGNUM];
   word_t pc;
@@ -70,8 +76,11 @@ void init_difftest(char *ref_so_file, long img_size) {
 bool static checkregs(struct CPU_state *ref_r){
   bool flag = true;
   int i;
-  if(ref_r -> pc != PC) flag = false;
-  for(i = 0;i < REGNUM;i++){
+  if(first_diff == 0)
+    if(comp_pc != DIFF_PC) flag = false;
+  else;
+
+  for(i = 0;i < REAL_REGNUM;i++){
     if(ref_r -> gpr[i] != gpr[i])
       flag = false;
   }
@@ -80,9 +89,9 @@ bool static checkregs(struct CPU_state *ref_r){
       flag = false;
   }
   if(flag == false){
-    printf("ref - pc = 0x%x\n",ref_r -> pc);
-    printf("cpu - pc = 0x%x\n",PC);
-    for(i = 0;i < REGNUM;i++){
+    printf("ref - pc = 0x%x\n",comp_pc);
+    printf("cpu - pc = 0x%x\n",DIFF_PC);
+    for(i = 0;i < REAL_REGNUM;i++){
         printf("ref - %3s = %-#11x", regs[i], ref_r -> gpr[i]);
         printf("       ");
         printf("cpu - %3s = %-#11x", regs[i], gpr[i]);
@@ -104,11 +113,17 @@ bool static checkregs(struct CPU_state *ref_r){
 }
 
 void difftest_step() {
+  comp_pc = ref_pre_pc;
   if(ref_difftest_memcpy == NULL) return;
 
   CPU_state ref_r;
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  if(ref_r.pc == 0x30000004)
+    first_diff = 1;
+  else
+    first_diff = 0;
+  ref_pre_pc = ref_r.pc;
 
   is_skip_diff = ref_difftest_skip();
   
@@ -117,8 +132,8 @@ void difftest_step() {
     int i;
     //get dut reg into CPU_state struct
     CPU_state dut_r;
-    dut_r.pc = PC;
-    for(i = 0;i < REGNUM;i++)
+    dut_r.pc = ref_r.pc;
+    for(i = 0;i < REAL_REGNUM;i++)
       dut_r.gpr[i] = gpr[i];
     for(i = 0;i < 4;i++)
       dut_r.csr[i] = csr[i];

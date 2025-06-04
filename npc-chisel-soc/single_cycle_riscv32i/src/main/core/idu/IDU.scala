@@ -66,18 +66,16 @@ class IDU extends Module {
 
 
 
-
-
-
-
-
+    //registers
+    val inst_r = RegEnable(io_pipe.in.bits.if2id_inst, 0.U, io_pipe.in.valid & io_pipe.in.ready)
+    val reg_pc_r = RegEnable(io_pipe.in.bits.if2id_reg_pc, 0.U, io_pipe.in.valid & io_pipe.in.ready)
 
 
 
 
     //main process
-    val inst = io_pipe.in.bits.if2id_inst
-    val reg_pc = io_pipe.in.bits.if2id_reg_pc
+    val inst = inst_r
+    val reg_pc = reg_pc_r
     
     val rs1_addr = inst(19, 15)
     val rs2_addr = inst(24, 20)
@@ -234,8 +232,8 @@ class IDU extends Module {
 
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
-    io_pipe.in.ready := in_ready
-    io_pipe.out.valid := Mux(is_fencei === 1.U, fencei_io_vr.is_fencei_io.ready, out_valid)
+    io_pipe.in.ready := in_ready && ~io_hazard.stall_flg
+    io_pipe.out.valid := Mux(is_fencei === 1.U, fencei_io_vr.is_fencei_io.ready, out_valid && ~io_hazard.stall_flg)
 
     val s_BeforePreFire :: s_AfterPreFire :: Nil = Enum(2)
     val c_state = RegInit(s_BeforePreFire)
@@ -251,13 +249,13 @@ class IDU extends Module {
 
     switch(n_state){//third phase
         is(s_BeforePreFire){
-            in_ready := Mux(io_hazard.stall_flg, false.B, true.B)
+            in_ready := true.B
             out_valid := false.B
             is_fencei_valid := false.B
         }
         is(s_AfterPreFire){
             in_ready := false.B
-            out_valid := Mux(io_hazard.stall_flg, false.B, true.B)
+            out_valid := true.B
             is_fencei_valid := is_fencei === 1.U
         }
     }

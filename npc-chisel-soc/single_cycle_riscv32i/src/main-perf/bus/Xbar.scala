@@ -481,9 +481,6 @@ class Xbar extends Module {
     val clint_bready_r = RegNext(io.clint.bready)
 
     val burstCnt = dontTouch(RegInit(0.U(8.W)))
-
-    val ing_w_or_r = RegInit(false.B)
-    dontTouch(ing_w_or_r)
 /*-----------------------FSM-----------------------*/
     val s_IDLE :: s_i_soc :: s_d_soc :: s_d_clint :: Nil = Enum(4)
     val c_state = RegInit(s_IDLE)
@@ -493,14 +490,11 @@ class Xbar extends Module {
     val isclint_raddr = (io.dmem.araddr >= "h0200_0000".U(32.W) && io.dmem.araddr <= "h0200_ffff".U(32.W))
     val isclint_waddr = (io.dmem.awaddr >= "h0200_0000".U(32.W) && io.dmem.awaddr <= "h0200_ffff".U(32.W))
 
+    val isimem_req_soc = io.imem.arvalid === true.B
     val isdmem_req_r = io.dmem.arvalid === true.B
     val isdmem_req_w = io.dmem.awvalid === true.B
     val isdmem_req_soc = (isdmem_req_r & !isclint_raddr) | (isdmem_req_w & !isclint_waddr)
     val isdmem_req_clint = (isdmem_req_r & isclint_raddr) | (isdmem_req_w & isclint_waddr)
-    val isimem_req_soc = Mux(io.imem.arvalid === true.B, Mux(isdmem_req_r || isdmem_req_w, false.B, true.B), false.B)
-    // val isimem_req_soc = io.imem.arvalid === true.B
-
-
 
     val soc_i_done = ~io.soc.rvalid & soc_rvalid_r & soc_rready & burstCnt === 0.U
     val soc_d_done = (~io.soc.rvalid & soc_rvalid_r & soc_rready) | (soc_bvalid_r & soc_bready)
@@ -533,41 +527,32 @@ class Xbar extends Module {
 
     switch(n_state){//third phase
         is(s_IDLE){
-            ing_w_or_r := false.B
         }
         is(s_i_soc){
             ConnectImem2Soc()
-
             when(io.soc.arvalid & io.soc.arready){
                 soc_arvalid := false.B
-                ing_w_or_r := true.B
             }.elsewhen(io.soc.arvalid & ~io.soc.arready){
                 soc_arvalid := true.B
                 soc_araddr := imem_araddr
                 soc_arburst := imem_arburst
                 soc_arlen := imem_arlen
                 soc_arsize := imem_arsize
-                ing_w_or_r := false.B
             }
         }
         is(s_d_soc){
             ConnectDmem2Soc()
-
             when(io.soc.arvalid & io.soc.arready){
                 soc_arvalid := false.B
-                ing_w_or_r := true.B
             }.elsewhen(io.soc.arvalid & ~io.soc.arready){
                 soc_arvalid := true.B
                 soc_araddr := dmem_araddr
-                ing_w_or_r := false.B
             }
             when(io.soc.awvalid & io.soc.awready){
                 soc_awvalid := false.B
-                ing_w_or_r := true.B
             }.elsewhen(io.soc.awvalid & ~io.soc.awready){
                 soc_awvalid := true.B
                 soc_awaddr := dmem_awaddr
-                ing_w_or_r := false.B
             }
         }
         is(s_d_clint){
@@ -581,25 +566,16 @@ class Xbar extends Module {
         burstCnt := burstCnt - 1.U
     }
 
-    io.dmem.arready := Mux(c_state === s_IDLE, true.B, Mux(c_state === s_d_soc, io.soc.arready, false.B))
-    io.dmem.awready := Mux(c_state === s_IDLE, true.B, Mux(c_state === s_d_soc, io.soc.awready, false.B))
-    io.dmem.wready  := Mux(c_state === s_IDLE, false.B, Mux(c_state === s_d_soc, io.soc.wready, false.B))
-
-    io.imem.arready := Mux(c_state === s_IDLE, ~(io.dmem.arvalid | io.dmem.awvalid), Mux(c_state === s_i_soc, io.soc.arready, false.B))
-    io.imem.awready := Mux(c_state === s_IDLE, false.B, Mux(c_state === s_i_soc, io.soc.awready, false.B))
-    io.imem.wready  := Mux(c_state === s_IDLE, false.B, Mux(c_state === s_i_soc, io.soc.wready, false.B))
-
-
 /*-----------------------function-----------------------*/
     def ConnectImem2Soc(): Unit = {
-        // io.imem.arready := io.soc.arready & ~ing_w_or_r
+        io.imem.arready := io.soc.arready
         io.imem.rdata := io.soc.rdata
         io.imem.rresp := io.soc.rresp
         io.imem.rvalid := io.soc.rvalid
         io.imem.rlast := io.soc.rlast
         io.imem.rid := io.soc.rid
-        // io.imem.awready := io.soc.awready & ~ing_w_or_r
-        // io.imem.wready := io.soc.wready
+        io.imem.awready := io.soc.awready
+        io.imem.wready := io.soc.wready
         io.imem.bresp := io.soc.bresp
         io.imem.bvalid := io.soc.bvalid
         io.imem.bid := io.soc.bid
@@ -625,14 +601,14 @@ class Xbar extends Module {
     }
 
     def ConnectDmem2Soc(): Unit = {
-        // io.dmem.arready := io.soc.arready & ~ing_w_or_r
+        io.dmem.arready := io.soc.arready
         io.dmem.rdata := io.soc.rdata
         io.dmem.rresp := io.soc.rresp
         io.dmem.rvalid := io.soc.rvalid
         io.dmem.rlast := io.soc.rlast
         io.dmem.rid := io.soc.rid
-        // io.dmem.awready := io.soc.awready & ~ing_w_or_r
-        // io.dmem.wready := io.soc.wready
+        io.dmem.awready := io.soc.awready
+        io.dmem.wready := io.soc.wready
         io.dmem.bresp := io.soc.bresp
         io.dmem.bvalid := io.soc.bvalid
         io.dmem.bid := io.soc.bid
@@ -691,13 +667,13 @@ class Xbar extends Module {
     }
 
     def DefaultImem(): Unit = {
-        // io.imem.arready := true.B
+        io.imem.arready := true.B
         io.imem.rdata := DontCare
         io.imem.rresp := 0.U
         io.imem.rvalid := false.B
         io.imem.rlast := true.B
         io.imem.rid := 0.U
-        // io.imem.awready := false.B
+        io.imem.awready := false.B
         io.imem.wready := false.B
         io.imem.bresp := 0.U
         io.imem.bvalid := false.B
@@ -705,13 +681,13 @@ class Xbar extends Module {
     }
 
     def DefaultDmem(): Unit = {
-        // io.dmem.arready := true.B
+        io.dmem.arready := true.B
         io.dmem.rdata := DontCare
         io.dmem.rresp := 0.U
         io.dmem.rvalid := false.B
         io.dmem.rlast := true.B
         io.dmem.rid := 0.U
-        // io.dmem.awready := true.B
+        io.dmem.awready := true.B
         io.dmem.wready := true.B
         io.dmem.bresp := 0.U
         io.dmem.bvalid := false.B

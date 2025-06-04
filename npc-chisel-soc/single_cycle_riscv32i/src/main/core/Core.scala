@@ -43,7 +43,7 @@ class Core extends Module {
     pipelineConnect(exu.io_pipe.out, lsu.io_pipe.in)
     pipelineConnect(lsu.io_pipe.out, wbu.io_pipe.in)
 
-    StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
+    // StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
 
     val icache = Module(new iCache(8, 4, 1, "LRU"))
     io.imem <> icache.io.out
@@ -79,18 +79,36 @@ class Core extends Module {
     gpr.io.gpr_wdata := wbu.io.gpr_wdata
 
     //data hazard
-    val exu_raw = dataConflictWithStage(idu, exu.io_pipe.in.valid, exu.io_pipe.in.bits.id2exe_wb_addr, exu.io_pipe.in.bits.id2exe_rf_wen === REN_S)
-    val lsu_raw = dataConflictWithStage(idu, lsu.io_pipe.in.valid, lsu.io_pipe.in.bits.exe2ls_wb_addr, lsu.io_pipe.in.bits.exe2ls_rf_wen === REN_S)
-    val wbu_raw = dataConflictWithStage(idu, wbu.io_pipe.in.valid, wbu.io_pipe.in.bits.ls2wb_wb_addr, wbu.io_pipe.in.bits.ls2wb_rf_wen === REN_S)
+    val exu_is_working = ~exu.io_pipe.in.ready | exu.io_pipe.in.valid
+    val lsu_is_working = ~lsu.io_pipe.in.ready | lsu.io_pipe.in.valid
+    val wbu_is_working = ~wbu.io_pipe.in.ready | wbu.io_pipe.in.valid
+    val wbu_is_working_r = RegNext(wbu_is_working)
+    val wbu_end_flg = wbu_is_working_r & ~wbu_is_working
+    val wbu_end_flg_r = RegNext(wbu_end_flg)
+    dontTouch(exu_is_working)
+    dontTouch(lsu_is_working)
+    dontTouch(wbu_is_working)
+    dontTouch(wbu_is_working_r)
+    dontTouch(wbu_end_flg)
+    dontTouch(wbu_end_flg_r)
+    val exu_raw = dataConflictWithStage(idu, exu_is_working, exu.io_pipe.in.bits.id2exe_wb_addr, exu.io_pipe.in.bits.id2exe_rf_wen === REN_S)
+    val lsu_raw = dataConflictWithStage(idu, lsu_is_working, lsu.io_pipe.in.bits.exe2ls_wb_addr, lsu.io_pipe.in.bits.exe2ls_rf_wen === REN_S)
+    val wbu_raw = dataConflictWithStage(idu, wbu_is_working, wbu.io_pipe.in.bits.ls2wb_wb_addr, wbu.io_pipe.in.bits.ls2wb_rf_wen === REN_S)
     val is_raw = exu_raw || lsu_raw || wbu_raw
     dontTouch(exu_raw)
     dontTouch(lsu_raw)
     dontTouch(wbu_raw)
     dontTouch(is_raw)
-    idu.io_hazard.stall_flg := is_raw
+    val stall_flg = RegInit(false.B)
+    stall_flg := Mux(is_raw, true.B, Mux(wbu_end_flg_r, false.B, stall_flg))
+    idu.io_hazard.stall_flg := is_raw | stall_flg
+
+    //Struc hazard
+    /*fix in xbar*/
 
     //control hazard
-    val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc + 4.U) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc + 4.U)) && exu.io_pipe.out.valid
+    val exu_out_valid_rise = exu.io_pipe.out.valid & ~RegNext(exu.io_pipe.out.valid)
+    val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc)) && exu_out_valid_rise
     dontTouch(is_ctrl_hazard)
     ifu.io_hazard.flush_flg := is_ctrl_hazard
     idu.io_hazard.flush_flg := is_ctrl_hazard
@@ -104,6 +122,13 @@ class Core extends Module {
     // //auto fetch logic end
     // when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
     // when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
+
+    wbu.io_pipe.out.ready := true.B
+    val ready_r = RegNext(ifu.io_pipe.in.ready)
+    ifu.io_pipe.in.valid := ifu.io_pipe.in.ready & ready_r
+
+    when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
+    when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
 
 
 
@@ -121,15 +146,17 @@ class Core extends Module {
     }
 
     def dataConflict(rs: UInt, rd: UInt) = (rs === rd)
-    def dataConflictWithStage(stage_left: IDU, stage_right_valid: Bool, rd: UInt, is_w: Bool) = {
+    def dataConflictWithStage(stage_left: IDU, stage_right_is_working: Bool, rd: UInt, is_w: Bool) = {
         val rs1 = stage_left.io.gpr_rs1_addr
         val rs2 = stage_left.io.gpr_rs2_addr
-        val is_working = stage_left.io_pipe.in.valid && stage_right_valid
+        val is_working = stage_right_is_working
         val rs1_is_zero = rs1 === 0.U
         val rs2_is_zero = rs2 === 0.U
         val rs1_is_read = stage_left.io.gpr_rs1_is_read
         val rs2_is_read = stage_left.io.gpr_rs2_is_read
-        ((rs1_is_read && ~rs1_is_zero && dataConflict(rs1, rd)) || (rs2_is_read && ~rs2_is_zero && dataConflict(rs2, rd))) && is_working && is_w
+        
+        val stage_left_valid_r = RegNext(stage_left.io_pipe.in.valid)
+        ((rs1_is_read && ~rs1_is_zero && dataConflict(rs1, rd)) || (rs2_is_read && ~rs2_is_zero && dataConflict(rs2, rd))) && is_working && is_w && stage_left_valid_r
     }
 
 }
