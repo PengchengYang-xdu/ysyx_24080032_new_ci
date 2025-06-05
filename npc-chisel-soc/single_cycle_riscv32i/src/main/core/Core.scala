@@ -95,12 +95,32 @@ class Core extends Module {
     val lsu_raw = dataConflictWithStage(idu, lsu_is_working, lsu.io_pipe.in.bits.exe2ls_wb_addr, lsu.io_pipe.in.bits.exe2ls_rf_wen === REN_S)
     val wbu_raw = dataConflictWithStage(idu, wbu_is_working, wbu.io_pipe.in.bits.ls2wb_wb_addr, wbu.io_pipe.in.bits.ls2wb_rf_wen === REN_S)
     val is_raw = exu_raw || lsu_raw || wbu_raw
+    val exu_raw_rs1 = exu_raw && dataConflict(idu.io.gpr_rs1_addr, exu.io_pipe.in.bits.id2exe_wb_addr)
+    val exu_raw_rs2 = exu_raw && dataConflict(idu.io.gpr_rs2_addr, exu.io_pipe.in.bits.id2exe_wb_addr)
+    val lsu_raw_rs1 = lsu_raw && dataConflict(idu.io.gpr_rs1_addr, lsu.io_pipe.in.bits.exe2ls_wb_addr)
+    val lsu_raw_rs2 = lsu_raw && dataConflict(idu.io.gpr_rs2_addr, lsu.io_pipe.in.bits.exe2ls_wb_addr)
+    val wbu_raw_rs1 = wbu_raw && dataConflict(idu.io.gpr_rs1_addr, wbu.io_pipe.in.bits.ls2wb_wb_addr)
+    val wbu_raw_rs2 = wbu_raw && dataConflict(idu.io.gpr_rs2_addr, wbu.io_pipe.in.bits.ls2wb_wb_addr)
+    val rs1_raw = exu_raw_rs1 || lsu_raw_rs1 || wbu_raw_rs1
+    val rs2_raw = exu_raw_rs2 || lsu_raw_rs2 || wbu_raw_rs2
     dontTouch(exu_raw)
     dontTouch(lsu_raw)
     dontTouch(wbu_raw)
     dontTouch(is_raw)
+    dontTouch(exu_raw_rs1)
+    dontTouch(exu_raw_rs2)
+    dontTouch(lsu_raw_rs1)
+    dontTouch(lsu_raw_rs2)
+    dontTouch(wbu_raw_rs1)
+    dontTouch(wbu_raw_rs2)
+    dontTouch(rs1_raw)
+    dontTouch(rs2_raw)
+
+    val stall_cnt = RegInit(0.U)
+    stall_cnt := Mux(is_raw, Mux((rs1_raw & ~rs2_raw) || (~rs1_raw & rs2_raw) || (rs1_raw & rs2_raw & (idu.io.gpr_rs1_addr === idu.io.gpr_rs2_addr)), 1.U, 2.U), Mux(wbu_end_flg && stall_cnt =/= 0.U, stall_cnt - 1.U, stall_cnt))
+
     val stall_flg = RegInit(false.B)
-    stall_flg := Mux(is_raw, true.B, Mux(wbu_end_flg_r, false.B, stall_flg))
+    stall_flg := Mux(is_raw, true.B, Mux(stall_cnt === 0.U, false.B, stall_flg))
     idu.io_hazard.stall_flg := is_raw | stall_flg
 
     //Struc hazard
