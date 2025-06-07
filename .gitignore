@@ -14,6 +14,7 @@
 !README.md
 !.gitignore
 !init.sh
+npc-chisel-soc/single_cycle_riscv32i/build/*.fst
 # !/fceux-am/*
 # !/nvboard/*
 # !/am-kernels/*
