@@ -34,7 +34,7 @@ void init_psram(){
 }
 
 
-
+// #define CONFIG_TARGET_SHARE
 
 
 void init_ysyxsoc_mem(){

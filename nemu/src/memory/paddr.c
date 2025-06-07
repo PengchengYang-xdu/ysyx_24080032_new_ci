@@ -12,6 +12,7 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
+// #define CONFIG_TARGET_SHARE
 #include <ysyxsoc.h>
 #include "../ysyxsoc/include/ysyxsoc_mem.h"
 #include <memory/host.h>
@@ -49,11 +50,17 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
+    // if(in_sdram(addr)){
+    //     printf("now read sdram addr = %x, data = %x\n", addr, ret);
+    // }
   return ret;
 }
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
   host_write(guest_to_host(addr), len, data);
+    // if(in_sdram(addr)){
+    //     printf("now write sdram addr = %x, data = %x\n", addr, data);
+    // }
 }
 
 static void out_of_bound(paddr_t addr) {

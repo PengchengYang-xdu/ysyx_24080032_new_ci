@@ -116,15 +116,106 @@ class Core extends Module {
     dontTouch(rs1_raw)
     dontTouch(rs2_raw)
 
-    val stall_cnt = RegInit(0.U)
-    stall_cnt := Mux(is_raw, Mux((rs1_raw & ~rs2_raw) || (~rs1_raw & rs2_raw) || (rs1_raw & rs2_raw & (idu.io.gpr_rs1_addr === idu.io.gpr_rs2_addr)), 1.U, 2.U), Mux(wbu_end_flg && stall_cnt =/= 0.U, stall_cnt - 1.U, stall_cnt))
+    //记录发生raw的寄存器
+    val rs1_raw_valid = RegInit(false.B)
+    val rs2_raw_valid = RegInit(false.B)
 
-    val stall_flg = RegInit(false.B)
-    stall_flg := Mux(is_raw, true.B, Mux(stall_cnt === 0.U, false.B, stall_flg))
-    idu.io_hazard.stall_flg := is_raw | stall_flg
+    val rs1_raw_rd = Reg(UInt(ADDR_LEN.W))
+    val rs2_raw_rd = Reg(UInt(ADDR_LEN.W))
+
+    // 记录来自哪段
+    val rs1_raw_from_exu = RegInit(false.B)
+    val rs1_raw_from_lsu = RegInit(false.B)
+    val rs1_raw_from_wbu = RegInit(false.B)
+
+    val rs2_raw_from_exu = RegInit(false.B)
+    val rs2_raw_from_lsu = RegInit(false.B)
+    val rs2_raw_from_wbu = RegInit(false.B)
+
+    when(rs1_raw){
+        rs1_raw_rd := MuxCase(0.U, Seq(
+            exu_raw_rs1 -> exu.io_pipe.in.bits.id2exe_wb_addr,
+            lsu_raw_rs1 -> lsu.io_pipe.in.bits.exe2ls_wb_addr,
+            wbu_raw_rs1 -> wbu.io_pipe.in.bits.ls2wb_wb_addr,
+        ))
+        rs1_raw_valid := true.B
+        rs1_raw_from_exu := exu_raw_rs1
+        rs1_raw_from_lsu := lsu_raw_rs1
+        rs1_raw_from_wbu := wbu_raw_rs1
+    }
+    when(rs2_raw){
+        rs2_raw_rd := MuxCase(0.U, Seq(
+            exu_raw_rs2 -> exu.io_pipe.in.bits.id2exe_wb_addr,
+            lsu_raw_rs2 -> lsu.io_pipe.in.bits.exe2ls_wb_addr,
+            wbu_raw_rs2 -> wbu.io_pipe.in.bits.ls2wb_wb_addr,
+        ))
+        rs2_raw_valid := true.B
+        rs2_raw_from_exu := exu_raw_rs2
+        rs2_raw_from_lsu := lsu_raw_rs2
+        rs2_raw_from_wbu := wbu_raw_rs2
+    }
+
+    val rs1_resolved = rs1_raw_valid && wbu_end_flg && wbu.io_pipe.in.bits.ls2wb_wb_addr === rs1_raw_rd
+    val rs2_resolved = rs2_raw_valid && wbu_end_flg && wbu.io_pipe.in.bits.ls2wb_wb_addr === rs2_raw_rd
+
+    when(rs1_resolved) {rs1_raw_valid := false.B}
+    when(rs2_resolved) {rs2_raw_valid := false.B}
+
+    idu.io_hazard.stall_flg := rs1_raw_valid | rs2_raw_valid | is_raw
+
+
+
+
+
+
+
+
+
+    // val stall_cnt = RegInit(0.U)
+    // stall_cnt := Mux(is_raw, Mux((rs1_raw & ~rs2_raw) || (~rs1_raw & rs2_raw) || (rs1_raw & rs2_raw & (idu.io.gpr_rs1_addr === idu.io.gpr_rs2_addr)), 1.U, 2.U), Mux(wbu_end_flg && stall_cnt =/= 0.U, stall_cnt - 1.U, stall_cnt))
+
+    // val stall_flg = RegInit(false.B)
+    // stall_flg := Mux(is_raw, true.B, Mux(stall_cnt === 0.U, false.B, stall_flg))
+    // idu.io_hazard.stall_flg := is_raw | stall_flg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Struc hazard
     /*fix in xbar*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //control hazard
     val exu_out_valid_rise = exu.io_pipe.out.valid & ~RegNext(exu.io_pipe.out.valid)
@@ -149,6 +240,25 @@ class Core extends Module {
 
     when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
     when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

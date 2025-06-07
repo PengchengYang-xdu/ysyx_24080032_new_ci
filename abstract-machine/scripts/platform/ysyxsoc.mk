@@ -40,6 +40,7 @@ image: $(IMAGE).elf
 # NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc/single_cycle_riscv32i_refactor/ref/riscv32-nemu-interpreter-so_20241012
 # NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20241012
 NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_20250602
+# NPCFLAGS += -d /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/ref/riscv32-nemu-interpreter-so_debug
 
 
 # run: image

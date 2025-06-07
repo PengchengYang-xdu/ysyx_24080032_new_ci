@@ -86,7 +86,7 @@ class IFU extends Module {
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
     io_pipe.in.ready := in_ready
-    io_pipe.out.valid := out_valid
+    io_pipe.out.valid := out_valid & ~io_hazard.flush_flg
 
     val araddr = Wire(UInt(WORD_LEN.W))
     val arvalid = RegInit(false.B)
@@ -120,7 +120,7 @@ class IFU extends Module {
         s_BeforePreFire       ->  Mux(start, s_BeforeAXI_AR_Fire, s_BeforePreFire),
         s_BeforeAXI_AR_Fire   ->  Mux(AXI_AR_fire, s_BeforeAXI_R_Fire, s_BeforeAXI_AR_Fire),
         s_BeforeAXI_R_Fire    ->  Mux(fetch_normal, s_AfterPreFire, Mux(flush_before_R, s_Flush, Mux(R_while_flush, s_BeforePreFire, s_BeforeAXI_R_Fire))),
-        s_AfterPreFire        ->  Mux(io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire),
+        s_AfterPreFire        ->  Mux(io_hazard.flush_flg | io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire),
         s_Flush               ->  Mux(AXI_R_fire, s_BeforePreFire, s_Flush)
     ))//发起的请求必须等取到这次取指之后，再冲刷
 
