@@ -175,7 +175,7 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
-EXPLAIN = 任务进度:流水线简易实现完成，初步修改了csrc中的perf实现，跑跑看microbench 属性:icache开启,block=8,sets=4,ways=1,policy=lru
+EXPLAIN = 任务进度:流水线简易实现完成 跑通cpu-test和microbench，现在跑性能 属性:icache开启,block=8,sets=4,ways=1,policy=lru
 
 perf: checkout run save_perf
 
