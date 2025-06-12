@@ -37,13 +37,24 @@ class Core extends Module {
     // StageConnect(exu.io_pipe.out, lsu.io_pipe.in)
     // StageConnect(lsu.io_pipe.out, wbu.io_pipe.in)
     // StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
+    wbu.io_pipe.out.ready := true.B
+    val ready_r = RegNext(ifu.io_pipe.in.ready)
+    ifu.io_pipe.in.valid := RegEnable(true.B, ifu.io_pipe.in.valid, ifu.io_pipe.in.ready & ready_r)
 
     pipelineConnect(ifu.io_pipe.out, idu.io_pipe.in)
     pipelineConnect(idu.io_pipe.out, exu.io_pipe.in)
     pipelineConnect(exu.io_pipe.out, lsu.io_pipe.in)
     pipelineConnect(lsu.io_pipe.out, wbu.io_pipe.in)
 
-    // StageConnect(wbu.io_pipe.out, ifu.io_pipe.in)
+
+
+
+
+
+
+
+
+
 
     val icache = Module(new iCache(8, 4, 1, "LRU"))
     io.imem <> icache.io.out
@@ -77,6 +88,39 @@ class Core extends Module {
     gpr.io.gpr_wen := wbu.io.gpr_wen
     gpr.io.gpr_addr := wbu.io.gpr_addr
     gpr.io.gpr_wdata := wbu.io.gpr_wdata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //data hazard
     val exu_is_working = ~exu.io_pipe.in.ready | exu.io_pipe.in.valid
@@ -178,6 +222,11 @@ class Core extends Module {
 
 
 
+
+
+
+
+
     //Struc hazard
     /*fix in xbar*/
 
@@ -202,28 +251,40 @@ class Core extends Module {
 
 
     //control hazard
+    val idu_out_valid_rise = idu.io_pipe.out.valid & ~RegNext(idu.io_pipe.out.valid)
+    val is_irq = idu.io_pipe.out.bits.id2exe_is_irq && idu_out_valid_rise
+    dontTouch(is_irq)
+
     val exu_out_valid_rise = exu.io_pipe.out.valid & ~RegNext(exu.io_pipe.out.valid)
     val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc)) && exu_out_valid_rise
     dontTouch(is_ctrl_hazard)
+
+
     ifu.io_hazard.flush_flg := is_ctrl_hazard
     idu.io_hazard.flush_flg := is_ctrl_hazard
     exu.io_hazard.flush_flg := is_ctrl_hazard
-    //auto fetch logic begin
-    // wbu.io_pipe.out.ready := true.B
+    lsu.io_hazard.flush_flg := false.B
+    wbu.io_hazard.flush_flg := false.B
 
-    // val auto_valid = RegInit(false.B)
-    // auto_valid := Mux(ifu.io_hazard.flush_flg, true.B, RegEnable(true.B, false.B, ifu.io_pipe.in.ready))
-    // ifu.io_pipe.in.valid := auto_valid
-    // //auto fetch logic end
-    // when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
-    // when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
 
-    wbu.io_pipe.out.ready := true.B
-    val ready_r = RegNext(ifu.io_pipe.in.ready)
-    ifu.io_pipe.in.valid := ifu.io_pipe.in.ready & ready_r
-
+    when(ifu.io_hazard.flush_flg){ifu.io_pipe.in.valid := false.B}
     when(idu.io_hazard.flush_flg){idu.io_pipe.in.valid := false.B}
     when(exu.io_hazard.flush_flg){exu.io_pipe.in.valid := false.B}
+    when(lsu.io_hazard.flush_flg){lsu.io_pipe.in.valid := false.B}
+    when(wbu.io_hazard.flush_flg){wbu.io_pipe.in.valid := false.B}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

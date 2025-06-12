@@ -40,6 +40,10 @@ class IDUIO_pipe_out extends Bundle{
     val id2exe_csr_cmd = Output(UInt(CSR_LEN.W))
     val id2exe_mem_wen = Output(UInt(MEN_LEN.W))
     val id2exe_mem_op = Output(UInt(MEM_OP.W))
+
+    //irq
+    val id2exe_is_irq = Output(Bool())
+    val id2exe_irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
 }
 
 class FENCEI_IO extends Bundle{
@@ -266,5 +270,9 @@ class IDU extends Module {
 
 
     is_fencei_reg := Mux(fencei_io_vr.is_fencei_io.fire, 0.U, Mux(io_pipe.in.valid, is_fencei, is_fencei_reg))
+    
+    //irq
+    io_pipe.out.bits.id2exe_is_irq := Mux(csr_cmd === CSR_E, true.B, false.B)
+    io_pipe.out.bits.id2exe_irq_num := Mux(csr_cmd === CSR_E, IRQ_NUM_ECALL, 0.U)
 }
 

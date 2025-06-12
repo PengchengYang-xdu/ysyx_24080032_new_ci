@@ -7,6 +7,11 @@ import npc.common.Instructions._
 import npc.core.exu._
 import npc.bus.axi._
 
+class LSUIO_HAZARD extends Bundle {
+    val flush_flg = Input(Bool())
+}
+
+
 class LSUIO extends Bundle {
     val dmem = Flipped(new AXI4WithoutClk)
 
@@ -23,6 +28,10 @@ class LSUIO_pipe_out extends Bundle{
     val ls2wb_csr_wdata = Output(UInt(WORD_LEN.W))
     val ls2wb_csr_addr = Output(UInt(CSR_ADDR_LEN.W))
     val ls2wb_csr_cmd = Output(UInt(CSR_LEN.W))
+
+    //irq
+    val ls2wb_is_irq = Output(Bool())
+    val ls2wb_irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
 }
 
 class LSUIO_pipe extends Bundle {
@@ -33,6 +42,8 @@ class LSUIO_pipe extends Bundle {
 class LSU extends Module {
     val io = IO(new LSUIO)
     val io_pipe = IO(new LSUIO_pipe)
+
+    val io_hazard = IO(new LSUIO_HAZARD)
 
     //disable something in AR R AW W B
     io.dmem.arid := 0.U
@@ -309,5 +320,12 @@ class LSU extends Module {
 
 
 
+
+
+    //irq
+    val is_laf = io.dmem.rvalid && io.dmem.rresp =/= 0.U
+    val is_saf = io.dmem.bvalid && io.dmem.bresp =/= 0.U
+    io_pipe.out.bits.ls2wb_is_irq := is_laf | is_saf | io_pipe.in.bits.exe2ls_is_irq
+    io_pipe.out.bits.ls2wb_irq_num := Mux(is_laf, IRQ_NUM_LAF, Mux(is_saf, IRQ_NUM_SAF, io_pipe.in.bits.exe2ls_irq_num))
 }
 

@@ -123,4 +123,10 @@ object Config{
     val RS1_NO_READ = false.B
     val RS2_IS_READ = true.B
     val RS2_NO_READ = false.B
+
+    val IRQ_NUM_WIDTH = 4
+    val IRQ_NUM_ECALL = 11.U(IRQ_NUM_WIDTH.W)
+    val IRQ_NUM_IAF = 1.U(IRQ_NUM_WIDTH.W)
+    val IRQ_NUM_LAF = 5.U(IRQ_NUM_WIDTH.W)
+    val IRQ_NUM_SAF = 7.U(IRQ_NUM_WIDTH.W)
 }
