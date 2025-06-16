@@ -5,6 +5,11 @@
 #include <utils.h>
 #include <debug.h>
 
+#include <lightsss.h> // 确保路径正确
+
+extern uint64_t light_cycle_num;
+extern LightSSS lightsss;
+
 int one_inst_working = 0;
 
 word_t ref_pre_pc = 0x30000000;
@@ -149,9 +154,18 @@ void difftest_step() {
 	itrace_init(PC, INSTR);
 	display_inst();
 	#endif
-    #ifdef NPCCONFIG_DUMPWAVE
-	dump_wave();
-	close_wave(2);
+    #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
+    #ifdef NPCCONFIG_LIGHTSSS
+        if(lightsss.is_child()){
+            dump_wave();
+	        close_wave(2);
+        }else{
+            lightsss.wakeup_child(light_cycle_num);
+        }
+    #else
+        dump_wave();
+	    close_wave(2);
+    #endif
 	#endif
     exit(-1);
   }

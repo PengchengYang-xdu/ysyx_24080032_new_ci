@@ -9,13 +9,15 @@ deigned by ypc
 #include <utils.h>
 #include <device.h>
 
+#include <lightsss.h> // 确保路径正确
+
 extern bool is_skip_diff;
 static uint64_t timer = 0;
 
 
 
-
-
+extern uint64_t light_cycle_num;
+extern LightSSS lightsss;
 
 
 
@@ -287,9 +289,18 @@ extern "C" void paddr_write(int addr, int data, char wmask) {
         }
     }
     out_of_bound(addr);
-    #ifdef NPCCONFIG_DUMPWAVE
-	dump_wave();
-	close_wave(4);
+    #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
+    #ifdef NPCCONFIG_LIGHTSSS
+        if(lightsss.is_child()){
+            dump_wave();
+	        close_wave(4);
+        }else{
+            lightsss.wakeup_child(light_cycle_num);
+        }
+    #else
+        dump_wave();
+	    close_wave(4);
+    #endif
 	#endif
 }
 

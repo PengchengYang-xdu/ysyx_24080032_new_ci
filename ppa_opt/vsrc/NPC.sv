@@ -120,16 +120,20 @@ module NPC(	// @[src/main/NPC.scala:15:7]
 );
 
   wire [31:0] _clint_axi4_rdata;	// @[src/main/NPC.scala:56:23]
+  wire [1:0]  _clint_axi4_rresp;	// @[src/main/NPC.scala:56:23]
   wire        _clint_axi4_rvalid;	// @[src/main/NPC.scala:56:23]
+  wire [1:0]  _clint_axi4_bresp;	// @[src/main/NPC.scala:56:23]
   wire        _clint_axi4_bvalid;	// @[src/main/NPC.scala:56:23]
   wire        _xbar_io_imem_arready;	// @[src/main/NPC.scala:55:22]
   wire [31:0] _xbar_io_imem_rdata;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_imem_rvalid;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_dmem_arready;	// @[src/main/NPC.scala:55:22]
   wire [31:0] _xbar_io_dmem_rdata;	// @[src/main/NPC.scala:55:22]
+  wire [1:0]  _xbar_io_dmem_rresp;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_dmem_rvalid;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_dmem_awready;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_dmem_wready;	// @[src/main/NPC.scala:55:22]
+  wire [1:0]  _xbar_io_dmem_bresp;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_dmem_bvalid;	// @[src/main/NPC.scala:55:22]
   wire [31:0] _xbar_io_clint_araddr;	// @[src/main/NPC.scala:55:22]
   wire        _xbar_io_clint_arvalid;	// @[src/main/NPC.scala:55:22]
@@ -200,6 +204,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_dmem_arready (_xbar_io_dmem_arready),	// @[src/main/NPC.scala:55:22]
     .io_dmem_arsize  (_core_io_dmem_arsize),
     .io_dmem_rdata   (_xbar_io_dmem_rdata),	// @[src/main/NPC.scala:55:22]
+    .io_dmem_rresp   (_xbar_io_dmem_rresp),	// @[src/main/NPC.scala:55:22]
     .io_dmem_rvalid  (_xbar_io_dmem_rvalid),	// @[src/main/NPC.scala:55:22]
     .io_dmem_rready  (_core_io_dmem_rready),
     .io_dmem_awaddr  (_core_io_dmem_awaddr),
@@ -210,6 +215,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_dmem_wstrb   (_core_io_dmem_wstrb),
     .io_dmem_wvalid  (_core_io_dmem_wvalid),
     .io_dmem_wready  (_xbar_io_dmem_wready),	// @[src/main/NPC.scala:55:22]
+    .io_dmem_bresp   (_xbar_io_dmem_bresp),	// @[src/main/NPC.scala:55:22]
     .io_dmem_bvalid  (_xbar_io_dmem_bvalid),	// @[src/main/NPC.scala:55:22]
     .io_dmem_bready  (_core_io_dmem_bready)
   );
@@ -242,6 +248,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_dmem_arready  (_xbar_io_dmem_arready),
     .io_dmem_arsize   (_core_io_dmem_arsize),	// @[src/main/NPC.scala:54:22]
     .io_dmem_rdata    (_xbar_io_dmem_rdata),
+    .io_dmem_rresp    (_xbar_io_dmem_rresp),
     .io_dmem_rvalid   (_xbar_io_dmem_rvalid),
     .io_dmem_rready   (_core_io_dmem_rready),	// @[src/main/NPC.scala:54:22]
     .io_dmem_awaddr   (_core_io_dmem_awaddr),	// @[src/main/NPC.scala:54:22]
@@ -252,6 +259,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_dmem_wstrb    (_core_io_dmem_wstrb),	// @[src/main/NPC.scala:54:22]
     .io_dmem_wvalid   (_core_io_dmem_wvalid),	// @[src/main/NPC.scala:54:22]
     .io_dmem_wready   (_xbar_io_dmem_wready),
+    .io_dmem_bresp    (_xbar_io_dmem_bresp),
     .io_dmem_bvalid   (_xbar_io_dmem_bvalid),
     .io_dmem_bready   (_core_io_dmem_bready),	// @[src/main/NPC.scala:54:22]
     .io_soc_araddr    (io_master_araddr),
@@ -262,6 +270,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_soc_arsize    (io_master_arsize),
     .io_soc_arburst   (io_master_arburst),
     .io_soc_rdata     (io_master_rdata),
+    .io_soc_rresp     (io_master_rresp),
     .io_soc_rvalid    (io_master_rvalid),
     .io_soc_rready    (io_master_rready),
     .io_soc_awaddr    (io_master_awaddr),
@@ -276,12 +285,14 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_soc_wvalid    (io_master_wvalid),
     .io_soc_wready    (io_master_wready),
     .io_soc_wlast     (io_master_wlast),
+    .io_soc_bresp     (io_master_bresp),
     .io_soc_bvalid    (io_master_bvalid),
     .io_soc_bready    (io_master_bready),
     .io_clint_araddr  (_xbar_io_clint_araddr),
     .io_clint_arvalid (_xbar_io_clint_arvalid),
     .io_clint_arsize  (_xbar_io_clint_arsize),
     .io_clint_rdata   (_clint_axi4_rdata),	// @[src/main/NPC.scala:56:23]
+    .io_clint_rresp   (_clint_axi4_rresp),	// @[src/main/NPC.scala:56:23]
     .io_clint_rvalid  (_clint_axi4_rvalid),	// @[src/main/NPC.scala:56:23]
     .io_clint_rready  (_xbar_io_clint_rready),
     .io_clint_awaddr  (_xbar_io_clint_awaddr),
@@ -290,6 +301,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_clint_wdata   (_xbar_io_clint_wdata),
     .io_clint_wstrb   (_xbar_io_clint_wstrb),
     .io_clint_wvalid  (_xbar_io_clint_wvalid),
+    .io_clint_bresp   (_clint_axi4_bresp),	// @[src/main/NPC.scala:56:23]
     .io_clint_bvalid  (_clint_axi4_bvalid),	// @[src/main/NPC.scala:56:23]
     .io_clint_bready  (_xbar_io_clint_bready)
   );
@@ -304,7 +316,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .axi4_arsize  (_xbar_io_clint_arsize),	// @[src/main/NPC.scala:55:22]
     .axi4_arburst (2'h0),	// @[src/main/NPC.scala:54:22, :55:22, :56:23]
     .axi4_rdata   (_clint_axi4_rdata),
-    .axi4_rresp   (/* unused */),
+    .axi4_rresp   (_clint_axi4_rresp),
     .axi4_rvalid  (_clint_axi4_rvalid),
     .axi4_rready  (_xbar_io_clint_rready),	// @[src/main/NPC.scala:55:22]
     .axi4_rlast   (/* unused */),
@@ -321,7 +333,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .axi4_wvalid  (_xbar_io_clint_wvalid),	// @[src/main/NPC.scala:55:22]
     .axi4_wready  (/* unused */),
     .axi4_wlast   (1'h1),	// @[src/main/NPC.scala:54:22, :55:22, :56:23]
-    .axi4_bresp   (/* unused */),
+    .axi4_bresp   (_clint_axi4_bresp),
     .axi4_bvalid  (_clint_axi4_bvalid),
     .axi4_bready  (_xbar_io_clint_bready),	// @[src/main/NPC.scala:55:22]
     .axi4_bid     (/* unused */)

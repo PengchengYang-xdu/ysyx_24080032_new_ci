@@ -9,6 +9,9 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <unistd.h>
+#include <stdio.h>
 
 typedef int32_t sword_t;
 typedef uint32_t word_t;
@@ -36,8 +39,6 @@ typedef uint32_t paddr_t;
 
 #define SDRAM_SIZE 0x1fffffff
 #define SDRAM_BASE 0xa0000000
-
-
 
 
 

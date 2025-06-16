@@ -56,7 +56,7 @@
 `endif // not def SYNTHESIS
 
 // VCS coverage exclude_file
-module csr_6x32(	// @[src/main/core/CSR.scala:23:18]
+module csr_6x32(	// @[src/main/core/CSR.scala:28:18]
   input  [2:0]  R0_addr,
   input         R0_en,
                 R0_clk,
@@ -88,36 +88,42 @@ module csr_6x32(	// @[src/main/core/CSR.scala:23:18]
   input  [2:0]  W4_addr,
   input         W4_en,
                 W4_clk,
-  input  [31:0] W4_data
+  input  [31:0] W4_data,
+  input  [2:0]  W5_addr,
+  input         W5_en,
+                W5_clk,
+  input  [31:0] W5_data
 );
 
-  reg [31:0] Memory[0:5];	// @[src/main/core/CSR.scala:23:18]
-  always @(posedge W0_clk) begin	// @[src/main/core/CSR.scala:23:18]
-    if (W0_en & 1'h1)	// @[src/main/core/CSR.scala:23:18]
-      Memory[W0_addr] <= W0_data;	// @[src/main/core/CSR.scala:23:18]
-    if (W1_en & 1'h1)	// @[src/main/core/CSR.scala:23:18]
-      Memory[W1_addr] <= W1_data;	// @[src/main/core/CSR.scala:23:18]
-    if (W2_en & 1'h1)	// @[src/main/core/CSR.scala:23:18]
-      Memory[W2_addr] <= W2_data;	// @[src/main/core/CSR.scala:23:18]
-    if (W3_en & 1'h1)	// @[src/main/core/CSR.scala:23:18]
-      Memory[W3_addr] <= W3_data;	// @[src/main/core/CSR.scala:23:18]
-    if (W4_en & 1'h1)	// @[src/main/core/CSR.scala:23:18]
-      Memory[W4_addr] <= W4_data;	// @[src/main/core/CSR.scala:23:18]
+  reg [31:0] Memory[0:5];	// @[src/main/core/CSR.scala:28:18]
+  always @(posedge W0_clk) begin	// @[src/main/core/CSR.scala:28:18]
+    if (W0_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W0_addr] <= W0_data;	// @[src/main/core/CSR.scala:28:18]
+    if (W1_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W1_addr] <= W1_data;	// @[src/main/core/CSR.scala:28:18]
+    if (W2_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W2_addr] <= W2_data;	// @[src/main/core/CSR.scala:28:18]
+    if (W3_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W3_addr] <= W3_data;	// @[src/main/core/CSR.scala:28:18]
+    if (W4_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W4_addr] <= W4_data;	// @[src/main/core/CSR.scala:28:18]
+    if (W5_en & 1'h1)	// @[src/main/core/CSR.scala:28:18]
+      Memory[W5_addr] <= W5_data;	// @[src/main/core/CSR.scala:28:18]
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_MEM_	// @[src/main/core/CSR.scala:23:18]
-    reg [31:0] _RANDOM_MEM;	// @[src/main/core/CSR.scala:23:18]
-    initial begin	// @[src/main/core/CSR.scala:23:18]
-      `INIT_RANDOM_PROLOG_	// @[src/main/core/CSR.scala:23:18]
-      `ifdef RANDOMIZE_MEM_INIT	// @[src/main/core/CSR.scala:23:18]
+  `ifdef ENABLE_INITIAL_MEM_	// @[src/main/core/CSR.scala:28:18]
+    reg [31:0] _RANDOM_MEM;	// @[src/main/core/CSR.scala:28:18]
+    initial begin	// @[src/main/core/CSR.scala:28:18]
+      `INIT_RANDOM_PROLOG_	// @[src/main/core/CSR.scala:28:18]
+      `ifdef RANDOMIZE_MEM_INIT	// @[src/main/core/CSR.scala:28:18]
         for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
-          _RANDOM_MEM = `RANDOM;	// @[src/main/core/CSR.scala:23:18]
-          Memory[i] = _RANDOM_MEM;	// @[src/main/core/CSR.scala:23:18]
-        end	// @[src/main/core/CSR.scala:23:18]
+          _RANDOM_MEM = `RANDOM;	// @[src/main/core/CSR.scala:28:18]
+          Memory[i] = _RANDOM_MEM;	// @[src/main/core/CSR.scala:28:18]
+        end	// @[src/main/core/CSR.scala:28:18]
       `endif // RANDOMIZE_MEM_INIT
     end // initial
   `endif // ENABLE_INITIAL_MEM_
-  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[src/main/core/CSR.scala:23:18]
-  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[src/main/core/CSR.scala:23:18]
-  assign R2_data = R2_en ? Memory[R2_addr] : 32'bx;	// @[src/main/core/CSR.scala:23:18]
+  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[src/main/core/CSR.scala:28:18]
+  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[src/main/core/CSR.scala:28:18]
+  assign R2_data = R2_en ? Memory[R2_addr] : 32'bx;	// @[src/main/core/CSR.scala:28:18]
 endmodule
 

@@ -9,15 +9,16 @@ static VerilatedContext* contextp = nullptr;
 
 vluint64_t main_time = 0;
 
-void init_wave(){
-    Verilated::traceEverOn(true);
-	contextp = new VerilatedContext;	
-	// tfp = new VerilatedVcdC();
+void init_wave(const char* wave_path) {
+    Verilated::traceEverOn(true); // 打开全局波形开关
+    contextp = new VerilatedContext;
     tfp = new VerilatedFstC();
-	top->trace(tfp, 5);
-	tfp->open("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/build/ysyxsoc.fst");//gen the vcd in share dir, so that memory doesn't get biiiiiiiiiiiiig
-	// tfp->open("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/build/perf_ref.fst");//gen the vcd in share dir, so that memory doesn't get biiiiiiiiiiiiig
-} 
+
+    // 假设 top 是你定义的 Verilog 顶层模块指针
+    top->trace(tfp, 5); // 跟踪等级设置为 5（可以根据需要调）
+
+    tfp->open(wave_path); // 使用传入的路径打开波形文件
+}
 
 void dump_wave(){
     tfp->dump(main_time);

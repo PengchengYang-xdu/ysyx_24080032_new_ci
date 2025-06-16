@@ -19,6 +19,11 @@ class WBUIO extends Bundle {
     val csr_addr = Output(UInt(CSR_ADDR_LEN.W))
     val csr_cmd = Output(UInt(CSR_LEN.W))
     val csr_wdata = Output(UInt(WORD_LEN.W))
+
+    val is_irq = Output(Bool())
+    val irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
+
+    val irq_valid = Output(Bool())
 }
 
 class WBUIO_pipe_out extends Bundle{
@@ -98,5 +103,14 @@ class WBU extends Module {
             out_valid := true.B
         }
     }
+
+
+
+
+
+    //irq
+    io.is_irq := io_pipe.in.bits.ls2wb_is_irq
+    io.irq_num := io_pipe.in.bits.ls2wb_irq_num
+    io.irq_valid := io_pipe.in.valid && ~io_hazard.flush_flg
 }
 

@@ -21,7 +21,7 @@ void cpu_exec(uint64_t n);
 void reset(int i);
 
 //wave
-void init_wave();
+void init_wave(const char* wave_path);
 void dump_wave();
 void close_wave(int i);
 

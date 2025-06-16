@@ -55,58 +55,72 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
-module CSR(	// @[src/main/core/CSR.scala:20:7]
-  input         clock,	// @[src/main/core/CSR.scala:20:7]
-  output [31:0] io_csr_mtvec,	// @[src/main/core/CSR.scala:21:16]
-                io_csr_mepc,	// @[src/main/core/CSR.scala:21:16]
-                io_csr_rdata,	// @[src/main/core/CSR.scala:21:16]
-  input  [31:0] io_csr_wdata,	// @[src/main/core/CSR.scala:21:16]
-  input  [11:0] io_csr_addr,	// @[src/main/core/CSR.scala:21:16]
-  input  [2:0]  io_csr_cmd,	// @[src/main/core/CSR.scala:21:16]
-  input  [31:0] io_csr_reg_pc	// @[src/main/core/CSR.scala:21:16]
+module CSR(	// @[src/main/core/CSR.scala:25:7]
+  input         clock,	// @[src/main/core/CSR.scala:25:7]
+  output [31:0] io_csr_mtvec,	// @[src/main/core/CSR.scala:26:16]
+                io_csr_mepc,	// @[src/main/core/CSR.scala:26:16]
+                io_csr_rdata,	// @[src/main/core/CSR.scala:26:16]
+  input  [31:0] io_csr_wdata,	// @[src/main/core/CSR.scala:26:16]
+  input  [11:0] io_csr_addr,	// @[src/main/core/CSR.scala:26:16]
+  input  [2:0]  io_csr_cmd,	// @[src/main/core/CSR.scala:26:16]
+  input  [11:0] io_csr_raddr,	// @[src/main/core/CSR.scala:26:16]
+  input  [31:0] io_csr_reg_pc,	// @[src/main/core/CSR.scala:26:16]
+  input  [3:0]  io_csr_irq_num,	// @[src/main/core/CSR.scala:26:16]
+  input         io_csr_is_irq	// @[src/main/core/CSR.scala:26:16]
 );
 
-  wire [2:0] csr_addr_process =
-    io_csr_addr == 12'hF12
-      ? 3'h5
-      : io_csr_addr == 12'hF11
-          ? 3'h4
-          : io_csr_addr == 12'h342
-              ? 3'h3
-              : io_csr_addr == 12'h341 ? 3'h2 : {2'h0, io_csr_addr == 12'h305};	// @[src/main/core/CSR.scala:26:52]
-  csr_6x32 csr_ext (	// @[src/main/core/CSR.scala:23:18]
-    .R0_addr (csr_addr_process),	// @[src/main/core/CSR.scala:26:52]
-    .R0_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+  wire _GEN = io_csr_cmd == 3'h4;	// @[src/main/core/CSR.scala:31:52, :56:21]
+  csr_6x32 csr_ext (	// @[src/main/core/CSR.scala:28:18]
+    .R0_addr
+      (io_csr_raddr == 12'hF12
+         ? 3'h5
+         : io_csr_raddr == 12'hF11
+             ? 3'h4
+             : io_csr_raddr == 12'h342
+                 ? 3'h3
+                 : io_csr_raddr == 12'h341 ? 3'h2 : {2'h0, io_csr_raddr == 12'h305}),	// @[src/main/core/CSR.scala:31:52, :46:54]
+    .R0_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .R0_clk  (clock),
     .R0_data (io_csr_rdata),
-    .R1_addr (3'h1),	// @[src/main/core/CSR.scala:26:52]
-    .R1_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+    .R1_addr (3'h1),	// @[src/main/core/CSR.scala:31:52]
+    .R1_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .R1_clk  (clock),
     .R1_data (io_csr_mtvec),
-    .R2_addr (3'h2),	// @[src/main/core/CSR.scala:26:52]
-    .R2_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+    .R2_addr (3'h2),	// @[src/main/core/CSR.scala:31:52]
+    .R2_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .R2_clk  (clock),
     .R2_data (io_csr_mepc),
-    .W0_addr (3'h5),	// @[src/main/core/CSR.scala:26:52]
-    .W0_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+    .W0_addr (3'h5),	// @[src/main/core/CSR.scala:31:52]
+    .W0_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .W0_clk  (clock),
-    .W0_data (32'h16F6EA0),	// @[src/main/core/CSR.scala:51:27]
-    .W1_addr (3'h4),	// @[src/main/core/CSR.scala:26:52]
-    .W1_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+    .W0_data (32'h16F6EA0),	// @[src/main/core/CSR.scala:67:27]
+    .W1_addr (3'h4),	// @[src/main/core/CSR.scala:31:52]
+    .W1_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .W1_clk  (clock),
-    .W1_data (32'h79737978),	// @[src/main/core/CSR.scala:50:29]
-    .W2_addr (3'h0),	// @[src/main/core/CSR.scala:26:52]
-    .W2_en   (1'h1),	// @[src/main/core/CSR.scala:20:7]
+    .W1_data (32'h79737978),	// @[src/main/core/CSR.scala:66:29]
+    .W2_addr (3'h0),	// @[src/main/core/CSR.scala:31:52]
+    .W2_en   (1'h1),	// @[src/main/core/CSR.scala:25:7]
     .W2_clk  (clock),
-    .W2_data (32'h1800),	// @[src/main/core/CSR.scala:49:27]
-    .W3_addr (csr_addr_process),	// @[src/main/core/CSR.scala:26:52]
-    .W3_en   (|io_csr_cmd),	// @[src/main/core/CSR.scala:42:21]
+    .W2_data (32'h1800),	// @[src/main/core/CSR.scala:65:27]
+    .W3_addr
+      (io_csr_addr == 12'hF12
+         ? 3'h5
+         : io_csr_addr == 12'hF11
+             ? 3'h4
+             : io_csr_addr == 12'h342
+                 ? 3'h3
+                 : io_csr_addr == 12'h341 ? 3'h2 : {2'h0, io_csr_addr == 12'h305}),	// @[src/main/core/CSR.scala:31:52]
+    .W3_en   ((|io_csr_cmd) & io_csr_cmd != 3'h4 & io_csr_cmd != 3'h6 & ~io_csr_is_irq),	// @[src/main/core/CSR.scala:31:52, :60:{21,41,66,76,79}]
     .W3_clk  (clock),
     .W3_data (io_csr_wdata),
-    .W4_addr (3'h2),	// @[src/main/core/CSR.scala:26:52]
-    .W4_en   ((|io_csr_cmd) & io_csr_cmd == 3'h4),	// @[src/main/core/CSR.scala:23:18, :26:52, :42:{21,27}, :43:{25,35}]
+    .W4_addr (3'h3),	// @[src/main/core/CSR.scala:31:52]
+    .W4_en   (_GEN),	// @[src/main/core/CSR.scala:56:21]
     .W4_clk  (clock),
-    .W4_data (io_csr_reg_pc)
+    .W4_data ({28'h0, io_csr_irq_num}),	// @[src/main/core/CSR.scala:58:30]
+    .W5_addr (3'h2),	// @[src/main/core/CSR.scala:31:52]
+    .W5_en   (_GEN),	// @[src/main/core/CSR.scala:56:21]
+    .W5_clk  (clock),
+    .W5_data (io_csr_reg_pc)
   );
 endmodule
 

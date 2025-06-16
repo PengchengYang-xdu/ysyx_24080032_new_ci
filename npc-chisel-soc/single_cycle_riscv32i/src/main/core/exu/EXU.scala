@@ -36,6 +36,9 @@ class EXUIO_pipe_out extends Bundle{
     //irq
     val exe2ls_is_irq = Output(Bool())
     val exe2ls_irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
+
+    //csr
+    val exe2ls_csr_rdata = Output(UInt(WORD_LEN.W))
 }
 
 class EXUIO_pipe extends Bundle {
@@ -114,7 +117,7 @@ class EXU extends Module {
 
 
 
-
+    io_pipe.out.bits.exe2ls_csr_rdata := io_pipe.in.bits.id2exe_csr_rdata
 
 
 

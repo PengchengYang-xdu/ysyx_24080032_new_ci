@@ -20,6 +20,11 @@ class IDUIO extends Bundle {
     val gpr_rs2_data = Input(UInt(WORD_LEN.W))
     val gpr_rs1_is_read = Output(Bool())
     val gpr_rs2_is_read = Output(Bool())
+
+    val csr_raddr = Output(UInt(CSR_ADDR_LEN.W))
+    val csr_rdata = Input(UInt(WORD_LEN.W))
+
+    val is_mret = Output(Bool())
 }
 
 class IDUIO_pipe_out extends Bundle{
@@ -44,6 +49,9 @@ class IDUIO_pipe_out extends Bundle{
     //irq
     val id2exe_is_irq = Output(Bool())
     val id2exe_irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
+
+    //csr
+    val id2exe_csr_rdata = Output(UInt(WORD_LEN.W))
 }
 
 class FENCEI_IO extends Bundle{
@@ -172,6 +180,8 @@ class IDU extends Module {
     ))
 
     val csr_addr = Mux(csr_cmd === CSR_E, 0x342.U(CSR_ADDR_LEN.W), inst(31,20))
+    val csr_raddr = inst(31,20)
+    io.csr_raddr := csr_raddr
 
 
 
@@ -199,6 +209,8 @@ class IDU extends Module {
     io_pipe.out.bits.id2exe_csr_cmd := csr_cmd
     io_pipe.out.bits.id2exe_mem_wen := mem_wen
     io_pipe.out.bits.id2exe_mem_op := mem_op
+
+    io_pipe.out.bits.id2exe_csr_rdata := io.csr_rdata
 
     class Ebreak extends BlackBox with HasBlackBoxPath{
         val io = IO(new Bundle{
@@ -274,5 +286,6 @@ class IDU extends Module {
     //irq
     io_pipe.out.bits.id2exe_is_irq := Mux(csr_cmd === CSR_E, true.B, false.B)
     io_pipe.out.bits.id2exe_irq_num := Mux(csr_cmd === CSR_E, IRQ_NUM_ECALL, 0.U)
+    io.is_mret := csr_cmd === CSR_M
 }
 
