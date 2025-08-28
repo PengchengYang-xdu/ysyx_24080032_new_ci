@@ -78,6 +78,7 @@ void show_id(){
 void _trm_init() {
     init_uart(1);
     // show_id();//not supported in difftest because mvendorid and marchid are not supported in nemu as a ref
+    printf("hello ypc\n");
     int ret = main("train");
     // int ret = main(mainargs);
     halt(ret);

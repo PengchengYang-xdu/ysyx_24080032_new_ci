@@ -20,8 +20,8 @@ class iCacheBlock(val m: Int, val n: Int) extends Bundle{
 
 class iCacheSet(val m: Int, val n: Int, val ways: Int, val ways_width: Int) extends Bundle{
     val set = Vec(ways, new iCacheBlock(m, n))
-    val lruMatrix = Vec(ways, Vec(ways, UInt(1.W)))
-    val fifoPtr = UInt(ways_width.W)
+    lazy val lruMatrix = Vec(ways, Vec(ways, UInt(1.W)))
+    lazy val fifoPtr = UInt(ways_width.W)
 }
 
 class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementPolicy: String) extends Module{
@@ -168,7 +168,9 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
     }
     fencei_io_vr.is_fencei_io.ready := fencei_fsh
     when(is_fencei){
-        icache(fencei_counter) := 0.U.asTypeOf(new iCacheSet(m, n, ways, ways_width))
+        for(i <- 0 until ways){
+            icache(fencei_counter).set(i).valid := false.B
+        }
     }
 
     switch(n_state){//third phase
@@ -210,13 +212,6 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         }
     }
 
-    val policy = replacementPolicy.toUpperCase match {
-        case "LRU" => "LRU"
-        case "FIFO" => "FIFO"
-        case "RANDOM" => "RANDOM"
-        case _ => throw new Exception("Unknown replacement policy!")
-    }
-
     //检查空闲的cache块
     val hasEmpty = Wire(Bool())
     hasEmpty := false.B
@@ -234,7 +229,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
         Mux(io.out.rvalid & out_rready && ((c.U - 1.U - count) === req_offset >> 2),
             io.out.rdata,
             in_rdata)),
-    Mux(n_state === s_i_2, io.out.rdata, in_rdata))
+    Mux(n_state === s_i_2 && (io.out.rvalid & out_rready), io.out.rdata, in_rdata))
 
 
     //命中的时候更新LRU矩阵
@@ -260,7 +255,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int, val replacementP
             }
         } .otherwise{
             // 如果没有空闲块，替换逻辑
-            policy match {
+            replacementPolicy match {
                 case "LRU" =>
                     val lruIndex = getLRUIndex(icache(req_index), ways_width)
                     set(lruIndex).valid := true.B

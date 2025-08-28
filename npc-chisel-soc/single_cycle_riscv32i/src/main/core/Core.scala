@@ -56,7 +56,7 @@ class Core extends Module {
 
 
 
-    val icache = Module(new iCache(8, 4, 1, "LRU"))
+    val icache = Module(new iCache(8, 4, 1, "FIFO"))
     io.imem <> icache.io.out
     icache.io.in <> ifu.io.imem
 
@@ -66,13 +66,6 @@ class Core extends Module {
 
 
 
-    ifu.io.br_flg := exu.io.br_flg
-    ifu.io.jmp_flg := exu.io.jmp_flg
-    ifu.io.br_target := exu.io.br_target
-    ifu.io.alu_out := exu.io.alu_out
-    ifu.io.csr_mtvec := csr.io.csr_mtvec
-    ifu.io.csr_mepc := csr.io.csr_mepc
-    // csr.io.csr_reg_pc := ifu.io.csr_reg_pc//modified by ypc
     
     idu.io.gpr_rs1_data := gpr.io.gpr_rs1_data
     idu.io.gpr_rs2_data := gpr.io.gpr_rs2_data
@@ -259,18 +252,36 @@ class Core extends Module {
     csr.io.csr_reg_pc := wbu.io_pipe.in.bits.ls2wb_reg_pc//pipe line irq
     csr.io.csr_irq_num := wbu.io.irq_num
 
-    ifu.io.is_mret := idu.io.is_mret
+    val is_mret_rise = idu.io.is_mret & ~RegNext(idu.io.is_mret)
+    ifu.io_hazard.is_mret_rise := is_mret_rise
+    val is_mret_r = RegInit(false.B)
+    is_mret_r := Mux(is_mret_rise, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_mret_r))
 
-    val exu_out_valid_rise = exu.io_pipe.out.valid & ~RegNext(exu.io_pipe.out.valid)
-    val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc)) && exu_out_valid_rise
+    val is_ctrl_hazard = ((exu.io.br_flg && exu.io.br_target =/= ifu.io_pipe.out.bits.if2id_reg_pc) || (exu.io.jmp_flg && exu.io.alu_out =/= ifu.io_pipe.out.bits.if2id_reg_pc)) && exu.io_pipe.out.valid
     dontTouch(is_ctrl_hazard)
 
+    val is_ctrl_hazard_r = RegInit(false.B)
+    val is_irq_r = RegInit(false.B)
+    is_ctrl_hazard_r := Mux(is_ctrl_hazard, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_ctrl_hazard_r))
+    is_irq_r := Mux(is_irq, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_irq_r))
 
     ifu.io_hazard.flush_flg := is_ctrl_hazard | is_irq
     idu.io_hazard.flush_flg := is_ctrl_hazard | is_irq
-    exu.io_hazard.flush_flg := is_ctrl_hazard | is_irq
+    exu.io_hazard.flush_flg := is_irq
     lsu.io_hazard.flush_flg := is_irq
     wbu.io_hazard.flush_flg := is_irq
+
+    //ifu next pc process
+    val sel_br = exu.io.br_flg
+    val sel_jmp = exu.io.jmp_flg
+    val sel_mret = idu.io.is_mret
+    val pc_next_normal = Mux1H(Seq(
+        sel_br   -> exu.io.br_target,
+        sel_jmp  -> exu.io.alu_out,
+        sel_mret -> csr.io.csr_mepc
+    ))
+    val pc_real_next = Mux(is_irq_r, csr.io.csr_mtvec, Mux(is_ctrl_hazard_r | is_mret_r, pc_next_normal, ifu.io_hazard.pc_plus4))
+    ifu.io_hazard.pc_real_next := pc_real_next
 
 
     when(ifu.io_hazard.flush_flg){ifu.io_pipe.in.valid := false.B}

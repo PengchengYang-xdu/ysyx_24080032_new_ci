@@ -7,7 +7,7 @@ PRJ_PATH ?= .
 DESIGN ?= NPC
 SDC_FILE ?= $(PRJ_PATH)/syn/sdc/NPC.sdc
 RTL_FILES ?= $(shell find $(PRJ_PATH)/vsrc -name "*.sv" -or -name "*.v")
-export CLK_FREQ_MHZ ?= 450
+export CLK_FREQ_MHZ ?= 500
 
 RESULT_DIR = $(PRJ_PATH)/syn/result/$(DESIGN)-$(CLK_FREQ_MHZ)MHz
 SCRIPT_DIR = $(PRJ_PATH)/syn/scripts
@@ -45,8 +45,10 @@ GEN_NPC:
 TRUNC:
 	@bash ./trunc.sh $(RESULT_DIR) $(DESIGN) $(PRJ_PATH)
 
+clean:
+	@rm -rf $(PRJ_PATH)/syn/result/*
 
-ppa: GEN_NPC COPY_FILE $(TIMING_RPT)
+ppa: clean GEN_NPC COPY_FILE $(TIMING_RPT)
 $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_FIXED_V)
 	$(PRJ_PATH)/syn/bin/iEDA -script $^ $(DESIGN) 2>&1 | tee $(RESULT_DIR)/sta.log
 	@make TRUNC

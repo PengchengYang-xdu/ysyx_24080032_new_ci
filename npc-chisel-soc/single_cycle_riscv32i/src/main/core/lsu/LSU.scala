@@ -57,33 +57,13 @@ class LSU extends Module {
     val isS = ~notLS & (io_pipe.in.bits.exe2ls_mem_wen === MEN_S)
     val isL = ~notLS & (io_pipe.in.bits.exe2ls_mem_wen === MEN_X)
 
-    //delay
-    val lfsr = RegInit(LSU_DELAY)
-    lfsr := Cat(lfsr(2,0), lfsr(0)^lfsr(1)^lfsr(2))
-    val delay = RegInit(lfsr)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    val is_flush = io_hazard.flush_flg
 
     //handshake between modules
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
     io_pipe.in.ready := in_ready
-    io_pipe.out.valid := out_valid & ~io_hazard.flush_flg
+    io_pipe.out.valid := out_valid & ~is_flush
 
     val araddr = RegInit(0.U)
     val arvalid = RegInit(false.B)
@@ -117,22 +97,35 @@ class LSU extends Module {
     val AXI_RorB_fire = (io.dmem.rvalid & rready) | (io.dmem.bvalid & bready)
 
     //flush states
-    val RB_while_flush = AXI_RorB_fire & io_hazard.flush_flg
-    val flush_before_RB = ~AXI_RorB_fire & io_hazard.flush_flg
-    val fetch_normal = AXI_RorB_fire & ~io_hazard.flush_flg
+    val RB_while_flush = AXI_RorB_fire & is_flush
+    val flush_before_RB = ~AXI_RorB_fire & is_flush
+    val fetch_normal = AXI_RorB_fire & ~is_flush
 
     c_state := n_state//first phase
 
     n_state := MuxLookup(c_state, s_BeforePreFire)(Seq(//second phase
-        s_BeforePreFire             ->  Mux(io_pipe.in.fire & ~io_hazard.flush_flg, Mux(notLS, s_AfterPreFire, s_BeforeAXI_ARorAWW_Fire), s_BeforePreFire),
+        s_BeforePreFire             ->  Mux(io_pipe.in.fire & ~is_flush, Mux(notLS, s_AfterPreFire, s_BeforeAXI_ARorAWW_Fire), s_BeforePreFire),
         s_BeforeAXI_ARorAWW_Fire    ->  Mux(AXI_ARorAWW_fire, s_BeforeAXI_RorB_Fire, s_BeforeAXI_ARorAWW_Fire),
         s_BeforeAXI_RorB_Fire       ->  Mux(fetch_normal, s_AfterPreFire, Mux(flush_before_RB, s_Flush, Mux(RB_while_flush, s_BeforePreFire, s_BeforeAXI_RorB_Fire))),
-        s_AfterPreFire              ->  Mux(io_hazard.flush_flg | io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire),
+        s_AfterPreFire              ->  Mux(is_flush | io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire),
         s_Flush                     ->  Mux(AXI_RorB_fire, s_BeforePreFire, s_Flush)
     ))
 
     val dmem_rdata = RegInit(0.U)//保存一下读出的数据
     dmem_rdata := Mux(n_state === s_AfterPreFire, io.dmem.rdata, dmem_rdata)
+
+    val arsize_func = MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
+        MEM_OP_1S  ->  0.U,
+        MEM_OP_1U  ->  0.U,
+        MEM_OP_2S  ->  1.U,
+        MEM_OP_2U  ->  1.U,
+        MEM_OP_4   ->  2.U
+    ))
+    val awsize_func = MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
+        MEM_OP_1S  ->  0.U,
+        MEM_OP_2S  ->  1.U,
+        MEM_OP_4   ->  2.U
+    ))
 
     switch(n_state){//third phase
         is(s_BeforePreFire){
@@ -147,65 +140,19 @@ class LSU extends Module {
             bready := false.B
             arsize := 2.U
             awsize := 2.U
-            //delay
-            if(ENABLE_DELAY){
-                delay := lfsr
-            }
         }
         is(s_BeforeAXI_ARorAWW_Fire){
             //between modules
             in_ready := false.B
             out_valid := false.B
             //AXI
-            if(ENABLE_DELAY){
-                when(delay === 0.U){
-                    arvalid := Mux(isL, true.B, false.B)
-                    arsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                        MEM_OP_1S  ->  0.U,
-                        MEM_OP_1U  ->  0.U,
-                        MEM_OP_2S  ->  1.U,
-                        MEM_OP_2U  ->  1.U,
-                        MEM_OP_4   ->  2.U
-                    ))
-                    rready := false.B
-                    awvalid := Mux(isS, true.B, false.B)
-                    awsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                        MEM_OP_1S  ->  0.U,
-                        MEM_OP_2S  ->  1.U,
-                        MEM_OP_4   ->  2.U
-                    ))
-                    wvalid := Mux(isS, true.B, false.B)
-                    bready := false.B
-                }.otherwise{
-                    arvalid := false.B
-                    rready := false.B
-                    awvalid := false.B
-                    wvalid := false.B
-                    bready := false.B
-                    arsize := 2.U
-                    awsize := 2.U
-                    //delay
-                    delay := delay - 1.U
-                }
-            } else {
-                arvalid := Mux(isL, true.B, false.B)
-                arsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                    MEM_OP_1S  ->  0.U,
-                    MEM_OP_1U  ->  0.U,
-                    MEM_OP_2S  ->  1.U,
-                    MEM_OP_2U  ->  1.U,
-                    MEM_OP_4   ->  2.U
-                ))
-                rready := false.B
-                awvalid := Mux(isS, true.B, false.B)
-                awsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                    MEM_OP_1S  ->  0.U,
-                    MEM_OP_2S  ->  1.U,
-                    MEM_OP_4   ->  2.U
-                ))
-                wvalid := Mux(isS, true.B, false.B)
-                bready := false.B
-            }
+            arvalid := isL
+            arsize := arsize_func
+            rready := false.B
+            awvalid := isS
+            awsize := awsize_func
+            wvalid := isS
+            bready := false.B
         }
         is(s_BeforeAXI_RorB_Fire){
             //between modules
@@ -213,22 +160,12 @@ class LSU extends Module {
             out_valid := false.B
             //AXI
             arvalid := false.B
-            arsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                MEM_OP_1S  ->  0.U,
-                MEM_OP_1U  ->  0.U,
-                MEM_OP_2S  ->  1.U,
-                MEM_OP_2U  ->  1.U,
-                MEM_OP_4   ->  2.U
-            ))
-            rready := Mux(isL, true.B, false.B)
+            arsize := arsize_func
+            rready := isL
             awvalid := false.B
-            awsize := MuxLookup(io_pipe.in.bits.exe2ls_mem_op, 2.U)(Seq(
-                MEM_OP_1S  ->  0.U,
-                MEM_OP_2S  ->  1.U,
-                MEM_OP_4   ->  2.U
-            ))
+            awsize := awsize_func
             wvalid := false.B
-            bready := Mux(isS, true.B, false.B)
+            bready := isS
         }
         is(s_AfterPreFire){
             //between modules
@@ -277,7 +214,7 @@ class LSU extends Module {
     val csr_wdata =  MuxCase(0.U(WORD_LEN.W), Seq(
         (io_pipe.in.bits.exe2ls_csr_cmd === CSR_W) -> io_pipe.in.bits.exe2ls_op1_data,
         (io_pipe.in.bits.exe2ls_csr_cmd === CSR_S) -> (io_pipe.in.bits.exe2ls_csr_rdata | io_pipe.in.bits.exe2ls_op1_data),
-        (io_pipe.in.bits.exe2ls_csr_cmd === CSR_C) -> (io_pipe.in.bits.exe2ls_csr_rdata & ~io_pipe.in.bits.exe2ls_op1_data),
+        // (io_pipe.in.bits.exe2ls_csr_cmd === CSR_C) -> (io_pipe.in.bits.exe2ls_csr_rdata & ~io_pipe.in.bits.exe2ls_op1_data),
         (io_pipe.in.bits.exe2ls_csr_cmd === CSR_E) -> 11.U(WORD_LEN.W)
     ))
 

@@ -1,6 +1,4 @@
-gpr_16x32.sv
 GPR.sv
-csr_6x32.sv
 CSR.sv
 IFU.sv
 extern_modules.sv
@@ -10,7 +8,7 @@ LSU.sv
 WBU.sv
 iCache.sv
 Core.sv
-Xbar.sv
+Xbar_new.sv
+Clint.sv
 NPC.sv
 ./Ebreak.sv
-./Clint.sv

@@ -20,7 +20,8 @@ class GPR extends Module {
     val io = IO(new GPRIO)
 
     // val gpr = Mem(32, UInt(WORD_LEN.W))
-    val gpr = Mem(16, UInt(WORD_LEN.W))
+    val gpr = RegInit(VecInit(Seq.fill(16)(0.U(WORD_LEN.W))))
+    // val gpr = Mem(16, UInt(WORD_LEN.W))
 
     io.gpr_rs1_data := Mux((io.gpr_rs1_addr =/= 0.U(ADDR_LEN.W)), gpr(io.gpr_rs1_addr), 0.U(WORD_LEN.W))
     io.gpr_rs2_data := Mux((io.gpr_rs2_addr =/= 0.U(ADDR_LEN.W)), gpr(io.gpr_rs2_addr), 0.U(WORD_LEN.W))

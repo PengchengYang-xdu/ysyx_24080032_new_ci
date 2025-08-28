@@ -141,3 +141,57 @@ class AXI4WithoutClk extends Bundle{
     val bid = Output(UInt(4.W))
 }
 
+
+object AXI4Connector {
+    def connectAR(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+        master.araddr   := slave.araddr
+        master.arvalid  := slave.arvalid
+        master.arid     := slave.arid
+        master.arlen    := slave.arlen
+        master.arsize   := slave.arsize
+        master.arburst  := slave.arburst
+        slave.arready   := master.arready
+    }
+    // Connect Read Data Channel (R)
+    def connectR(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+      slave.rdata    := master.rdata
+      slave.rresp    := master.rresp
+      slave.rvalid   := master.rvalid
+      slave.rlast    := master.rlast
+      slave.rid      := master.rid
+      master.rready  := slave.rready
+    }
+    // Connect Write Address Channel (AW)
+    def connectAW(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+      master.awaddr   := slave.awaddr
+      master.awvalid  := slave.awvalid
+      master.awid     := slave.awid
+      master.awlen    := slave.awlen
+      master.awsize   := slave.awsize
+      master.awburst  := slave.awburst
+      slave.awready   := master.awready
+    }
+    // Connect Write Data Channel (W)
+    def connectW(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+      master.wdata    := slave.wdata
+      master.wstrb    := slave.wstrb
+      master.wvalid   := slave.wvalid
+      master.wlast    := slave.wlast
+      slave.wready    := master.wready
+    }
+    // Connect Write Response Channel (B)
+    def connectB(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+      slave.bresp    := master.bresp
+      slave.bvalid   := master.bvalid
+      slave.bid      := master.bid
+      master.bready  := slave.bready
+    }
+    // Connect All Channels
+    def connectAll(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
+      connectAR(slave, master)
+      connectR(slave, master)
+      connectAW(slave, master)
+      connectW(slave, master)
+      connectB(slave, master)
+    }
+}

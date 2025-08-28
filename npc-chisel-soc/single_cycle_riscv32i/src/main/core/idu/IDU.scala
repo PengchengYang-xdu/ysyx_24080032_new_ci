@@ -29,18 +29,22 @@ class IDUIO extends Bundle {
 
 class IDUIO_pipe_out extends Bundle{
     val id2exe_reg_pc = Output(UInt(WORD_LEN.W))
-    val id2exe_op1_data = Output(UInt(WORD_LEN.W))
-    val id2exe_op2_data = Output(UInt(WORD_LEN.W))
+    // val id2exe_op1_data = Output(UInt(WORD_LEN.W))
+    // val id2exe_op2_data = Output(UInt(WORD_LEN.W))
+    val id2exe_op1_sel = Output(UInt(OP1_LEN.W))
+    val id2exe_op2_sel = Output(UInt(OP2_LEN.W))
+    val id2exe_rs1_data = Output(UInt(WORD_LEN.W))
     val id2exe_rs2_data = Output(UInt(WORD_LEN.W))
     val id2exe_wb_addr = Output(UInt(ADDR_LEN.W))
     val id2exe_rf_wen = Output(UInt(REN_LEN.W))
     val id2exe_exe_fun = Output(UInt(EXE_FUN_LEN.W))
     val id2exe_wb_sel = Output(UInt(WB_SEL_LEN.W))
-    val id2exe_imm_i_sext = Output(UInt(WORD_LEN.W))
-    val id2exe_imm_s_sext = Output(UInt(WORD_LEN.W))
-    val id2exe_imm_b_sext = Output(UInt(WORD_LEN.W))
-    val id2exe_imm_u_shifted = Output(UInt(WORD_LEN.W))
-    val id2exe_imm_z_uext = Output(UInt(WORD_LEN.W))
+    val id2exe_imm_sext = Output(UInt(WORD_LEN.W))
+    // val id2exe_imm_i_sext = Output(UInt(WORD_LEN.W))
+    // val id2exe_imm_s_sext = Output(UInt(WORD_LEN.W))
+    // val id2exe_imm_b_sext = Output(UInt(WORD_LEN.W))
+    // val id2exe_imm_u_shifted = Output(UInt(WORD_LEN.W))
+    // val id2exe_imm_z_uext = Output(UInt(WORD_LEN.W))
     val id2exe_csr_addr = Output(UInt(CSR_ADDR_LEN.W))
     val id2exe_csr_cmd = Output(UInt(CSR_LEN.W))
     val id2exe_mem_wen = Output(UInt(MEN_LEN.W))
@@ -110,74 +114,82 @@ class IDU extends Module {
     val imm_z_uext = Cat(Fill(27, 0.U), imm_z)
 
     val csignals = ListLookup(inst,
-                        List(ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+                        List(IMM_TYPE_X, ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
         Array(
-            LW       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SW       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            LB       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            LH       -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            LBU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            LHU      -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SB       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SH       -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            LW       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SW       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            LB       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            LH       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            LBU      -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            LHU      -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SB       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SH       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
 
-            ADD      -> List(ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            ADDI     -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SUB      -> List(ALU_SUB  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            AND      -> List(ALU_AND  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            OR       -> List(ALU_OR   , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            XOR      -> List(ALU_XOR  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            ANDI     -> List(ALU_AND  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            ORI      -> List(ALU_OR   , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            XORI     -> List(ALU_XOR  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLL      -> List(ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SRL      -> List(ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SRA      -> List(ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLLI     -> List(ALU_SLL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SRLI     -> List(ALU_SRL  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SRAI     -> List(ALU_SRA  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLT      -> List(ALU_SLT  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLTU     -> List(ALU_SLTU , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLTI     -> List(ALU_SLT  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLTIU    -> List(ALU_SLTU , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            BEQ      -> List(BR_BEQ   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            BNE      -> List(BR_BNE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            BGE      -> List(BR_BGE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            BGEU     -> List(BR_BGEU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            BLT      -> List(BR_BLT   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            BLTU     -> List(BR_BLTU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            JAL      -> List(ALU_ADD  , OP1_PC , OP2_IMJ, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            JALR     -> List(ALU_JALR , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            LUI      -> List(ALU_ADD  , OP1_X  , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            AUIPC    -> List(ALU_ADD  , OP1_PC , OP2_IMU, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            CSRRW    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            CSRRWI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            CSRRS    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            CSRRSI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            CSRRC    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_IS_READ, RS2_NO_READ),
-            CSRRCI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            ECALL    -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_E, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            MRET     -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_M, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),//modified by ypc
-            EBREAK   -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            FENCEI   -> List(ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , IS_FENCEI, RS1_NO_READ, RS2_NO_READ)
+            ADD      -> List(IMM_TYPE_X, ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            ADDI     -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SUB      -> List(IMM_TYPE_X, ALU_SUB  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            AND      -> List(IMM_TYPE_X, ALU_AND  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            OR       -> List(IMM_TYPE_X, ALU_OR   , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            XOR      -> List(IMM_TYPE_X, ALU_XOR  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            ANDI     -> List(IMM_TYPE_I, ALU_AND  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            ORI      -> List(IMM_TYPE_I, ALU_OR   , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            XORI     -> List(IMM_TYPE_I, ALU_XOR  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SLL      -> List(IMM_TYPE_X, ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SRL      -> List(IMM_TYPE_X, ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SRA      -> List(IMM_TYPE_X, ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SLLI     -> List(IMM_TYPE_I, ALU_SLL  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SRLI     -> List(IMM_TYPE_I, ALU_SRL  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SRAI     -> List(IMM_TYPE_I, ALU_SRA  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SLT      -> List(IMM_TYPE_X, ALU_SLT  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SLTU     -> List(IMM_TYPE_X, ALU_SLTU , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            SLTI     -> List(IMM_TYPE_I, ALU_SLT  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            SLTIU    -> List(IMM_TYPE_I, ALU_SLTU , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            BEQ      -> List(IMM_TYPE_B, BR_BEQ   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            BNE      -> List(IMM_TYPE_B, BR_BNE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            BGE      -> List(IMM_TYPE_B, BR_BGE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            BGEU     -> List(IMM_TYPE_B, BR_BGEU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            BLT      -> List(IMM_TYPE_B, BR_BLT   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            BLTU     -> List(IMM_TYPE_B, BR_BLTU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
+            JAL      -> List(IMM_TYPE_J, ALU_ADD  , OP1_PC , OP2_IMM, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+            JALR     -> List(IMM_TYPE_I, ALU_JALR , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            LUI      -> List(IMM_TYPE_U, ALU_ADD  , OP1_X  , OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+            AUIPC    -> List(IMM_TYPE_U, ALU_ADD  , OP1_PC , OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+            CSRRW    -> List(IMM_TYPE_X, ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            // CSRRWI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
+            CSRRS    -> List(IMM_TYPE_X, ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
+            // CSRRSI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
+            // CSRRC    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_IS_READ, RS2_NO_READ),
+            // CSRRCI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
+            ECALL    -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_E, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+            MRET     -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_M, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),//modified by ypc
+            EBREAK   -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
+            FENCEI   -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , IS_FENCEI, RS1_NO_READ, RS2_NO_READ)
         )
     )
 
-    val exe_fun :: op1_sel :: op2_sel :: mem_wen :: rf_wen :: wb_sel :: csr_cmd :: mem_op :: is_fencei :: rs1_is_read :: rs2_is_read :: Nil = csignals
+    val imm_type :: exe_fun :: op1_sel :: op2_sel :: mem_wen :: rf_wen :: wb_sel :: csr_cmd :: mem_op :: is_fencei :: rs1_is_read :: rs2_is_read :: Nil = csignals
     
-    val op1_data = MuxCase(0.U(WORD_LEN.W), Seq(
-        (op1_sel === OP1_RS1)  ->  rs1_data,
-        (op1_sel === OP1_PC)   ->  reg_pc,
-        (op1_sel === OP1_IMZ)  ->  imm_z_uext
+    val imm_sext = MuxCase(0.U(WORD_LEN.W), Seq(
+        (imm_type === IMM_TYPE_I)  ->  imm_i_sext,
+        (imm_type === IMM_TYPE_S)  ->  imm_s_sext,
+        (imm_type === IMM_TYPE_J)  ->  imm_j_sext,
+        (imm_type === IMM_TYPE_U)  ->  imm_u_shifted,
+        (imm_type === IMM_TYPE_B)  ->  imm_b_sext
     ))
 
-    val op2_data = MuxCase(0.U(WORD_LEN.W), Seq(
-        (op2_sel === OP2_RS2)  ->  rs2_data,
-        (op2_sel === OP2_IMI)  ->  imm_i_sext,
-        (op2_sel === OP2_IMS)  ->  imm_s_sext,
-        (op2_sel === OP2_IMJ)  ->  imm_j_sext,
-        (op2_sel === OP2_IMU)  ->  imm_u_shifted
-    ))
+    // val op1_data = MuxCase(0.U(WORD_LEN.W), Seq(
+    //     (op1_sel === OP1_RS1)  ->  rs1_data,
+    //     (op1_sel === OP1_PC)   ->  reg_pc
+    //     // (op1_sel === OP1_IMZ)  ->  imm_z_uext
+    // ))
+
+    // val op2_data = MuxCase(0.U(WORD_LEN.W), Seq(
+    //     (op2_sel === OP2_RS2)  ->  rs2_data,
+    //     (op2_sel === OP2_IMI)  ->  imm_i_sext,
+    //     (op2_sel === OP2_IMS)  ->  imm_s_sext,
+    //     (op2_sel === OP2_IMJ)  ->  imm_j_sext,
+    //     (op2_sel === OP2_IMU)  ->  imm_u_shifted
+    // ))
 
     val csr_addr = Mux(csr_cmd === CSR_E, 0x342.U(CSR_ADDR_LEN.W), inst(31,20))
     val csr_raddr = inst(31,20)
@@ -193,18 +205,22 @@ class IDU extends Module {
 
 
     io_pipe.out.bits.id2exe_reg_pc := reg_pc
-    io_pipe.out.bits.id2exe_op1_data := op1_data
-    io_pipe.out.bits.id2exe_op2_data := op2_data
+    // io_pipe.out.bits.id2exe_op1_data := op1_data
+    // io_pipe.out.bits.id2exe_op2_data := op2_data
+    io_pipe.out.bits.id2exe_op1_sel := op1_sel
+    io_pipe.out.bits.id2exe_op2_sel := op2_sel
     io_pipe.out.bits.id2exe_rs2_data := rs2_data
+    io_pipe.out.bits.id2exe_rs1_data := rs1_data
     io_pipe.out.bits.id2exe_wb_addr := wb_addr
     io_pipe.out.bits.id2exe_rf_wen := rf_wen
     io_pipe.out.bits.id2exe_exe_fun := exe_fun
     io_pipe.out.bits.id2exe_wb_sel := wb_sel
-    io_pipe.out.bits.id2exe_imm_i_sext := imm_i_sext
-    io_pipe.out.bits.id2exe_imm_s_sext := imm_s_sext
-    io_pipe.out.bits.id2exe_imm_b_sext := imm_b_sext
-    io_pipe.out.bits.id2exe_imm_u_shifted := imm_u_shifted
-    io_pipe.out.bits.id2exe_imm_z_uext := imm_z_uext
+    io_pipe.out.bits.id2exe_imm_sext := imm_sext
+    // io_pipe.out.bits.id2exe_imm_i_sext := imm_i_sext
+    // io_pipe.out.bits.id2exe_imm_s_sext := imm_s_sext
+    // io_pipe.out.bits.id2exe_imm_b_sext := imm_b_sext
+    // io_pipe.out.bits.id2exe_imm_u_shifted := imm_u_shifted
+    // io_pipe.out.bits.id2exe_imm_z_uext := imm_z_uext
     io_pipe.out.bits.id2exe_csr_addr := csr_addr
     io_pipe.out.bits.id2exe_csr_cmd := csr_cmd
     io_pipe.out.bits.id2exe_mem_wen := mem_wen
