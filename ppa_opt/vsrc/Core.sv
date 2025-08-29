@@ -257,6 +257,7 @@ module Core(	// @[src/main/core/Core.scala:23:7]
      | _idu_io_gpr_rs2_is_read & (|_idu_io_gpr_rs2_addr) & _lsu_raw_rs2_T)
     & lsu_is_working & lsu_io_pipe_in_bits_r_exe2ls_rf_wen == 2'h1
     & lsu_raw_stage_left_valid_r;	// @[src/main/core/Core.scala:30:21, :121:48, :132:132, :133:132, :336:33, :340:48, :345:31, :346:31, :350:41, :351:{39,65,97,146}]
+  wire        _rs2_resolved_T_3 = wbu_io_pipe_in_bits_r_ls2wb_rf_wen == 2'h1;	// @[src/main/core/Core.scala:132:132, :134:130, :336:33]
   reg         wbu_raw_stage_left_valid_r;	// @[src/main/core/Core.scala:350:41]
   wire        _wbu_raw_rs1_T =
     _idu_io_gpr_rs1_addr == wbu_io_pipe_in_bits_r_ls2wb_wb_addr;	// @[src/main/core/Core.scala:30:21, :336:33, :340:48]
@@ -265,8 +266,7 @@ module Core(	// @[src/main/core/Core.scala:23:7]
   wire        wbu_raw =
     (_idu_io_gpr_rs1_is_read & (|_idu_io_gpr_rs1_addr) & _wbu_raw_rs1_T
      | _idu_io_gpr_rs2_is_read & (|_idu_io_gpr_rs2_addr) & _wbu_raw_rs2_T)
-    & wbu_is_working & wbu_io_pipe_in_bits_r_ls2wb_rf_wen == 2'h1
-    & wbu_raw_stage_left_valid_r;	// @[src/main/core/Core.scala:30:21, :122:48, :132:132, :134:130, :336:33, :340:48, :345:31, :346:31, :350:41, :351:{39,65,97,146}]
+    & wbu_is_working & _rs2_resolved_T_3 & wbu_raw_stage_left_valid_r;	// @[src/main/core/Core.scala:30:21, :122:48, :134:130, :340:48, :345:31, :346:31, :350:41, :351:{39,65,97,146}]
   wire        is_raw = exu_raw | lsu_raw | wbu_raw;	// @[src/main/core/Core.scala:135:37, :351:146]
   wire        exu_raw_rs1 = exu_raw & _exu_raw_rs1_T;	// @[src/main/core/Core.scala:136:31, :340:48, :351:146]
   wire        exu_raw_rs2 = exu_raw & _exu_raw_rs2_T;	// @[src/main/core/Core.scala:137:31, :340:48, :351:146]
@@ -379,9 +379,11 @@ module Core(	// @[src/main/core/Core.scala:23:7]
               ? lsu_io_pipe_in_bits_r_exe2ls_wb_addr
               : wbu_raw_rs2 ? wbu_io_pipe_in_bits_r_ls2wb_wb_addr : 4'h0;	// @[src/main/core/Core.scala:137:31, :139:31, :141:31, :162:25, :336:33, src/main/scala/chisel3/util/Mux.scala:126:16]
     rs1_resolved_r <=
-      rs1_raw_valid & wbu_end_flg & wbu_io_pipe_in_bits_r_ls2wb_wb_addr == rs1_raw_rd;	// @[src/main/core/Core.scala:124:40, :158:32, :161:25, :196:{53,90}, :199:33, :336:33]
+      rs1_raw_valid & wbu_end_flg & wbu_io_pipe_in_bits_r_ls2wb_wb_addr == rs1_raw_rd
+      & _rs2_resolved_T_3;	// @[src/main/core/Core.scala:124:40, :134:130, :158:32, :161:25, :196:{90,105}, :199:33, :336:33]
     rs2_resolved_r <=
-      rs2_raw_valid & wbu_end_flg & wbu_io_pipe_in_bits_r_ls2wb_wb_addr == rs2_raw_rd;	// @[src/main/core/Core.scala:124:40, :159:32, :162:25, :197:{53,90}, :200:33, :336:33]
+      rs2_raw_valid & wbu_end_flg & wbu_io_pipe_in_bits_r_ls2wb_wb_addr == rs2_raw_rd
+      & _rs2_resolved_T_3;	// @[src/main/core/Core.scala:124:40, :134:130, :159:32, :162:25, :197:{90,105}, :200:33, :336:33]
     is_irq <= _wbu_io_irq_valid & _wbu_io_is_irq;	// @[src/main/core/Core.scala:33:21, :249:{25,43}]
     is_mret_rise_REG <= _idu_io_is_mret;	// @[src/main/core/Core.scala:30:21, :255:49]
     if (reset) begin	// @[src/main/core/Core.scala:23:7]
