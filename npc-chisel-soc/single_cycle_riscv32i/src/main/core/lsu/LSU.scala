@@ -211,6 +211,8 @@ class LSU extends Module {
 
     //main process
     val dmem_rdata_processed = WireDefault(0.U(WORD_LEN.W))
+    dontTouch(dmem_rdata)
+    dontTouch(dmem_rdata_processed)
     val csr_wdata =  MuxCase(0.U(WORD_LEN.W), Seq(
         (io_pipe.in.bits.exe2ls_csr_cmd === CSR_W) -> io_pipe.in.bits.exe2ls_op1_data,
         (io_pipe.in.bits.exe2ls_csr_cmd === CSR_S) -> (io_pipe.in.bits.exe2ls_csr_rdata | io_pipe.in.bits.exe2ls_op1_data),
@@ -223,6 +225,7 @@ class LSU extends Module {
         (io_pipe.in.bits.exe2ls_wb_sel === WB_PC)  -> (io_pipe.in.bits.exe2ls_reg_pc + 4.U(WORD_LEN.W)),
         (io_pipe.in.bits.exe2ls_wb_sel === WB_CSR) -> io_pipe.in.bits.exe2ls_csr_rdata
     ))
+    dontTouch(wb_data)
 
     switch(io_pipe.in.bits.exe2ls_mem_op) {
         is(0.U) {//byte

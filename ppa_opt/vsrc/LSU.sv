@@ -102,7 +102,6 @@ module LSU(	// @[src/main/core/lsu/LSU.scala:40:7]
   input         io_hazard_flush_flg	// @[src/main/core/lsu/LSU.scala:44:23]
 );
 
-  wire [31:0] dmem_rdata_processed;	// @[src/main/core/lsu/LSU.scala:241:43, :243:34]
   reg         in_ready;	// @[src/main/core/lsu/LSU.scala:63:27]
   reg         out_valid;	// @[src/main/core/lsu/LSU.scala:64:28]
   wire        io_pipe_out_valid_0 = out_valid & ~io_hazard_flush_flg;	// @[src/main/core/lsu/LSU.scala:64:28, :66:{36,38}]
@@ -195,10 +194,19 @@ module LSU(	// @[src/main/core/lsu/LSU.scala:40:7]
         casez_tmp_0 = awsize;	// @[src/main/core/lsu/LSU.scala:63:27, :74:25, :130:20, :142:20, :147:23, :153:20, :160:23, :166:20, :172:22, :181:20, :185:22, :194:20]
     endcase	// @[src/main/core/lsu/LSU.scala:63:27, :74:25, :93:30, :130:20, :142:20, :147:23, :153:20, :160:23, :166:20, :172:22, :181:20, :185:22, :194:20]
   end // always_comb
-  wire        _GEN = io_pipe_in_bits_exe2ls_mem_op == 3'h1;	// @[src/main/core/lsu/LSU.scala:40:7, :227:43]
-  wire        _GEN_0 = io_pipe_in_bits_exe2ls_mem_op == 3'h2;	// @[src/main/core/lsu/LSU.scala:40:7, :227:43]
+  wire [31:0] dmem_rdata_processed;	// @[src/main/core/lsu/LSU.scala:213:43]
+  wire [31:0] wb_data =
+    io_pipe_in_bits_exe2ls_wb_sel == 3'h1
+      ? dmem_rdata_processed
+      : io_pipe_in_bits_exe2ls_wb_sel == 3'h2
+          ? io_pipe_in_bits_exe2ls_reg_pc + 32'h4
+          : io_pipe_in_bits_exe2ls_wb_sel == 3'h3
+              ? io_pipe_in_bits_exe2ls_csr_rdata
+              : io_pipe_in_bits_exe2ls_alu_out;	// @[src/main/core/lsu/LSU.scala:40:7, :213:43, :224:40, :225:{40,86}, :226:40, src/main/scala/chisel3/util/Mux.scala:126:16]
+  wire        _GEN = io_pipe_in_bits_exe2ls_mem_op == 3'h1;	// @[src/main/core/lsu/LSU.scala:40:7, :230:43]
+  wire        _GEN_0 = io_pipe_in_bits_exe2ls_mem_op == 3'h2;	// @[src/main/core/lsu/LSU.scala:40:7, :230:43]
   wire [31:0] shift_rdata =
-    dmem_rdata >> {27'h0, io_pipe_in_bits_exe2ls_alu_out[1:0], 3'h0};	// @[src/main/core/lsu/LSU.scala:40:7, :114:29, :240:{34,68}]
+    dmem_rdata >> {27'h0, io_pipe_in_bits_exe2ls_alu_out[1:0], 3'h0};	// @[src/main/core/lsu/LSU.scala:40:7, :114:29, :243:{34,68}]
   assign dmem_rdata_processed =
     (|io_pipe_in_bits_exe2ls_mem_op)
       ? (_GEN
@@ -208,9 +216,9 @@ module LSU(	// @[src/main/core/lsu/LSU.scala:40:7]
                : _arsize_func_T_2
                    ? {24'h0, shift_rdata[7:0]}
                    : _arsize_func_T_6 ? {16'h0, shift_rdata[15:0]} : 32'h0)
-      : {{24{shift_rdata[7]}}, shift_rdata[7:0]};	// @[src/main/core/lsu/LSU.scala:117:68, :213:43, :227:43, :240:34, :241:43, :243:{34,40,45,61,78}, :246:{34,40,45,61,79}, :249:34, :252:{34,40,67}, :255:{34,40,67}]
-  wire        is_laf = io_dmem_rvalid & (|io_dmem_rresp);	// @[src/main/core/lsu/LSU.scala:280:{33,50}]
-  wire        is_saf = io_dmem_bvalid & (|io_dmem_bresp);	// @[src/main/core/lsu/LSU.scala:281:{33,50}]
+      : {{24{shift_rdata[7]}}, shift_rdata[7:0]};	// @[src/main/core/lsu/LSU.scala:117:68, :213:43, :230:43, :243:34, :244:43, :246:{34,40,45,61,78}, :249:{34,40,45,61,79}, :252:34, :255:{34,40,67}, :258:{34,40,67}]
+  wire        is_laf = io_dmem_rvalid & (|io_dmem_rresp);	// @[src/main/core/lsu/LSU.scala:283:{33,50}]
+  wire        is_saf = io_dmem_bvalid & (|io_dmem_bresp);	// @[src/main/core/lsu/LSU.scala:284:{33,50}]
   wire        isS =
     ~(&io_pipe_in_bits_exe2ls_mem_op) & io_pipe_in_bits_exe2ls_mem_wen == 2'h1;	// @[src/main/core/lsu/LSU.scala:56:47, :57:{15,22,56}]
   wire        isL =
@@ -252,15 +260,15 @@ module LSU(	// @[src/main/core/lsu/LSU.scala:40:7]
       awsize <= casez_tmp_0;	// @[src/main/core/lsu/LSU.scala:74:25, :130:20, :142:20]
       wdata <=
         {31'h0, io_pipe_in_bits_exe2ls_rs2_data}
-        << {58'h0, io_pipe_in_bits_exe2ls_alu_out[1:0], 3'h0};	// @[src/main/core/lsu/LSU.scala:40:7, :68:25, :75:24, :240:68, :262:46]
+        << {58'h0, io_pipe_in_bits_exe2ls_alu_out[1:0], 3'h0};	// @[src/main/core/lsu/LSU.scala:40:7, :68:25, :75:24, :243:68, :265:46]
       if (|io_pipe_in_bits_exe2ls_mem_op) begin	// @[src/main/core/lsu/LSU.scala:117:68]
-        if (_GEN)	// @[src/main/core/lsu/LSU.scala:227:43]
-          wstrb <= {2'h0, 5'h3 << io_pipe_in_bits_exe2ls_alu_out[1:0]};	// @[src/main/core/lsu/LSU.scala:58:56, :76:24, :227:43, :232:{19,36,69}]
-        else if (_GEN_0)	// @[src/main/core/lsu/LSU.scala:227:43]
-          wstrb <= 7'hF << io_pipe_in_bits_exe2ls_alu_out[1:0];	// @[src/main/core/lsu/LSU.scala:76:24, :235:{36,69}]
+        if (_GEN)	// @[src/main/core/lsu/LSU.scala:230:43]
+          wstrb <= {2'h0, 5'h3 << io_pipe_in_bits_exe2ls_alu_out[1:0]};	// @[src/main/core/lsu/LSU.scala:58:56, :76:24, :230:43, :235:{19,36,69}]
+        else if (_GEN_0)	// @[src/main/core/lsu/LSU.scala:230:43]
+          wstrb <= 7'hF << io_pipe_in_bits_exe2ls_alu_out[1:0];	// @[src/main/core/lsu/LSU.scala:76:24, :238:{36,69}]
       end
       else	// @[src/main/core/lsu/LSU.scala:117:68]
-        wstrb <= {3'h0, 4'h1 << io_pipe_in_bits_exe2ls_alu_out[1:0]};	// @[src/main/core/lsu/LSU.scala:40:7, :76:24, :227:43, :229:{19,36,69}]
+        wstrb <= {3'h0, 4'h1 << io_pipe_in_bits_exe2ls_alu_out[1:0]};	// @[src/main/core/lsu/LSU.scala:40:7, :76:24, :230:43, :232:{19,36,69}]
       wvalid <= ~_GEN_1 & (_GEN_2 ? isS : ~_GEN_6 & wvalid);	// @[src/main/core/lsu/LSU.scala:57:22, :63:27, :69:26, :77:25, :130:20, :136:21, :139:20, :154:20, :159:22, :162:21, :167:20, :172:22, :175:21, :178:20, :185:22, :188:21, :191:20]
       bready <= ~_GEN_7 & (_GEN_3 ? isS : ~_GEN_4 & (_GEN_5 | bready));	// @[src/main/core/lsu/LSU.scala:57:22, :78:25, :130:20, :137:20, :140:20, :151:20, :155:20, :168:20, :176:20, :179:20, :192:20]
       c_state <= n_state;	// @[src/main/core/lsu/LSU.scala:92:26, :93:30]
@@ -318,24 +326,17 @@ module LSU(	// @[src/main/core/lsu/LSU.scala:40:7]
   assign io_pipe_out_bits_ls2wb_reg_pc = io_pipe_in_bits_exe2ls_reg_pc;	// @[src/main/core/lsu/LSU.scala:40:7]
   assign io_pipe_out_bits_ls2wb_wb_addr = io_pipe_in_bits_exe2ls_wb_addr;	// @[src/main/core/lsu/LSU.scala:40:7]
   assign io_pipe_out_bits_ls2wb_rf_wen = io_pipe_in_bits_exe2ls_rf_wen;	// @[src/main/core/lsu/LSU.scala:40:7]
-  assign io_pipe_out_bits_ls2wb_wb_data =
-    io_pipe_in_bits_exe2ls_wb_sel == 3'h1
-      ? dmem_rdata_processed
-      : io_pipe_in_bits_exe2ls_wb_sel == 3'h2
-          ? io_pipe_in_bits_exe2ls_reg_pc + 32'h4
-          : io_pipe_in_bits_exe2ls_wb_sel == 3'h3
-              ? io_pipe_in_bits_exe2ls_csr_rdata
-              : io_pipe_in_bits_exe2ls_alu_out;	// @[src/main/core/lsu/LSU.scala:40:7, :222:40, :223:{40,86}, :224:40, :241:43, :243:34, src/main/scala/chisel3/util/Mux.scala:126:16]
+  assign io_pipe_out_bits_ls2wb_wb_data = wb_data;	// @[src/main/core/lsu/LSU.scala:40:7, src/main/scala/chisel3/util/Mux.scala:126:16]
   assign io_pipe_out_bits_ls2wb_csr_wdata =
     io_pipe_in_bits_exe2ls_csr_cmd == 3'h1
       ? io_pipe_in_bits_exe2ls_op1_data
       : io_pipe_in_bits_exe2ls_csr_cmd == 3'h2
           ? io_pipe_in_bits_exe2ls_csr_rdata | io_pipe_in_bits_exe2ls_op1_data
-          : io_pipe_in_bits_exe2ls_csr_cmd == 3'h4 ? 32'hB : 32'h0;	// @[src/main/core/lsu/LSU.scala:40:7, :213:43, :215:41, :216:{41,89}, :218:41, src/main/scala/chisel3/util/Mux.scala:126:16]
+          : io_pipe_in_bits_exe2ls_csr_cmd == 3'h4 ? 32'hB : 32'h0;	// @[src/main/core/lsu/LSU.scala:40:7, :213:43, :217:41, :218:{41,89}, :220:41, src/main/scala/chisel3/util/Mux.scala:126:16]
   assign io_pipe_out_bits_ls2wb_csr_addr = io_pipe_in_bits_exe2ls_csr_addr;	// @[src/main/core/lsu/LSU.scala:40:7]
   assign io_pipe_out_bits_ls2wb_csr_cmd = io_pipe_in_bits_exe2ls_csr_cmd;	// @[src/main/core/lsu/LSU.scala:40:7]
-  assign io_pipe_out_bits_ls2wb_is_irq = is_laf | is_saf | io_pipe_in_bits_exe2ls_is_irq;	// @[src/main/core/lsu/LSU.scala:40:7, :280:33, :281:33, :282:54]
+  assign io_pipe_out_bits_ls2wb_is_irq = is_laf | is_saf | io_pipe_in_bits_exe2ls_is_irq;	// @[src/main/core/lsu/LSU.scala:40:7, :283:33, :284:33, :285:54]
   assign io_pipe_out_bits_ls2wb_irq_num =
-    is_laf ? 4'h5 : is_saf ? 4'h7 : io_pipe_in_bits_exe2ls_irq_num;	// @[src/main/core/lsu/LSU.scala:40:7, :280:33, :281:33, :283:{42,67}]
+    is_laf ? 4'h5 : is_saf ? 4'h7 : io_pipe_in_bits_exe2ls_irq_num;	// @[src/main/core/lsu/LSU.scala:40:7, :283:33, :284:33, :286:{42,67}]
 endmodule
 
