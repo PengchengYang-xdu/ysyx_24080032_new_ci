@@ -50,6 +50,7 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
+<<<<<<< HEAD
 module IFU(	// @[src/main/core/ifu/IFU.scala:32:7]
   input         clock,	// @[src/main/core/ifu/IFU.scala:32:7]
                 reset,	// @[src/main/core/ifu/IFU.scala:32:7]
@@ -80,6 +81,39 @@ module IFU(	// @[src/main/core/ifu/IFU.scala:32:7]
   reg         rready;	// @[src/main/core/ifu/IFU.scala:70:25]
   reg  [2:0]  c_state;	// @[src/main/core/ifu/IFU.scala:78:26]
   wire        AXI_R_fire = io_imem_rvalid & rready;	// @[src/main/core/ifu/IFU.scala:70:25, :83:37]
+=======
+module IFU(	// @[src/main/core/ifu/IFU.scala:33:7]
+  input         clock,	// @[src/main/core/ifu/IFU.scala:33:7]
+                reset,	// @[src/main/core/ifu/IFU.scala:33:7]
+  output [31:0] io_imem_araddr,	// @[src/main/core/ifu/IFU.scala:34:16]
+  output        io_imem_arvalid,	// @[src/main/core/ifu/IFU.scala:34:16]
+  input         io_imem_arready,	// @[src/main/core/ifu/IFU.scala:34:16]
+  input  [31:0] io_imem_rdata,	// @[src/main/core/ifu/IFU.scala:34:16]
+  input         io_imem_rvalid,	// @[src/main/core/ifu/IFU.scala:34:16]
+  output        io_imem_rready,	// @[src/main/core/ifu/IFU.scala:34:16]
+                io_pipe_in_ready,	// @[src/main/core/ifu/IFU.scala:35:21]
+  input         io_pipe_in_valid,	// @[src/main/core/ifu/IFU.scala:35:21]
+                io_pipe_out_ready,	// @[src/main/core/ifu/IFU.scala:35:21]
+  output        io_pipe_out_valid,	// @[src/main/core/ifu/IFU.scala:35:21]
+  output [31:0] io_pipe_out_bits_if2id_reg_pc,	// @[src/main/core/ifu/IFU.scala:35:21]
+                io_pipe_out_bits_if2id_inst,	// @[src/main/core/ifu/IFU.scala:35:21]
+  input         io_hazard_flush_flg,	// @[src/main/core/ifu/IFU.scala:40:23]
+  output [31:0] io_hazard_pc_plus4,	// @[src/main/core/ifu/IFU.scala:40:23]
+  input  [31:0] io_hazard_pc_real_next,	// @[src/main/core/ifu/IFU.scala:40:23]
+  input         io_hazard_is_mret_rise,	// @[src/main/core/ifu/IFU.scala:40:23]
+  output [31:0] io_hazard_reg_pc	// @[src/main/core/ifu/IFU.scala:40:23]
+);
+
+  wire [31:0] pc_next = io_hazard_pc_real_next;	// @[src/main/core/ifu/IFU.scala:158:23]
+  wire        is_flush = io_hazard_flush_flg | io_hazard_is_mret_rise;	// @[src/main/core/ifu/IFU.scala:62:40]
+  reg         in_ready;	// @[src/main/core/ifu/IFU.scala:64:27]
+  reg         out_valid;	// @[src/main/core/ifu/IFU.scala:65:28]
+  wire        io_pipe_out_valid_0 = out_valid & ~is_flush;	// @[src/main/core/ifu/IFU.scala:62:40, :65:28, :67:{36,38}]
+  reg         arvalid;	// @[src/main/core/ifu/IFU.scala:70:26]
+  reg         rready;	// @[src/main/core/ifu/IFU.scala:71:25]
+  reg  [2:0]  c_state;	// @[src/main/core/ifu/IFU.scala:79:26]
+  wire        AXI_R_fire = io_imem_rvalid & rready;	// @[src/main/core/ifu/IFU.scala:71:25, :84:37]
+>>>>>>> tracer-ysyx
   wire [2:0]  n_state =
     c_state == 3'h4
       ? {~AXI_R_fire, 2'h0}
@@ -96,6 +130,7 @@ module IFU(	// @[src/main/core/ifu/IFU.scala:32:7]
                        ? (io_hazard_is_mret_rise ? 3'h4 : 3'h2)
                        : 3'h1)
                   : {2'h0,
+<<<<<<< HEAD
                      c_state == 3'h0 & io_pipe_in_valid & io_imem_arready & ~is_flush};	// @[src/main/core/ifu/IFU.scala:32:7, :61:40, :66:{36,38}, :69:26, :78:26, :79:30, :82:31, :83:37, :86:36, :87:{26,38}, :88:35, :95:51, :96:38, :97:{38,55}, :98:{38,72,101}, :99:{38,48}, :100:38, src/main/scala/chisel3/util/Decoupled.scala:51:35]
   reg  [31:0] reg_pc;	// @[src/main/core/ifu/IFU.scala:161:18]
   wire        _GEN = n_state == 3'h0;	// @[src/main/core/ifu/IFU.scala:79:30, :96:38, :103:20]
@@ -161,5 +196,73 @@ module IFU(	// @[src/main/core/ifu/IFU.scala:32:7]
   assign io_pipe_out_bits_if2id_reg_pc = reg_pc;	// @[src/main/core/ifu/IFU.scala:32:7, :161:18]
   assign io_pipe_out_bits_if2id_inst = io_imem_rdata;	// @[src/main/core/ifu/IFU.scala:32:7]
   assign io_hazard_pc_plus4 = reg_pc + 32'h4;	// @[src/main/core/ifu/IFU.scala:32:7, :161:18, :164:27]
+=======
+                     c_state == 3'h0 & io_pipe_in_valid & io_imem_arready & ~is_flush};	// @[src/main/core/ifu/IFU.scala:33:7, :62:40, :67:{36,38}, :70:26, :79:26, :80:30, :83:31, :84:37, :87:36, :88:{26,38}, :89:35, :96:51, :97:38, :98:{38,55}, :99:{38,72,101}, :100:{38,48}, :101:38, src/main/scala/chisel3/util/Decoupled.scala:51:35]
+  reg  [31:0] reg_pc;	// @[src/main/core/ifu/IFU.scala:162:18]
+  wire        _GEN = n_state == 3'h0;	// @[src/main/core/ifu/IFU.scala:80:30, :97:38, :104:20]
+  wire        _GEN_0 = n_state == 3'h1;	// @[src/main/core/ifu/IFU.scala:79:26, :80:30, :104:20]
+  wire        _GEN_1 = n_state == 3'h2;	// @[src/main/core/ifu/IFU.scala:80:30, :98:55, :104:20]
+  wire        _GEN_2 = n_state == 3'h3;	// @[src/main/core/ifu/IFU.scala:80:30, :99:38, :104:20]
+  wire        _GEN_3 = n_state == 3'h4;	// @[src/main/core/ifu/IFU.scala:80:30, :98:55, :104:20]
+  wire        _GEN_4 = _GEN_1 | _GEN_2 | _GEN_3;	// @[src/main/core/ifu/IFU.scala:64:27, :104:20, :123:22, :131:22, :139:22]
+  always @(posedge clock) begin	// @[src/main/core/ifu/IFU.scala:33:7]
+    if (reset) begin	// @[src/main/core/ifu/IFU.scala:33:7]
+      in_ready <= 1'h0;	// @[src/main/core/ifu/IFU.scala:33:7, :64:27]
+      out_valid <= 1'h0;	// @[src/main/core/ifu/IFU.scala:33:7, :65:28]
+      arvalid <= 1'h0;	// @[src/main/core/ifu/IFU.scala:33:7, :70:26]
+      rready <= 1'h0;	// @[src/main/core/ifu/IFU.scala:33:7, :71:25]
+      c_state <= 3'h1;	// @[src/main/core/ifu/IFU.scala:79:26]
+    end
+    else begin	// @[src/main/core/ifu/IFU.scala:33:7]
+      in_ready <= _GEN | ~(_GEN_0 | _GEN_4) & in_ready;	// @[src/main/core/ifu/IFU.scala:64:27, :104:20, :107:22, :115:22, :123:22, :131:22, :139:22]
+      out_valid <= ~(_GEN | _GEN_0 | _GEN_1) & (_GEN_2 | ~_GEN_3 & out_valid);	// @[src/main/core/ifu/IFU.scala:65:28, :104:20, :108:23, :116:23, :124:23, :132:23, :140:23]
+      arvalid <= ~_GEN & (_GEN_0 | ~_GEN_4 & arvalid);	// @[src/main/core/ifu/IFU.scala:64:27, :70:26, :104:20, :110:21, :118:21, :123:22, :126:21, :131:22, :134:21, :139:22, :142:21]
+      rready <= ~(_GEN | _GEN_0) & (_GEN_1 | ~_GEN_2 & (_GEN_3 | rready));	// @[src/main/core/ifu/IFU.scala:71:25, :104:20, :111:20, :119:20, :127:20, :135:20, :143:20]
+      c_state <= n_state;	// @[src/main/core/ifu/IFU.scala:79:26, :80:30]
+    end
+  end // always @(posedge)
+  always @(posedge clock or posedge reset) begin	// @[src/main/core/ifu/IFU.scala:33:7]
+    if (reset)	// @[src/main/core/ifu/IFU.scala:33:7]
+      reg_pc <= 32'h30000000;	// @[src/main/core/ifu/IFU.scala:162:18]
+    else if (io_pipe_in_valid & in_ready)	// @[src/main/core/ifu/IFU.scala:64:27, :162:57]
+      reg_pc <= pc_next;	// @[src/main/core/ifu/IFU.scala:158:23, :162:18]
+  end // always @(posedge, posedge)
+  `ifdef ENABLE_INITIAL_REG_	// @[src/main/core/ifu/IFU.scala:33:7]
+    `ifdef FIRRTL_BEFORE_INITIAL	// @[src/main/core/ifu/IFU.scala:33:7]
+      `FIRRTL_BEFORE_INITIAL	// @[src/main/core/ifu/IFU.scala:33:7]
+    `endif // FIRRTL_BEFORE_INITIAL
+    logic [31:0] _RANDOM[0:1];	// @[src/main/core/ifu/IFU.scala:33:7]
+    initial begin	// @[src/main/core/ifu/IFU.scala:33:7]
+      `ifdef INIT_RANDOM_PROLOG_	// @[src/main/core/ifu/IFU.scala:33:7]
+        `INIT_RANDOM_PROLOG_	// @[src/main/core/ifu/IFU.scala:33:7]
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// @[src/main/core/ifu/IFU.scala:33:7]
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// @[src/main/core/ifu/IFU.scala:33:7]
+        end	// @[src/main/core/ifu/IFU.scala:33:7]
+        in_ready = _RANDOM[1'h0][0];	// @[src/main/core/ifu/IFU.scala:33:7, :64:27]
+        out_valid = _RANDOM[1'h0][1];	// @[src/main/core/ifu/IFU.scala:33:7, :64:27, :65:28]
+        arvalid = _RANDOM[1'h0][2];	// @[src/main/core/ifu/IFU.scala:33:7, :64:27, :70:26]
+        rready = _RANDOM[1'h0][3];	// @[src/main/core/ifu/IFU.scala:33:7, :64:27, :71:25]
+        c_state = _RANDOM[1'h0][6:4];	// @[src/main/core/ifu/IFU.scala:33:7, :64:27, :79:26]
+        reg_pc = {_RANDOM[1'h0][31:7], _RANDOM[1'h1][6:0]};	// @[src/main/core/ifu/IFU.scala:33:7, :64:27, :162:18]
+      `endif // RANDOMIZE_REG_INIT
+      if (reset)	// @[src/main/core/ifu/IFU.scala:33:7]
+        reg_pc = 32'h30000000;	// @[src/main/core/ifu/IFU.scala:162:18]
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// @[src/main/core/ifu/IFU.scala:33:7]
+      `FIRRTL_AFTER_INITIAL	// @[src/main/core/ifu/IFU.scala:33:7]
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_imem_araddr = reg_pc;	// @[src/main/core/ifu/IFU.scala:33:7, :162:18]
+  assign io_imem_arvalid = arvalid;	// @[src/main/core/ifu/IFU.scala:33:7, :70:26]
+  assign io_imem_rready = rready;	// @[src/main/core/ifu/IFU.scala:33:7, :71:25]
+  assign io_pipe_in_ready = in_ready;	// @[src/main/core/ifu/IFU.scala:33:7, :64:27]
+  assign io_pipe_out_valid = io_pipe_out_valid_0;	// @[src/main/core/ifu/IFU.scala:33:7, :67:36]
+  assign io_pipe_out_bits_if2id_reg_pc = reg_pc;	// @[src/main/core/ifu/IFU.scala:33:7, :162:18]
+  assign io_pipe_out_bits_if2id_inst = io_imem_rdata;	// @[src/main/core/ifu/IFU.scala:33:7]
+  assign io_hazard_pc_plus4 = reg_pc + 32'h4;	// @[src/main/core/ifu/IFU.scala:33:7, :162:18, :165:27]
+  assign io_hazard_reg_pc = reg_pc;	// @[src/main/core/ifu/IFU.scala:33:7, :162:18]
+>>>>>>> tracer-ysyx
 endmodule
 

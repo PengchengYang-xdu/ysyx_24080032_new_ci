@@ -12,6 +12,10 @@ class IFUIO_HAZARD extends Bundle {
     val pc_plus4 = Output(UInt(WORD_LEN.W))
     val pc_real_next = Input(UInt(WORD_LEN.W))
     val is_mret_rise = Input(Bool())
+<<<<<<< HEAD
+=======
+    val reg_pc = Output(UInt(WORD_LEN.W))
+>>>>>>> tracer-ysyx
 }
 
 
@@ -168,6 +172,10 @@ class IFU extends Module {
     
     //connect
     araddr := reg_pc
+<<<<<<< HEAD
+=======
+    io_hazard.reg_pc := reg_pc
+>>>>>>> tracer-ysyx
 
     io_pipe.out.bits.if2id_reg_pc := reg_pc
     io_pipe.out.bits.if2id_inst := io.imem.rdata

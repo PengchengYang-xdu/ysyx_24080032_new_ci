@@ -176,7 +176,11 @@ run: $(BIN)
 
 PERF_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/perf/perf.md
 SAVE_MD = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/records/perf_$(shell date +%Y%m%d_%H%M%S).md
+<<<<<<< HEAD
 EXPLAIN = 任务进度:流水线简易实现完成 并且优化了一遍面积 在跑一次性能评估(这一次之前两次保存的perf数据无效, 没跑完成)
+=======
+EXPLAIN = 任务进度:流水线所有东西基本完成 还剩fencei 转发做掉了 跑通了cputest rtt microbench test (之前那次的9月1号perf没用 difftest trigger了) 现在debug完成了 再跑一次
+>>>>>>> tracer-ysyx
 
 perf: checkout run save_perf
 

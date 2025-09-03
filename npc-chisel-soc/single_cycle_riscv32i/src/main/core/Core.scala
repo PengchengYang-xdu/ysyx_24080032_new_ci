@@ -199,10 +199,17 @@ class Core extends Module {
     val wbu_rs2_rawing_raw = (wbu_rs2_rawing || wbu_raw_rs2)
 
 
+<<<<<<< HEAD
     val exu_can_forward_rs1 = exu_rs1_rawing_raw && (exu.io_pipe.in.bits.id2exe_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs1_addr))
     val exu_can_forward_rs2 = exu_rs2_rawing_raw && (exu.io_pipe.in.bits.id2exe_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs2_addr))
     val lsu_can_forward_rs1 = lsu_rs1_rawing_raw && (lsu.io_pipe.in.bits.exe2ls_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs1_addr))//两种情况：第一种、普通的lsu raw用=/= WB_MEM可以转发。第二种、load-use raw用lsu.io.dmem.rvalid可以转发
     val lsu_can_forward_rs2 = lsu_rs2_rawing_raw && (lsu.io_pipe.in.bits.exe2ls_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs2_addr))
+=======
+    val exu_can_forward_rs1 = exu_rs1_rawing_raw && (exu.io_pipe.in.bits.id2exe_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs1_addr && lsu.io_pipe.out.bits.ls2wb_rf_wen === REN_S))
+    val exu_can_forward_rs2 = exu_rs2_rawing_raw && (exu.io_pipe.in.bits.id2exe_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs2_addr && lsu.io_pipe.out.bits.ls2wb_rf_wen === REN_S))
+    val lsu_can_forward_rs1 = lsu_rs1_rawing_raw && (lsu.io_pipe.in.bits.exe2ls_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs1_addr && lsu.io_pipe.out.bits.ls2wb_rf_wen === REN_S))//两种情况：第一种、普通的lsu raw用=/= WB_MEM可以转发。第二种、load-use raw用lsu.io.dmem.rvalid可以转发
+    val lsu_can_forward_rs2 = lsu_rs2_rawing_raw && (lsu.io_pipe.in.bits.exe2ls_wb_sel =/= WB_MEM || (lsu.io_pipe.out.fire && lsu.io_pipe.out.bits.ls2wb_wb_addr === idu.io.gpr_rs2_addr && lsu.io_pipe.out.bits.ls2wb_rf_wen === REN_S))
+>>>>>>> tracer-ysyx
     val wbu_can_forward_rs1 = wbu_rs1_rawing_raw
     val wbu_can_forward_rs2 = wbu_rs2_rawing_raw
     val exu_forward_data = MuxLookup(exu.io_pipe.in.bits.id2exe_wb_sel, 0.U)(Seq(
@@ -328,7 +335,15 @@ class Core extends Module {
     is_ctrl_hazard_r := Mux(is_ctrl_hazard, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_ctrl_hazard_r))
     is_irq_r := Mux(is_irq, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_irq_r))
 
+<<<<<<< HEAD
     ifu.io_hazard.flush_flg := is_ctrl_hazard | is_irq
+=======
+    val is_fencei = icache.fencei_io_vr.is_fencei_io.fire
+    val is_fencei_r = RegInit(false.B)
+    is_fencei_r := Mux(is_fencei, true.B, Mux(ifu.io_pipe.in.ready & ifu.io_pipe.in.valid, false.B, is_fencei_r))
+
+    ifu.io_hazard.flush_flg := is_ctrl_hazard | is_irq | is_fencei
+>>>>>>> tracer-ysyx
     idu.io_hazard.flush_flg := is_ctrl_hazard | is_irq
     exu.io_hazard.flush_flg := is_irq
     lsu.io_hazard.flush_flg := is_irq
@@ -343,7 +358,11 @@ class Core extends Module {
         sel_jmp  -> exu.io.alu_out,
         sel_mret -> csr.io.csr_mepc
     ))
+<<<<<<< HEAD
     val pc_real_next = Mux(is_irq_r, csr.io.csr_mtvec, Mux(is_ctrl_hazard_r | is_mret_r, pc_next_normal, ifu.io_hazard.pc_plus4))
+=======
+    val pc_real_next = Mux(is_irq_r, csr.io.csr_mtvec, Mux(is_ctrl_hazard_r | is_mret_r, pc_next_normal, Mux(is_fencei_r, ifu.io_hazard.reg_pc, ifu.io_hazard.pc_plus4)))
+>>>>>>> tracer-ysyx
     ifu.io_hazard.pc_real_next := pc_real_next
 
 
