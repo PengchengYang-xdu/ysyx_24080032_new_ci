@@ -83,25 +83,15 @@ class IDU extends Module {
 
 
     //registers
-<<<<<<< HEAD
-    val inst_r = RegEnable(io_pipe.in.bits.if2id_inst, 0.U, io_pipe.in.valid & io_pipe.in.ready)
-    val reg_pc_r = RegEnable(io_pipe.in.bits.if2id_reg_pc, 0.U, io_pipe.in.valid & io_pipe.in.ready)
-=======
     // val inst_r = RegEnable(io_pipe.in.bits.if2id_inst, 0.U, io_pipe.in.valid & io_pipe.in.ready)
     // val reg_pc_r = RegEnable(io_pipe.in.bits.if2id_reg_pc, 0.U, io_pipe.in.valid & io_pipe.in.ready)
->>>>>>> tracer-ysyx
 
 
 
 
     //main process
-<<<<<<< HEAD
-    val inst = inst_r
-    val reg_pc = reg_pc_r
-=======
     val inst = io_pipe.in.bits.if2id_inst
     val reg_pc = io_pipe.in.bits.if2id_reg_pc
->>>>>>> tracer-ysyx
     
     val rs1_addr = inst(19, 15)
     val rs2_addr = inst(24, 20)
@@ -126,27 +116,15 @@ class IDU extends Module {
     val csignals = ListLookup(inst,
                         List(IMM_TYPE_X, ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
         Array(
-<<<<<<< HEAD
-            LW       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SW       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-=======
             //-------------------------------------------------------------------------------------------------------------------------------------------------
             //[[LOAD/STORE指令]]-------------------------------------------------------------------------------------------------------------------------------
             //-------------------------------------------------------------------------------------------------------------------------------------------------
             //LOAD: src1 = rs1, src2 = imm, addr = rs1 + imm, 从内存读数据, 写回rd (2 来源[rs1, imm])
             LW       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
->>>>>>> tracer-ysyx
             LB       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
             LH       -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
             LBU      -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_1U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
             LHU      -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_MEM, CSR_X, MEM_OP_2U, NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-<<<<<<< HEAD
-            SB       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SH       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_2S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-
-            ADD      -> List(IMM_TYPE_X, ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            ADDI     -> List(IMM_TYPE_I, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-=======
             //STORE: src1 = rs1, src2 = imm, addr = rs1 + imm, 把rs2写回内存 (3 来源[rs1, rs2, imm])
             SW       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_4 , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             SB       -> List(IMM_TYPE_S, ALU_ADD  , OP1_RS1, OP2_IMM, MEN_S, REN_X, WB_X  , CSR_X, MEM_OP_1S, NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
@@ -157,26 +135,10 @@ class IDU extends Module {
             //-------------------------------------------------------------------------------------------------------------------------------------------------
             //R型算术指令: src1 = rs1, src2 = rs2, 写回rd (2 来源[rs1, rs2])
             ADD      -> List(IMM_TYPE_X, ALU_ADD  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
->>>>>>> tracer-ysyx
             SUB      -> List(IMM_TYPE_X, ALU_SUB  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             AND      -> List(IMM_TYPE_X, ALU_AND  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             OR       -> List(IMM_TYPE_X, ALU_OR   , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             XOR      -> List(IMM_TYPE_X, ALU_XOR  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-<<<<<<< HEAD
-            ANDI     -> List(IMM_TYPE_I, ALU_AND  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            ORI      -> List(IMM_TYPE_I, ALU_OR   , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            XORI     -> List(IMM_TYPE_I, ALU_XOR  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLL      -> List(IMM_TYPE_X, ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SRL      -> List(IMM_TYPE_X, ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SRA      -> List(IMM_TYPE_X, ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLLI     -> List(IMM_TYPE_I, ALU_SLL  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SRLI     -> List(IMM_TYPE_I, ALU_SRL  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SRAI     -> List(IMM_TYPE_I, ALU_SRA  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLT      -> List(IMM_TYPE_X, ALU_SLT  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLTU     -> List(IMM_TYPE_X, ALU_SLTU , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-            SLTI     -> List(IMM_TYPE_I, ALU_SLT  , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            SLTIU    -> List(IMM_TYPE_I, ALU_SLTU , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-=======
             SLL      -> List(IMM_TYPE_X, ALU_SLL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             SRL      -> List(IMM_TYPE_X, ALU_SRL  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             SRA      -> List(IMM_TYPE_X, ALU_SRA  , OP1_RS1, OP2_RS2, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
@@ -197,27 +159,12 @@ class IDU extends Module {
             //[[分支跳转指令]]----------------------------------------------------------------------------------------------------------------------------------
             //-------------------------------------------------------------------------------------------------------------------------------------------------
             //Branch指令: src1 = rs1, src2 = rs2, 比较两者, 满足则跳target = pc + imm (4 来源[rs1, rs2, imm, pc])
->>>>>>> tracer-ysyx
             BEQ      -> List(IMM_TYPE_B, BR_BEQ   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             BNE      -> List(IMM_TYPE_B, BR_BNE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             BGE      -> List(IMM_TYPE_B, BR_BGE   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             BGEU     -> List(IMM_TYPE_B, BR_BGEU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             BLT      -> List(IMM_TYPE_B, BR_BLT   , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
             BLTU     -> List(IMM_TYPE_B, BR_BLTU  , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_IS_READ),
-<<<<<<< HEAD
-            JAL      -> List(IMM_TYPE_J, ALU_ADD  , OP1_PC , OP2_IMM, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            JALR     -> List(IMM_TYPE_I, ALU_JALR , OP1_RS1, OP2_IMM, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            LUI      -> List(IMM_TYPE_U, ALU_ADD  , OP1_X  , OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            AUIPC    -> List(IMM_TYPE_U, ALU_ADD  , OP1_PC , OP2_IMM, MEN_X, REN_S, WB_ALU, CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            CSRRW    -> List(IMM_TYPE_X, ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            // CSRRWI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_W, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            CSRRS    -> List(IMM_TYPE_X, ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI, RS1_IS_READ, RS2_NO_READ),
-            // CSRRSI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_S, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            // CSRRC    -> List(ALU_COPY1, OP1_RS1, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_IS_READ, RS2_NO_READ),
-            // CSRRCI   -> List(ALU_COPY1, OP1_IMZ, OP2_X  , MEN_X, REN_S, WB_CSR, CSR_C, MEM_OP_X , NO_FENCEI,         RS1_NO_READ, RS2_NO_READ),
-            ECALL    -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_E, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
-            MRET     -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_M, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),//modified by ypc
-=======
             //JAL指令: src1 = pc, src2 = imm, 跳target = pc + imm, 写回rd = pc + 4 (2 来源[imm, pc])
             JAL      -> List(IMM_TYPE_J, ALU_ADD  , OP1_PC , OP2_IMM, MEN_X, REN_S, WB_PC , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
             //JALR指令: src1 = rs1, src2 = imm, 跳target = rs1 + imm, 写回rd = pc + 4 (2 来源[rs1, imm])
@@ -247,7 +194,6 @@ class IDU extends Module {
 
 
             //其他指令
->>>>>>> tracer-ysyx
             EBREAK   -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , NO_FENCEI, RS1_NO_READ, RS2_NO_READ),
             FENCEI   -> List(IMM_TYPE_X, ALU_X    , OP1_X  , OP2_X  , MEN_X, REN_X, WB_X  , CSR_X, MEM_OP_X , IS_FENCEI, RS1_NO_READ, RS2_NO_READ)
         )
@@ -263,22 +209,6 @@ class IDU extends Module {
         (imm_type === IMM_TYPE_B)  ->  imm_b_sext
     ))
 
-<<<<<<< HEAD
-    // val op1_data = MuxCase(0.U(WORD_LEN.W), Seq(
-    //     (op1_sel === OP1_RS1)  ->  rs1_data,
-    //     (op1_sel === OP1_PC)   ->  reg_pc
-    //     // (op1_sel === OP1_IMZ)  ->  imm_z_uext
-    // ))
-
-    // val op2_data = MuxCase(0.U(WORD_LEN.W), Seq(
-    //     (op2_sel === OP2_RS2)  ->  rs2_data,
-    //     (op2_sel === OP2_IMI)  ->  imm_i_sext,
-    //     (op2_sel === OP2_IMS)  ->  imm_s_sext,
-    //     (op2_sel === OP2_IMJ)  ->  imm_j_sext,
-    //     (op2_sel === OP2_IMU)  ->  imm_u_shifted
-    // ))
-=======
->>>>>>> tracer-ysyx
 
     val csr_addr = Mux(csr_cmd === CSR_E, 0x342.U(CSR_ADDR_LEN.W), inst(31,20))
     val csr_raddr = inst(31,20)
@@ -293,29 +223,6 @@ class IDU extends Module {
     io.gpr_rs2_is_read := rs2_is_read
 
 
-<<<<<<< HEAD
-    io_pipe.out.bits.id2exe_reg_pc := reg_pc
-    // io_pipe.out.bits.id2exe_op1_data := op1_data
-    // io_pipe.out.bits.id2exe_op2_data := op2_data
-    io_pipe.out.bits.id2exe_op1_sel := op1_sel
-    io_pipe.out.bits.id2exe_op2_sel := op2_sel
-    io_pipe.out.bits.id2exe_rs2_data := rs2_data
-    io_pipe.out.bits.id2exe_rs1_data := rs1_data
-    io_pipe.out.bits.id2exe_wb_addr := wb_addr
-    io_pipe.out.bits.id2exe_rf_wen := rf_wen
-    io_pipe.out.bits.id2exe_exe_fun := exe_fun
-    io_pipe.out.bits.id2exe_wb_sel := wb_sel
-    io_pipe.out.bits.id2exe_imm_sext := imm_sext
-    // io_pipe.out.bits.id2exe_imm_i_sext := imm_i_sext
-    // io_pipe.out.bits.id2exe_imm_s_sext := imm_s_sext
-    // io_pipe.out.bits.id2exe_imm_b_sext := imm_b_sext
-    // io_pipe.out.bits.id2exe_imm_u_shifted := imm_u_shifted
-    // io_pipe.out.bits.id2exe_imm_z_uext := imm_z_uext
-    io_pipe.out.bits.id2exe_csr_addr := csr_addr
-    io_pipe.out.bits.id2exe_csr_cmd := csr_cmd
-    io_pipe.out.bits.id2exe_mem_wen := mem_wen
-    io_pipe.out.bits.id2exe_mem_op := mem_op
-=======
     io_pipe.out.bits.id2exe_reg_pc := reg_pc//32  must
     io_pipe.out.bits.id2exe_op1_sel := op1_sel//2
     io_pipe.out.bits.id2exe_op2_sel := op2_sel//2
@@ -330,7 +237,6 @@ class IDU extends Module {
     io_pipe.out.bits.id2exe_csr_cmd := csr_cmd//3
     io_pipe.out.bits.id2exe_mem_wen := mem_wen//2
     io_pipe.out.bits.id2exe_mem_op := mem_op//3
->>>>>>> tracer-ysyx
 
     io_pipe.out.bits.id2exe_csr_rdata := io.csr_rdata
 
