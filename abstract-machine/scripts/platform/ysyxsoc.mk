@@ -10,7 +10,7 @@ AM_SRCS := riscv/ysyxsoc/start.S \
 \
 		   riscv/ysyxsoc/bootloader.c \
 		   riscv/ysyxsoc/gpu.c \
-		   
+
 
 CFLAGS    += -fdata-sections -ffunction-sections
 LDFLAGS   += -T $(AM_HOME)/scripts/linkerysyxsoc.ld \
@@ -55,4 +55,3 @@ run: image
 
 perf:
 	$(MAKE) -C $(NPC_CHISEL_SOC_HOME)/single_cycle_riscv32i perf ARGS="$(NPCFLAGS)" IMG=$(IMAGE).bin
-	

@@ -3,43 +3,88 @@ package npc.core.ifu
 import chisel3._
 import chisel3.util._
 import npc.common.Config._
+import npc.common._
 import npc.common.Instructions._
 import npc.core.wbu._
+import npc.core.exu._
 import npc.bus.axi._
 
-class IFUIO_HAZARD extends Bundle {
-    val flush_flg = Input(Bool())
-    val pc_plus4 = Output(UInt(WORD_LEN.W))
-    val pc_real_next = Input(UInt(WORD_LEN.W))
-    val is_mret_rise = Input(Bool())
-    val reg_pc = Output(UInt(WORD_LEN.W))
-}
-
-
+/*
+              ___ _____ _   _ _____ ____  ____ ___ ____
+             / _ \_   _| | | | ____|  _ \/ ___|_ _/ ___|
+            | | | || | | |_| |  _| | |_) \___ \| | |  _
+            | |_| || | |  _  | |___|  _ < ___) | | |_| |
+             \___/ |_| |_| |_|_____|_| \_\____/___\____|
+*/
 class IFUIO extends Bundle {
     val imem = Flipped(new AXI4WithoutClk)
 }
-
+class FLUSHIO extends Bundle{
+    val flush_flg = Output(Bool())//control hazard flush for idu isu
+}
+/*
+             ____ ___ ____  _____ ____ ___ ____
+            |  _ \_ _|  _ \| ____/ ___|_ _/ ___|
+            | |_) | || |_) |  _| \___ \| | |  _
+            |  __/| ||  __/| |___ ___) | | |_| |
+            |_|  |___|_|   |_____|____/___\____|
+*/
+class IFUIO_pipe_in extends Bundle{
+}
 class IFUIO_pipe_out extends Bundle{
     val if2id_reg_pc = Output(UInt(WORD_LEN.W)) //pipe
     val if2id_inst = Output(UInt(WORD_LEN.W)) //pipe
 }
-
-class IFUIO_pipe extends Bundle {
-    val in = Flipped(Decoupled(new WBUIO_pipe_out))
+class IFUIO_pipe extends Bundle{
+    val in = Flipped(Decoupled(new IFUIO_pipe_in))
     val out = Decoupled(new IFUIO_pipe_out)
 }
-
+/*
+             ___ _____ _   _
+            |_ _|  ___| | | |
+             | || |_  | | | |
+             | ||  _| | |_| |
+            |___|_|    \___/
+*/
 class IFU extends Module {
     val io = IO(new IFUIO)
     val io_pipe = IO(new IFUIO_pipe)
+    val io_bj = IO(Flipped(new EXU_BJIO))
+    val io_flush = IO(new FLUSHIO)
 
     dontTouch(io_pipe)
 
+    //main process
+    val pc_next = Wire(UInt(WORD_LEN.W))
+    dontTouch(pc_next)
 
-    val io_hazard = IO(new IFUIO_HAZARD)
+    val reg_pc = withReset(reset.asAsyncReset){
+        RegEnable(pc_next, START_ADDR, io_pipe.out.fire || io_bj.valid)
+    }
+
+    val pc_plus4 = reg_pc + 4.U(WORD_LEN.W)
+
+    pc_next := Mux(io_bj.valid, io_bj.target, pc_plus4)
+
+    io_pipe.out.bits.if2id_reg_pc := reg_pc
+    io_pipe.out.bits.if2id_inst := io.imem.rdata
+
+    //flush
+    io_flush.flush_flg := io_bj.valid
+    val flush_flg = io_bj.valid && (io_bj.target =/= reg_pc)
+
+    //connect
+    io.imem.araddr := Mux(flush_flg, io_bj.target, reg_pc)
 
 
+
+/*
+             _   _    _    _   _ ____  ____  _   _    _    _  _______
+            | | | |  / \  | \ | |  _ \/ ___|| | | |  / \  | |/ / ____|
+            | |_| | / _ \ |  \| | | | \___ \| |_| | / _ \ | ' /|  _|
+            |  _  |/ ___ \| |\  | |_| |___) |  _  |/ ___ \| . \| |___
+            |_| |_/_/   \_\_| \_|____/|____/|_| |_/_/   \_\_|\_\_____|
+*/
     //disable AW W B and something in AR R
     io.imem.arid := 0.U
     io.imem.arlen := 0.U
@@ -56,24 +101,17 @@ class IFU extends Module {
     io.imem.wlast := false.B
     io.imem.bready := false.B
 
-
-    val is_mret_rise = io_hazard.is_mret_rise
-
-    val is_flush = io_hazard.flush_flg | is_mret_rise
     //handshake between modules && handshake between Imem
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
     io_pipe.in.ready := in_ready
-    io_pipe.out.valid := out_valid & ~is_flush
+    io_pipe.out.valid := out_valid && ~flush_flg
 
-    val araddr = Wire(UInt(WORD_LEN.W))
     val arvalid = RegInit(false.B)
     val rready = RegInit(false.B)
-    io.imem.araddr := araddr
     io.imem.arvalid := arvalid
     io.imem.rready := rready
     io.imem.arsize := 2.U
-
 
     val s_BeforePreFire :: s_BeforeAXI_AR_Fire :: s_BeforeAXI_R_Fire :: s_AfterPreFire :: s_Flush :: Nil = Enum(5)
     val c_state = RegInit(s_BeforeAXI_AR_Fire)
@@ -83,23 +121,21 @@ class IFU extends Module {
     val AXI_AR_fire = arvalid & io.imem.arready
     val AXI_R_fire = io.imem.rvalid & rready
 
-    //flush states
-    val R_while_flush = AXI_R_fire & is_flush
-    val flush_before_R = ~AXI_R_fire & is_flush
-    val fetch_normal = AXI_R_fire & ~is_flush
+    val start =  io_pipe.in.valid && io.imem.arready && ~flush_flg//only work at in.valid and imem ready and not flush
 
-    // val start = io_pipe.in.fire//this is the multi cycle version, change it auto fetch to fit 5 pipelines
-    val start =  io_pipe.in.valid && io.imem.arready && ~is_flush
+    val R_while_flush = AXI_R_fire & flush_flg
+    val flush_before_R = ~AXI_R_fire & flush_flg
+    val fetch_normal = AXI_R_fire & ~flush_flg
 
     c_state := n_state//first phase
 
     n_state := MuxLookup(c_state, s_BeforePreFire)(Seq(//second phase
         s_BeforePreFire       ->  Mux(start, s_BeforeAXI_AR_Fire, s_BeforePreFire),
-        s_BeforeAXI_AR_Fire   ->  Mux(AXI_AR_fire, Mux(is_mret_rise, s_Flush, s_BeforeAXI_R_Fire), s_BeforeAXI_AR_Fire),
+        s_BeforeAXI_AR_Fire   ->  Mux(AXI_AR_fire, s_BeforeAXI_R_Fire, s_BeforeAXI_AR_Fire),
         s_BeforeAXI_R_Fire    ->  Mux(fetch_normal, s_AfterPreFire, Mux(flush_before_R, s_Flush, Mux(R_while_flush, s_BeforePreFire, s_BeforeAXI_R_Fire))),
-        s_AfterPreFire        ->  Mux(is_flush | io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire),
+        s_AfterPreFire        ->  Mux(io_pipe.out.fire || flush_flg, s_BeforePreFire, s_AfterPreFire),
         s_Flush               ->  Mux(AXI_R_fire, s_BeforePreFire, s_Flush)
-    ))//发起的请求必须等取到这次取指之后，再冲刷
+    ))
 
     switch(n_state){//third phase
         is(s_BeforePreFire){
@@ -143,35 +179,5 @@ class IFU extends Module {
             rready := true.B
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-    //main process
-    val pc_next = Wire(UInt(WORD_LEN.W))
-    dontTouch(pc_next)
-    
-    val reg_pc = withReset(reset.asAsyncReset){
-        RegEnable(pc_next, START_ADDR, io_pipe.in.valid & io_pipe.in.ready)
-    }
-
-    val pc_plus4 = reg_pc + 4.U(WORD_LEN.W)
-    io_hazard.pc_plus4 := pc_plus4
-
-    pc_next := io_hazard.pc_real_next
-    
-    //connect
-    araddr := reg_pc
-    io_hazard.reg_pc := reg_pc
-
-    io_pipe.out.bits.if2id_reg_pc := reg_pc
-    io_pipe.out.bits.if2id_inst := io.imem.rdata
 }
 

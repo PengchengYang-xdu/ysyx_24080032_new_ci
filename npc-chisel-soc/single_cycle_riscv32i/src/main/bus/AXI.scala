@@ -3,63 +3,6 @@ package npc.bus.axi
 import chisel3._
 import chisel3.util._
 import npc.common.Config._
-import npc.common.Instructions._
-
-// class AXI_lite extends Bundle{
-//   //slave
-//   //clk and rst
-//   val clk = Input(Clock())
-//   val rst = Input(Reset())
-//   //AR
-//   val araddr = Input(UInt(WORD_LEN.W))
-//   val arvalid = Input(Bool())
-//   val arready = Output(Bool())
-//   //R
-//   val rdata = Output(UInt(WORD_LEN.W))
-//   val rresp = Output(UInt(2.W))
-//   val rvalid = Output(Bool())
-//   val rready = Input(Bool())
-//   //AW
-//   val awaddr = Input(UInt(WORD_LEN.W))
-//   val awvalid = Input(Bool())
-//   val awready = Output(Bool())
-//   //W
-//   val wdata = Input(UInt(WORD_LEN.W))
-//   val wstrb = Input(UInt(4.W))
-//   val wvalid = Input(Bool())
-//   val wready = Output(Bool())
-//   //B
-//   val bresp = Output(UInt(2.W))
-//   val bvalid = Output(Bool())
-//   val bready = Input(Bool())
-// }
-
-
-// class AXI_liteWithoutClk extends Bundle{
-//   //slave
-//   //AR
-//   val araddr = Input(UInt(WORD_LEN.W))
-//   val arvalid = Input(Bool())
-//   val arready = Output(Bool())
-//   //R
-//   val rdata = Output(UInt(WORD_LEN.W))
-//   val rresp = Output(UInt(2.W))
-//   val rvalid = Output(Bool())
-//   val rready = Input(Bool())
-//   //AW
-//   val awaddr = Input(UInt(WORD_LEN.W))
-//   val awvalid = Input(Bool())
-//   val awready = Output(Bool())
-//   //W
-//   val wdata = Input(UInt(WORD_LEN.W))
-//   val wstrb = Input(UInt(4.W))
-//   val wvalid = Input(Bool())
-//   val wready = Output(Bool())
-//   //B
-//   val bresp = Output(UInt(2.W))
-//   val bvalid = Output(Bool())
-//   val bready = Input(Bool())
-// }
 
 class AXI4 extends Bundle{
   //slave
@@ -154,44 +97,44 @@ object AXI4Connector {
     }
     // Connect Read Data Channel (R)
     def connectR(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
-      slave.rdata    := master.rdata
-      slave.rresp    := master.rresp
-      slave.rvalid   := master.rvalid
-      slave.rlast    := master.rlast
-      slave.rid      := master.rid
-      master.rready  := slave.rready
+        slave.rdata    := master.rdata
+        slave.rresp    := master.rresp
+        slave.rvalid   := master.rvalid
+        slave.rlast    := master.rlast
+        slave.rid      := master.rid
+        master.rready  := slave.rready
     }
     // Connect Write Address Channel (AW)
     def connectAW(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
-      master.awaddr   := slave.awaddr
-      master.awvalid  := slave.awvalid
-      master.awid     := slave.awid
-      master.awlen    := slave.awlen
-      master.awsize   := slave.awsize
-      master.awburst  := slave.awburst
-      slave.awready   := master.awready
+        master.awaddr   := slave.awaddr
+        master.awvalid  := slave.awvalid
+        master.awid     := slave.awid
+        master.awlen    := slave.awlen
+        master.awsize   := slave.awsize
+        master.awburst  := slave.awburst
+        slave.awready   := master.awready
     }
     // Connect Write Data Channel (W)
     def connectW(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
-      master.wdata    := slave.wdata
-      master.wstrb    := slave.wstrb
-      master.wvalid   := slave.wvalid
-      master.wlast    := slave.wlast
-      slave.wready    := master.wready
+        master.wdata    := slave.wdata
+        master.wstrb    := slave.wstrb
+        master.wvalid   := slave.wvalid
+        master.wlast    := slave.wlast
+        slave.wready    := master.wready
     }
     // Connect Write Response Channel (B)
     def connectB(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
-      slave.bresp    := master.bresp
-      slave.bvalid   := master.bvalid
-      slave.bid      := master.bid
-      master.bready  := slave.bready
+        slave.bresp    := master.bresp
+        slave.bvalid   := master.bvalid
+        slave.bid      := master.bid
+        master.bready  := slave.bready
     }
     // Connect All Channels
     def connectAll(slave: AXI4WithoutClk, master: AXI4WithoutClk): Unit = {
-      connectAR(slave, master)
-      connectR(slave, master)
-      connectAW(slave, master)
-      connectW(slave, master)
-      connectB(slave, master)
+        connectAR(slave, master)
+        connectR(slave, master)
+        connectAW(slave, master)
+        connectW(slave, master)
+        connectB(slave, master)
     }
 }

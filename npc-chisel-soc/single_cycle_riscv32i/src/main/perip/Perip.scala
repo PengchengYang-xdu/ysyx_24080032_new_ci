@@ -3,36 +3,17 @@ package npc.perip
 import chisel3._
 import chisel3.util._
 import npc.common.Config._
+import npc.common._
 import npc.common.Instructions._
 import npc.bus.axi._
-
-
-// class Mem extends BlackBox with HasBlackBoxPath{
-//     val io = IO(new AXI_lite)
-//     addPath("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/src/main/perip/Mem.sv")
-// }
-
-// class Uart extends BlackBox with HasBlackBoxPath{
-//     val io = IO(new AXI_lite)
-//     addPath("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/src/main/perip/Uart.sv")
-// }
-
-// class Clint extends BlackBox with HasBlackBoxPath{
-//     val io = IO(new Bundle {
-//         val clk = Input(Clock())
-//         val rst = Input(Reset())
-//         val axi4 = new AXI4WithoutClk
-//   })
-//     addPath("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/src/main/perip/Clint.sv")
-// }
 
 class Clint extends Module {
     val io = IO(new Bundle {
         val clk = Input(Clock())
-        val rst = Input(Reset()) 
+        val rst = Input(Reset())
         val axi4 = new AXI4WithoutClk // 保持与外部接口一致
     })
-    
+
     io.axi4.awready := false.B
     io.axi4.wready := false.B
     io.axi4.bvalid := false.B

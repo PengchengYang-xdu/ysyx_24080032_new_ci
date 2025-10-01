@@ -3,155 +3,141 @@ package npc.core.exu
 import chisel3._
 import chisel3.util._
 import npc.common.Config._
+import npc.common._
 import npc.common.Instructions._
-import npc.core.idu._
-
-
-class EXUIO_HAZARD extends Bundle {
-    val flush_flg = Input(Bool())
-}
-
-
+import npc.bus.axi._
+import npc.core.isu._
+import npc.core.difftest._
+/*
+              ___ _____ _   _ _____ ____  ____ ___ ____
+             / _ \_   _| | | | ____|  _ \/ ___|_ _/ ___|
+            | | | || | | |_| |  _| | |_) \___ \| | |  _
+            | |_| || | |  _  | |___|  _ < ___) | | |_| |
+             \___/ |_| |_| |_|_____|_| \_\____/___\____|
+*/
 class EXUIO extends Bundle {
-    val br_flg = Output(Bool())
-    val jmp_flg = Output(Bool())
-    val br_target = Output(UInt(WORD_LEN.W))
-    val alu_out = Output(UInt(WORD_LEN.W))
+    val dmem = Flipped(new AXI4WithoutClk)
 }
-
+class EXU_BJIO extends Bundle {
+    val valid = Output(Bool())
+    val target = Output(UInt(WORD_LEN.W))
+}
+class EXUIO_FOR extends Bundle {
+    val valid = Output(Bool())
+    val processunit = Output(UInt(ProcessUnit.ProcessUnit_Width.W))
+    val gpr_we = Output(Bool())
+    val gpr_wdata = Output(UInt(WORD_LEN.W))
+    val gpr_waddr = Output(UInt(ADDR_LEN.W))
+}
+/*
+             ____ ___ ____  _____ ____ ___ ____
+            |  _ \_ _|  _ \| ____/ ___|_ _/ ___|
+            | |_) | || |_) |  _| \___ \| | |  _
+            |  __/| ||  __/| |___ ___) | | |_| |
+            |_|  |___|_|   |_____|____/___\____|
+*/
 class EXUIO_pipe_out extends Bundle{
-    val exe2ls_reg_pc = Output(UInt(WORD_LEN.W))
-    val exe2ls_op1_data = Output(UInt(WORD_LEN.W))
-    val exe2ls_rs2_data = Output(UInt(WORD_LEN.W))
-    val exe2ls_wb_addr = Output(UInt(ADDR_LEN.W))
-    val exe2ls_alu_out = Output(UInt(WORD_LEN.W))
-    val exe2ls_rf_wen = Output(UInt(REN_LEN.W))
-    val exe2ls_wb_sel = Output(UInt(WB_SEL_LEN.W))
-    val exe2ls_csr_addr = Output(UInt(CSR_ADDR_LEN.W))
-    val exe2ls_csr_cmd = Output(UInt(CSR_LEN.W))
-    // val exe2ls_imm_z_uext = Output(UInt(WORD_LEN.W))
-    val exe2ls_mem_wen = Output(UInt(MEN_LEN.W))
-    val exe2ls_mem_op = Output(UInt(MEM_OP.W))
-
-    //irq
-    val exe2ls_is_irq = Output(Bool())
-    val exe2ls_irq_num = Output(UInt(IRQ_NUM_WIDTH.W))
-
-    //csr
-    val exe2ls_csr_rdata = Output(UInt(WORD_LEN.W))
+    val exe2wb_gpr_we = Output(Bool())
+    val exe2wb_gpr_wdata = Output(UInt(WORD_LEN.W))
+    val exe2wb_gpr_waddr = Output(UInt(ADDR_LEN.W))
+    val diff = if(DIFFTEST) Some(new DIFFIO) else None
 }
-
 class EXUIO_pipe extends Bundle {
-    val in = Flipped(Decoupled(new IDUIO_pipe_out))
+    val in = Flipped(Decoupled(new ISUIO_pipe_out))
     val out = Decoupled(new EXUIO_pipe_out)
 }
-
+/*
+             _______  ___   _
+            | ____\ \/ / | | |
+            |  _|  \  /| | | |
+            | |___ /  \| |_| |
+            |_____/_/\_\\___/
+*/
 class EXU extends Module {
     val io = IO(new EXUIO)
+    val io_bj = IO(new EXU_BJIO)
     val io_pipe = IO(new EXUIO_pipe)
+    val io_for = IO(new EXUIO_FOR)
+
+    val processunit = io_pipe.in.bits.is2exe_processunit
+    val processtpe = io_pipe.in.bits.is2exe_processtpe
+    val bjtpe = io_pipe.in.bits.is2exe_bjtpe
+    val rfwe = io_pipe.in.bits.is2exe_rfwe
+    val rd_addr = io_pipe.in.bits.is2exe_rd_addr
+    val ch1 = io_pipe.in.bits.is2exe_ch1
+    val ch2 = io_pipe.in.bits.is2exe_ch2
+    val ch3 = io_pipe.in.bits.is2exe_ch3
+/*
+              ____ ____  ____
+             / ___/ ___||  _ \
+            | |   \___ \| |_) |
+            | |___ ___) |  _ <
+             \____|____/|_| \_\
+*/
+    val csr = Module(new CSR)
+    csr.io.in.valid := io_pipe.in.fire && processunit === ProcessUnit.CSR
+    csr.io.in.bits.op1 := ch1
+    csr.io.in.bits.op2 := ch2
+    csr.io.in.bits.processtpe := processtpe
+    csr.io.out.ready := io_pipe.out.ready
+/*
+                _    _    _   _
+               / \  | |  | | | |
+              / _ \ | |  | | | |
+             / ___ \| |__| |_| |
+            /_/   \_\_____\___/
+*/
+    val alu = Module(new ALU)
+    alu.io.in.valid := io_pipe.in.fire && processunit === ProcessUnit.ALU
+    alu.io.in.bits.op1 := ch1
+    alu.io.in.bits.op2 := ch2
+    alu.io.in.bits.processtpe := processtpe
+    alu.io.in.bits.bjtpe := bjtpe
+    alu.io.out.ready := io_pipe.out.ready
+/*
+             _     ____  _   _
+            | |   / ___|| | | |
+            | |   \___ \| | | |
+            | |___ ___) | |_| |
+            |_____|____/ \___/
+*/
+    val lsu = Module(new LSU)
+    lsu.io.in.valid := io_pipe.in.fire && processunit === ProcessUnit.LSU
+    lsu.io.in.bits.op1 := ch3
+    lsu.io.in.bits.op2 := ch2
+    lsu.io.in.bits.processtpe := processtpe
+    lsu.io_dmem.dmem <> io.dmem
+    lsu.io.out.ready := io_pipe.out.ready
 
 
-    val io_hazard = IO(new EXUIO_HAZARD)
+    io_bj.valid := alu.io_bj.valid | csr.io_bj.valid
+    io_bj.target := Mux(alu.io_bj.valid, ch3, Mux(csr.io_bj.valid, csr.io_bj.target, 0.U))
 
-    val is_flush = io_hazard.flush_flg
+    val exefsh = csr.io.out.valid | alu.io.out.valid | lsu.io.out.valid
+    val gpr_wdata = Mux(processunit === ProcessUnit.CSR, csr.io.out.bits.csr_rdata, Mux(processunit === ProcessUnit.LSU, lsu.io.out.bits.gpr_wdata, alu.io.out.bits.alu_out))
 
+    io_pipe.out.bits.exe2wb_gpr_we := rfwe
+    io_pipe.out.bits.exe2wb_gpr_wdata := gpr_wdata
+    io_pipe.out.bits.exe2wb_gpr_waddr := rd_addr
 
+    io_for.valid := exefsh
+    io_for.processunit := processunit
+    io_for.gpr_we := rfwe
+    io_for.gpr_wdata := gpr_wdata
+    io_for.gpr_waddr := rd_addr
 
-
-
-
-
-    val op1_data = MuxCase(0.U(WORD_LEN.W), Seq(
-        (io_pipe.in.bits.id2exe_op1_sel === OP1_RS1)  ->  io_pipe.in.bits.id2exe_rs1_data,
-        (io_pipe.in.bits.id2exe_op1_sel === OP1_PC)   ->  io_pipe.in.bits.id2exe_reg_pc
-        // (op1_sel === OP1_IMZ)  ->  imm_z_uext
-    ))
-
-    val op2_data = Mux(io_pipe.in.bits.id2exe_op2_sel === OP2_RS2, io_pipe.in.bits.id2exe_rs2_data, io_pipe.in.bits.id2exe_imm_sext)
-
-
-
-    val op2_data_inverted = Mux(io_pipe.in.bits.id2exe_exe_fun === ALU_SUB, ~op2_data, op2_data)
-    val adder_func = op1_data + op2_data_inverted + Mux(io_pipe.in.bits.id2exe_exe_fun === ALU_SUB, 1.U, 0.U)
-
-
-    val lts = op1_data.asSInt < op2_data.asSInt
-    val ltu = op1_data < op2_data
-    val eq = op1_data === op2_data
-
-    //main process
-    val alu_out = MuxCase(0.U(WORD_LEN.W), Seq(
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_ADD)   -> (adder_func),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SUB)   -> (adder_func),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_AND)   -> (op1_data & op2_data),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_OR)    -> (op1_data | op2_data),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_XOR)   -> (op1_data ^ op2_data),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SLL)   -> (op1_data << op2_data(4, 0))(31, 0),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SRL)   -> (op1_data >> op2_data(4, 0)).asUInt,
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SRA)   -> (op1_data.asSInt >> op2_data(4, 0)).asUInt,
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SLT)   -> (lts).asUInt,
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_SLTU)  -> (ltu).asUInt,
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_JALR)  -> ((adder_func) & ~1.U(WORD_LEN.W)),
-        (io_pipe.in.bits.id2exe_exe_fun === ALU_COPY1) -> op1_data
-    ))
-
-    val br_flg = MuxCase(false.B, Seq(
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BEQ)    ->  (eq),
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BNE)    -> !(eq),
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BLT)    ->  (lts),
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BGE)    -> !(lts),
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BLTU)   ->  (ltu),
-        (io_pipe.in.bits.id2exe_exe_fun === BR_BGEU)   -> !(ltu)
-    ))
-
-    val br_target = io_pipe.in.bits.id2exe_reg_pc + io_pipe.in.bits.id2exe_imm_sext
-    val jmp_flg = (io_pipe.in.bits.id2exe_wb_sel === WB_PC)
-
-    //connect
-    io.br_flg := br_flg
-    io.jmp_flg := jmp_flg
-    io.br_target := br_target
-    io.alu_out := alu_out
-
-    io_pipe.out.bits.exe2ls_reg_pc := io_pipe.in.bits.id2exe_reg_pc
-    io_pipe.out.bits.exe2ls_op1_data := op1_data
-    io_pipe.out.bits.exe2ls_rs2_data := io_pipe.in.bits.id2exe_rs2_data
-    io_pipe.out.bits.exe2ls_wb_addr := io_pipe.in.bits.id2exe_wb_addr
-    io_pipe.out.bits.exe2ls_alu_out := alu_out
-    io_pipe.out.bits.exe2ls_rf_wen := io_pipe.in.bits.id2exe_rf_wen
-    io_pipe.out.bits.exe2ls_wb_sel := io_pipe.in.bits.id2exe_wb_sel
-    io_pipe.out.bits.exe2ls_csr_addr := io_pipe.in.bits.id2exe_csr_addr
-    io_pipe.out.bits.exe2ls_csr_cmd := io_pipe.in.bits.id2exe_csr_cmd
-    // io_pipe.out.bits.exe2ls_imm_z_uext := io_pipe.in.bits.id2exe_imm_z_uext
-    io_pipe.out.bits.exe2ls_mem_wen := io_pipe.in.bits.id2exe_mem_wen
-    io_pipe.out.bits.exe2ls_mem_op := io_pipe.in.bits.id2exe_mem_op
-
-
-
-    io_pipe.out.bits.exe2ls_csr_rdata := io_pipe.in.bits.id2exe_csr_rdata
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+             _   _    _    _   _ ____  ____  _   _    _    _  _______
+            | | | |  / \  | \ | |  _ \/ ___|| | | |  / \  | |/ / ____|
+            | |_| | / _ \ |  \| | | | \___ \| |_| | / _ \ | ' /|  _|
+            |  _  |/ ___ \| |\  | |_| |___) |  _  |/ ___ \| . \| |___
+            |_| |_/_/   \_\_| \_|____/|____/|_| |_/_/   \_\_|\_\_____|
+*/
     //handshake between modules
     val in_ready = RegInit(false.B)
     val out_valid = RegInit(false.B)
     io_pipe.in.ready := in_ready
-    io_pipe.out.valid := out_valid & ~is_flush
+    io_pipe.out.valid := out_valid
 
     val s_BeforePreFire :: s_AfterPreFire :: Nil = Enum(2)
     val c_state = RegInit(s_BeforePreFire)
@@ -161,26 +147,29 @@ class EXU extends Module {
     c_state := n_state//first phase
 
     n_state := MuxLookup(c_state, s_BeforePreFire)(Seq(//second phase
-        s_BeforePreFire  ->  Mux(io_pipe.in.fire && ~is_flush, s_AfterPreFire, s_BeforePreFire),
-        s_AfterPreFire   ->  Mux(io_pipe.out.fire | is_flush, s_BeforePreFire, s_AfterPreFire)
+        s_BeforePreFire  ->  Mux(io_pipe.in.fire, s_AfterPreFire, s_BeforePreFire),
+        s_AfterPreFire   ->  Mux(io_pipe.out.fire, s_BeforePreFire, s_AfterPreFire)
     ))
 
     switch(n_state){//third phase
         is(s_BeforePreFire){
-            in_ready := true.B
+            in_ready := csr.io.in.ready && alu.io.in.ready && lsu.io.in.ready
             out_valid := false.B
         }
         is(s_AfterPreFire){
             in_ready := false.B
-            out_valid := true.B
+            out_valid := exefsh
         }
     }
 
 
 
 
-    //irq
-    io_pipe.out.bits.exe2ls_is_irq := io_pipe.in.bits.id2exe_is_irq
-    io_pipe.out.bits.exe2ls_irq_num  := io_pipe.in.bits.id2exe_irq_num
+    if(DIFFTEST){
+        io_pipe.out.bits.diff.get.pc := io_pipe.in.bits.diff.get.pc
+        io_pipe.out.bits.diff.get.inst := io_pipe.in.bits.diff.get.inst
+    }
+
+
 }
 

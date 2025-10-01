@@ -82,8 +82,11 @@ bool static checkregs(struct CPU_state *ref_r){
   bool flag = true;
   int i;
   if(first_diff == 0)
-    if(comp_pc != DIFF_PC) flag = false;
+    if(comp_pc != PC) flag = false;
   else;
+
+// 添加一个inst不可能=0的判断，指示取指错误
+  if(INSTR == 0) flag = false;
 
   for(i = 0;i < REAL_REGNUM;i++){
     if(ref_r -> gpr[i] != gpr[i])
@@ -95,7 +98,7 @@ bool static checkregs(struct CPU_state *ref_r){
   }
   if(flag == false){
     printf("ref - pc = 0x%x\n",comp_pc);
-    printf("cpu - pc = 0x%x\n",DIFF_PC);
+    printf("cpu - pc = 0x%x\n",PC);
     for(i = 0;i < REAL_REGNUM;i++){
         printf("ref - %3s = %-#11x", regs[i], ref_r -> gpr[i]);
         printf("       ");
@@ -131,7 +134,7 @@ void difftest_step() {
   ref_pre_pc = ref_r.pc;
 
   is_skip_diff = ref_difftest_skip();
-  
+
   if(is_skip_diff == true){
     is_skip_diff = false;
     int i;
@@ -146,7 +149,7 @@ void difftest_step() {
     ref_difftest_regcpy(&dut_r, DIFFTEST_TO_REF);
     return;
   }
-  
+
 
   if(!checkregs(&ref_r)){
     printf("difftest triggered!\n");

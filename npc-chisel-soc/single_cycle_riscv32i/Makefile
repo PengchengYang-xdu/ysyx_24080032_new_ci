@@ -156,7 +156,7 @@ CFLAGS += -DNPCCONFIG_LIGHTSSS
 
 # if you want to just run the ysyxsoc
 run: $(BIN)
-	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(BIN) $(ARGS) $(IMG) 
+	@LD_LIBRARY_PATH=$(dir $(NEMU_SO)) $(BIN) $(ARGS) $(IMG)
 
 #if you want to run the nvboard
 # CFLAGS += -DNV_BOARD

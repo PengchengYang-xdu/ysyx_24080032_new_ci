@@ -1,6 +1,6 @@
 ################################################################        YOSYS        ################################################################
 SOC_PATH ?= ../npc-chisel-soc/single_cycle_riscv32i/vsrc
-
+CONFIG_FILE = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/src/main/common/Config.scala
 ################################################################        YOSYS        ################################################################
 PRJ_PATH ?= .
 
@@ -48,7 +48,18 @@ TRUNC:
 clean:
 	@rm -rf $(PRJ_PATH)/syn/result/*
 
-ppa: clean GEN_NPC COPY_FILE $(TIMING_RPT)
+# ppa 前关掉 difftest，结束后恢复
+ppa:
+	@echo ">> 关闭 DIFFTEST"
+	@sed -i 's/val DIFFTEST = true/val DIFFTEST = false/' $(CONFIG_FILE)
+	@$(MAKE) clean GEN_NPC COPY_FILE $(TIMING_RPT) || { \
+		echo "出错，恢复 DIFFTEST"; \
+		sed -i 's/val DIFFTEST = false/val DIFFTEST = true/' $(CONFIG_FILE); \
+		exit 1; \
+	}
+	@echo ">> 恢复 DIFFTEST"
+	@sed -i 's/val DIFFTEST = false/val DIFFTEST = true/' $(CONFIG_FILE)
+
 $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_FIXED_V)
 	$(PRJ_PATH)/syn/bin/iEDA -script $^ $(DESIGN) 2>&1 | tee $(RESULT_DIR)/sta.log
 	@make TRUNC

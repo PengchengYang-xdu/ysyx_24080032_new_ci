@@ -1,0 +1,5 @@
+make[1]: 进入目录“/home/yangpengcheng/ysyx/ysyx/ysyx-workbench”
+make[1]: 离开目录“/home/yangpengcheng/ysyx/ysyx/ysyx-workbench”
+mkdir -p ./vsrc
+mill -i playground.runMain Elaborate \
+--split-verilog --target-dir ./vsrc

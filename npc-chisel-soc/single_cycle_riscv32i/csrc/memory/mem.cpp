@@ -182,21 +182,21 @@ extern "C" void sdram_write(int id, int bank_addr, int row_addr, int col_addr, i
 	fflush(stdout);
 	switch (wstrb)
 	{
-	case 0b0001:
+	case 0b0001:{
 		*(uint8_t *)guest_to_host_sdram(addr_processed, id) = wdata;
-		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
-		break;
-    case 0b0010:
+		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		break;}
+    case 0b0010:{
 		*(uint8_t *)(guest_to_host_sdram(addr_processed, id) + 1) = wdata >> 8;
-		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
-		break;
-	case 0b0011:
+		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		break;}
+	case 0b0011:{
 		*(uint16_t *)guest_to_host_sdram(addr_processed, id) = wdata;
-		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
-		break;
-	default:
-        // printf("default : sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
-		break;
+		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		break;}
+	default:{
+        // if(addr_processed == 0xa000023c) printf("default : sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		break;}
 	}
 }
 
@@ -242,7 +242,7 @@ extern "C" int paddr_read(int addr, int is_pc_read) {
         if(addr == RTC_ADDR || addr == RTC_ADDR + 4 || addr == SERIAL_PORT){
             is_skip_diff = true;
             if(addr == RTC_ADDR + 4){
-                timer = get_time(); 
+                timer = get_time();
 		        return (uint32_t)(timer >> 32);
             }
             else if(addr == RTC_ADDR){
