@@ -20,6 +20,8 @@ object Config{
     val CSR_ADDR_LEN = 12
 
     val DIFFTEST = true
+
+    val RENAME = true
 }
 
 object ProcessUnit{

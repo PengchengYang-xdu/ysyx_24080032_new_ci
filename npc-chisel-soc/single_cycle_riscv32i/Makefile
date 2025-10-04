@@ -4,7 +4,8 @@ include /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/Makefile
 ################################################################        VERILATOR        ################################################################
 ################################        SRC        ################################
 TOPNAME = ysyxSoCFull
-VSRC = $(shell find $(abspath ./vsrc) -name "*.sv" -or -name "*.v")
+# VSRC = $(shell find $(abspath ./vsrc) -maxdepth 1 -type f \( -name "*.sv" -o -name "*.v" \))
+VSRC = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/final_rtl/build/ysyx_24080032.sv
 CSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 IMG ?= program.bin #image
 
@@ -37,9 +38,6 @@ $(BIN):  $(CSRC) $(VSRC)
 		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
 
-
-
-
 ################################################################        MILL        ################################################################
 ################################        SRC        ################################
 GEN_DIR = ./vsrc
@@ -50,7 +48,7 @@ MILLFLAG = --split-verilog --target-dir $(GEN_DIR)
 verilog:
 	$(call git_commit, "generate verilog")
 	mkdir -p $(GEN_DIR)
-	mill -i $(PRJ).runMain Elaborate \
+	CHISEL_FIRTOOL_PATH=/home/yangpengcheng/workspace/tools/firtool-1.131.0/bin mill -i $(PRJ).runMain Elaborate \
 	$(MILLFLAG)
 
 # IMG_CHAR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/ysyxSoC/char-test/build/char-test.bin
@@ -99,7 +97,7 @@ $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_FIXED_V)
 clean:
 	-rm -rf $(PRJ_PATH)/syn/result/
 
-.PHONY: init syn fix-fanout sta clean
+.PHONY: init syn fix-fanout sta clean verilog
 
 
 
