@@ -7,6 +7,7 @@ import npc.common._
 import npc.common.Instructions._
 import npc.core.wbu._
 import npc.core.exu._
+import npc.core.icache._
 import npc.bus.axi._
 
 /*
@@ -51,30 +52,33 @@ class IFU extends Module {
     val io_pipe = IO(new IFUIO_pipe)
     val io_bj = IO(Flipped(new EXU_BJIO))
     val io_flush = IO(new FLUSHIO)
+    val io_fencei_flush_exu = IO(Flipped(new FENCEI_FLUSH_IO_EXU))
+    val io_fencei_flush_icache = IO(Flipped(new FENCEI_FLUSH_IO_ICACHE))
 
     dontTouch(io_pipe)
 
-    //main process
     val pc_next = Wire(UInt(WORD_LEN.W))
     dontTouch(pc_next)
 
+    //flush
+    io_flush.flush_flg := io_bj.valid | io_fencei_flush_icache.fencing
+    val fencei_flush = io_fencei_flush_icache.fencing
     val reg_pc = withReset(reset.asAsyncReset){
-        RegEnable(pc_next, START_ADDR, io_pipe.out.fire || io_bj.valid)
+        RegEnable(pc_next, START_ADDR, io_pipe.out.fire || io_bj.valid || fencei_flush)
     }
+    val bj_flush = io_bj.valid && (io_bj.target =/= reg_pc)
+    val flush_flg = bj_flush || fencei_flush
 
+    //main process
     val pc_plus4 = reg_pc + 4.U(WORD_LEN.W)
 
-    pc_next := Mux(io_bj.valid, io_bj.target, pc_plus4)
+    pc_next := Mux(io_bj.valid, io_bj.target, Mux(fencei_flush, io_fencei_flush_exu.fencei_flush_target, pc_plus4))
 
     io_pipe.out.bits.if2id_reg_pc := reg_pc
     io_pipe.out.bits.if2id_inst := io.imem.rdata
 
-    //flush
-    io_flush.flush_flg := io_bj.valid
-    val flush_flg = io_bj.valid && (io_bj.target =/= reg_pc)
-
     //connect
-    io.imem.araddr := Mux(flush_flg, io_bj.target, reg_pc)
+    io.imem.araddr := Mux(bj_flush, io_bj.target, Mux(fencei_flush, io_fencei_flush_exu.fencei_flush_target, reg_pc))
 
 
 
