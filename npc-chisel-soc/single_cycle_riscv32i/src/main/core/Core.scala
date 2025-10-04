@@ -53,6 +53,8 @@ class Core extends Module {
             |___|_|  |_|_____|_|  |_|  \___/\/ |___\____/_/   \_\____|_| |_|_____|
 */
     val icache = Module(new iCache(4, 4, 1))
+    /*due to the area limit, icache dosen't realise plru, only support random.
+    final icache is 4, 4, 1, so replace policy dosen't matter*/
     io.imem <> icache.io.out
     icache.io.in <> ifu.io.imem
 /*
@@ -74,14 +76,17 @@ class Core extends Module {
     isu.io.gpr_waddr := wbu.io.gpr_waddr
     isu.io.gpr_wdata := wbu.io.gpr_wdata
 
-    ifu.io_bj.valid := exu.io_bj.valid
-    ifu.io_bj.target := exu.io_bj.target
+    ifu.io_bj <> exu.io_bj
+    ifu.io_fencei_flush_exu <> exu.io_fencei_flush_exu
+    ifu.io_fencei_flush_icache <> icache.io_fencei_flush_icache
 
     isu.io_for_ex <> exu.io_for
     isu.io_for_wb <> wbu.io_for
 
     idu.io_flush.flush_flg := ifu.io_flush.flush_flg
     isu.io_flush.flush_flg := ifu.io_flush.flush_flg
+
+    icache.io_fencei <> exu.io_fencei
 
 
 

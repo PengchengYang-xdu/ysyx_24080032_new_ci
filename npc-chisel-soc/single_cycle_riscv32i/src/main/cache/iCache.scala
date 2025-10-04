@@ -6,6 +6,11 @@ import scala.math._
 import npc.common.Config._
 import npc.common.Instructions._
 import npc.bus.axi._
+import npc.core.exu._
+
+class FENCEI_FLUSH_IO_ICACHE extends Bundle{
+    val fencing = Output(Bool())
+}
 /*
              ___ ____    _    ____ _   _ _____
             |_ _/ ___|  / \  / ___| | | | ____|
@@ -30,6 +35,8 @@ class iCacheSet(val m: Int, val n: Int, val ways: Int) extends Bundle{
 
 class iCache(val block_size: Int, val sets: Int, val ways: Int) extends Module{
     val io = IO(new iCacheIO)
+    val io_fencei = IO(Flipped(new FENCEI_IO))
+    val io_fencei_flush_icache = IO(new FENCEI_FLUSH_IO_ICACHE)
 
     // 寄存读出的数据以及要读的地址
     val send_rdata = Reg(UInt(WORD_LEN.W))
@@ -57,7 +64,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int) extends Module{
     dontTouch(icache)
 
     /*-----------------------FSM-----------------------*/
-    val s_IDLE :: s_icache_lookup :: s_fetch :: s_outdone :: Nil = Enum(4)
+    val s_IDLE :: s_icache_lookup :: s_fetch :: s_outdone :: s_fencei :: Nil = Enum(5)
     val c_state = RegInit(s_IDLE)
     val n_state = WireDefault(c_state)
     dontTouch(n_state)
@@ -113,13 +120,49 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int) extends Module{
     val is_ifu_require = count === req_offset >> 2
     dontTouch(is_ifu_require)
 
+    /*-----------------------FENCEI---------------------*/
+    val is_fencei_r = RegInit(false.B)
+    val fencei_counter = RegInit(0.U(n.W))
+    val fencei_fsh = fencei_counter === sets.U - 1.U
+
+    val is_fencei = io_fencei.is_fencei
+    io_fencei.fencei_done := fencei_fsh
+
+    val fencing = is_fencei | is_fencei_r
+    io_fencei_flush_icache.fencing := fencing
+
+    when(is_fencei){
+        is_fencei_r := true.B
+    }.elsewhen(fencei_fsh){
+        is_fencei_r := false.B
+    }
+    when(fencing && ~fencei_fsh){
+        fencei_counter := fencei_counter + 1.U
+    }.otherwise{
+        fencei_counter := 0.U
+    }
+    when(fencing){
+        for(i <- 0 until ways){
+            icache(fencei_counter).set(i).valid := false.B
+        }
+    }
+
+    /*fencei while fetch do not fill*/
+    val while_fence = RegInit(false.B)
+    when(is_fencei){
+        while_fence := true.B
+    }.elsewhen(n_state === s_IDLE){
+        while_fence := false.B
+    }
+
     c_state := n_state//first phase
 
     n_state := MuxLookup(c_state, s_IDLE)(Seq(//second phase
-        s_IDLE           ->  Mux(is_ifu_ar_fire, Mux(is_sdram_raddr, s_icache_lookup, s_fetch), s_IDLE),
+        s_IDLE           ->  Mux(is_ifu_ar_fire, Mux(is_sdram_raddr, s_icache_lookup, s_fetch), Mux(is_fencei, s_fencei, s_IDLE)),
         s_icache_lookup  ->  Mux(is_hit_handshake, s_IDLE, s_fetch),
         s_fetch          ->  Mux(is_imem_ar_fire, s_outdone, s_fetch),
-        s_outdone        ->  Mux(is_imem_r_fire, Mux(burst_done || ~is_sdram_raddr, s_IDLE, s_outdone), s_outdone)
+        s_outdone        ->  Mux(is_imem_r_fire, Mux(burst_done || ~is_sdram_raddr, s_IDLE, s_outdone), s_outdone),
+        s_fencei         ->  Mux(fencei_fsh, s_IDLE, s_fencei)
     ))
 
     switch(c_state){//third phase
@@ -162,7 +205,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int) extends Module{
     }
 
 
-    when(is_imem_r_fire && ~hit && is_sdram_raddr){//替换或填充逻辑, 这里需要补充根据配置选择LRU或者FIFO或者RANDOM, 这里注意hit了就不需要替换或填充
+    when(is_imem_r_fire && ~hit && is_sdram_raddr && ~while_fence){//替换或填充逻辑, 这里需要补充根据配置选择LRU或者FIFO或者RANDOM, 这里注意hit了就不需要替换或填充
         val set = icache(req_index).set
         when(hasEmpty === true.B) {
             // 如果有空闲块，填充

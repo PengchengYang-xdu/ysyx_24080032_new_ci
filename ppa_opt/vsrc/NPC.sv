@@ -137,7 +137,6 @@ module NPC(	// @[src/main/NPC.scala:15:7]
   wire        _xbar_io_clint_rready;	// @[src/main/NPC.scala:55:22]
   wire [31:0] _core_io_imem_araddr;	// @[src/main/NPC.scala:54:22]
   wire        _core_io_imem_arvalid;	// @[src/main/NPC.scala:54:22]
-  wire [7:0]  _core_io_imem_arlen;	// @[src/main/NPC.scala:54:22]
   wire [2:0]  _core_io_imem_arsize;	// @[src/main/NPC.scala:54:22]
   wire [1:0]  _core_io_imem_arburst;	// @[src/main/NPC.scala:54:22]
   wire        _core_io_imem_rready;	// @[src/main/NPC.scala:54:22]
@@ -158,7 +157,6 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_imem_araddr  (_core_io_imem_araddr),
     .io_imem_arvalid (_core_io_imem_arvalid),
     .io_imem_arready (_xbar_io_imem_arready),	// @[src/main/NPC.scala:55:22]
-    .io_imem_arlen   (_core_io_imem_arlen),
     .io_imem_arsize  (_core_io_imem_arsize),
     .io_imem_arburst (_core_io_imem_arburst),
     .io_imem_rdata   (_xbar_io_imem_rdata),	// @[src/main/NPC.scala:55:22]
@@ -189,7 +187,6 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_imem_araddr   (_core_io_imem_araddr),	// @[src/main/NPC.scala:54:22]
     .io_imem_arvalid  (_core_io_imem_arvalid),	// @[src/main/NPC.scala:54:22]
     .io_imem_arready  (_xbar_io_imem_arready),
-    .io_imem_arlen    (_core_io_imem_arlen),	// @[src/main/NPC.scala:54:22]
     .io_imem_arsize   (_core_io_imem_arsize),	// @[src/main/NPC.scala:54:22]
     .io_imem_arburst  (_core_io_imem_arburst),	// @[src/main/NPC.scala:54:22]
     .io_imem_rdata    (_xbar_io_imem_rdata),
@@ -216,7 +213,6 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_soc_araddr    (io_master_araddr),
     .io_soc_arvalid   (io_master_arvalid),
     .io_soc_arready   (io_master_arready),
-    .io_soc_arlen     (io_master_arlen),
     .io_soc_arsize    (io_master_arsize),
     .io_soc_arburst   (io_master_arburst),
     .io_soc_rdata     (io_master_rdata),
@@ -252,6 +248,7 @@ module NPC(	// @[src/main/NPC.scala:15:7]
     .io_axi4_rready  (_xbar_io_clint_rready)	// @[src/main/NPC.scala:55:22]
   );
   assign io_master_arid = 4'h0;	// @[src/main/NPC.scala:15:7, :54:22, :55:22, :56:23]
+  assign io_master_arlen = 8'h0;	// @[src/main/NPC.scala:15:7, :54:22, :55:22, :56:23]
   assign io_master_awid = 4'h0;	// @[src/main/NPC.scala:15:7, :54:22, :55:22, :56:23]
   assign io_master_awlen = 8'h0;	// @[src/main/NPC.scala:15:7, :54:22, :55:22, :56:23]
   assign io_master_awburst = 2'h0;	// @[src/main/NPC.scala:15:7, :54:22, :55:22, :56:23]
