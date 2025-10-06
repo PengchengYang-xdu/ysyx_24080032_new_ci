@@ -25,7 +25,8 @@ object Elaborate extends App {
       // see https://github.com/llvm/circt/blob/main/docs/VerilogGeneration.md
       "disallowLocalVariables",
       "disallowPackedArrays",
-      "locationInfoStyle=wrapInAtSquareBracket"
+      "locationInfoStyle=wrapInAtSquareBracket",
+      "noAlwaysComb"
     ).reduce(_ + "," + _))
     circt.stage.ChiselStage.emitSystemVerilogFile(new npc.ysyx_24080032, args, firtoolOptions)
 }

@@ -32,6 +32,7 @@ all: verilog
 
 # verilog_merge 目标：使用 cat 命令合并文件
 verilog:
+	@make clean
 	@echo "-> 正在创建输出目录 $(OUTPUT_DIR)..."
 	mkdir -p $(OUTPUT_DIR)
 	@echo "-> 正在合并 Verilog 文件到 $(OUTPUT_FILE)..."

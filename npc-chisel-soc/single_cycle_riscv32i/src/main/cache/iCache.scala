@@ -40,7 +40,7 @@ class iCache(val block_size: Int, val sets: Int, val ways: Int) extends Module{
 
     // 寄存读出的数据以及要读的地址
     val send_rdata = Reg(UInt(WORD_LEN.W))
-    val send_araddr = Reg(UInt(WORD_LEN.W))
+    val send_araddr = RegInit(0.U(WORD_LEN.W))
 
     val m = log2(block_size).toInt
     val n = log2(sets).toInt

@@ -71,6 +71,8 @@ class ISU extends Module{
     val rs2_addr = io_pipe.in.bits.id2is_rs2_addr
     val rs1_data = gpr.read(rs1_addr)
     val rs2_data = gpr.read(rs2_addr)
+    dontTouch(rs1_data)
+    dontTouch(rs2_data)
     when(io.gpr_we === RFwe.RFwe_y && io.gpr_waddr =/= 0.U){
         gpr.write(io.gpr_waddr, io.gpr_wdata)
     }
@@ -107,9 +109,12 @@ class ISU extends Module{
     val ch3Ready = ~useCh3 || io_pipe.in.bits.id2is_bjtpe.orR || (~sb.isBusy(rs1_addr) || rs1ForEX || rs1ForWB)
 
     val isudone = ch1Ready || ch2Ready || ch3Ready
+    dontTouch(isudone)
 
     val wbClearMask = Mux(io_for_wb.gpr_we === RFwe.RFwe_y && !isDepend(io_for_wb.gpr_waddr, io_for_ex.gpr_waddr, io_for_ex.gpr_we === RFwe.RFwe_y), sb.mask(io_for_wb.gpr_waddr), 0.U(GPR_NUM.W))
     val isuFireSetMask = Mux(io_pipe.out.fire, sb.mask(io_pipe.in.bits.id2is_rd_addr), 0.U)
+    dontTouch(wbClearMask)
+    dontTouch(isuFireSetMask)
     when (io_flush.flush_flg) { sb.update(0.U, Fill(GPR_NUM, 1.U(1.W))) }
     .otherwise { sb.update(isuFireSetMask, wbClearMask) }
 
