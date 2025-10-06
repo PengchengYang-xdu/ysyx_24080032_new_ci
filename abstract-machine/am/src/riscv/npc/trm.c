@@ -15,7 +15,7 @@ Area heap = RANGE(&_heap_start, PMEM_END);
 #ifndef MAINARGS
 #define MAINARGS ""
 #endif
-static const char mainargs[] = MAINARGS;
+const char mainargs[] = MAINARGS;
 
 void putch(char ch) {
   outb(SERIAL_PORT, ch);
@@ -27,6 +27,7 @@ void halt(int code) {
 }
 
 void _trm_init() {
-    int ret = main(mainargs);
+    int ret = main("test");
+    // int ret = main(mainargs);
     halt(ret);
 }

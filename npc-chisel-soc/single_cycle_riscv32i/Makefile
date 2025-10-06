@@ -97,7 +97,7 @@ $(TIMING_RPT): $(SCRIPT_DIR)/sta.tcl $(SDC_FILE) $(NETLIST_FIXED_V)
 clean:
 	-rm -rf $(PRJ_PATH)/syn/result/
 
-.PHONY: init syn fix-fanout sta clean verilog
+.PHONY: init syn fix-fanout sta clean verilog iverilog
 
 
 
@@ -189,3 +189,114 @@ save_perf:
 	cat $(PERF_MD) > $(SAVE_MD); \
 	echo -e "本次提交哈希值: $$CURRENT_HASH $(EXPLAIN)" >> $(SAVE_MD); \
 	echo "性能数据保存到: $(SAVE_MD)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################        IVERILOG        ################################################################
+CONFIG_FILE = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/src/main/common/Config.scala
+IVERILOG_DIR = ./iverilog
+
+TARGET ?= amtest
+
+AM_DIR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/am-kernels/tests/am-tests
+RTT_DIR = /home/yangpengcheng/ysyx/rt-thread-am/bsp/abstract-machine
+MB_DIR = /home/yangpengcheng/ysyx/ysyx/ysyx-workbench/am-kernels/benchmarks/microbench
+
+ifeq ($(TARGET), amtest)
+	TARGET_DIR = $(AM_DIR)
+else ifeq ($(TARGET), rtthread)
+    TARGET_DIR = $(RTT_DIR)
+else ifeq ($(TARGET), microbench)
+    TARGET_DIR = $(MB_DIR)
+else
+    $(error Unknown TARGET "$(TARGET)")
+endif
+
+IVERILOG_TB_SRC = $(IVERILOG_DIR)/tb/tb_top.sv
+IVERILOG_MEM_SRC =  $(IVERILOG_DIR)/mem/axi4_memory.sv #存放额外实现的mem的axi读写接口
+IVERILOG_V_SRC = $(IVERILOG_DIR)/src/ysyx_24080032.sv
+
+# IVERILOG_FINAL_V_SRC =  ./final_rtl/build/ysyx_24080032.sv #前仿
+IVERILOG_FINAL_V_SRC =  ../../ppa_opt/syn/result/ysyx_24080032-500MHz/ysyx_24080032.v #网表仿真
+
+IVERILOG_ELF_SRC = $(TARGET_DIR)/build/$(TARGET)-riscv32e-npc.elf
+IVERILOG_BIN_SRC = $(TARGET_DIR)/build/$(TARGET)-riscv32e-npc.bin
+IVERILOG_HEX_SRC = ./iverilog/hex/code-riscv32e-npc.hex
+
+IVERILOG_OUT = $(IVERILOG_DIR)/build/top.vvp
+IVERILOG_WAVE = $(IVERILOG_DIR)/wave/top.vcd
+
+iverilog:
+	@echo ">> 编译出elf文件..."
+	@make -C $(TARGET_DIR) ARCH=riscv32e-npc
+
+	@echo ">> 切换pc从0x80000000开始..."
+	@sed -i 's/val START_ADDR = "h30000000"/val START_ADDR = "h80000000"/' $(CONFIG_FILE)
+
+	@echo ">> mill生成v文件..."
+	@make clr
+	@make verilog
+
+	@echo ">> 合并大文件..."
+	@make -C ./final_rtl verilog
+	@mkdir -p $(dir $(IVERILOG_V_SRC))
+	@cp $(IVERILOG_FINAL_V_SRC) $(IVERILOG_V_SRC)
+
+	@echo ">> 删除DPI-C ECALL"
+	@sed -i '/import "DPI-C" function void npc_trap();/d' $(IVERILOG_V_SRC)
+	@sed -i "/npc_trap()/c\;" $(IVERILOG_V_SRC)
+
+	@echo ">> 切换pc从0x30000000开始..."
+	@sed -i 's/val START_ADDR = "h80000000"/val START_ADDR = "h30000000"/' $(CONFIG_FILE)
+
+	@echo ">> 从elf生成hex文件..."
+	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
+	# @riscv64-unknown-linux-gnu-objcopy -O verilog --adjust-vma -0x80000000 $(IVERILOG_ELF_SRC) $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_DIR)/hex/makehex.py $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+
+	@echo ">> 开始iverilog编译..."
+	@mkdir -p $(dir $(IVERILOG_OUT))
+	@mkdir -p $(dir $(IVERILOG_WAVE))
+	@iverilog -g2012 -Wall -D__ICARUS__ -o $(IVERILOG_OUT) \
+		$(IVERILOG_TB_SRC) $(IVERILOG_MEM_SRC) $(IVERILOG_V_SRC) ../../ppa_opt/syn/nangate45/sim/cells.v
+
+	@echo ">> 编译完成，开始执行仿真..."
+	@vvp $(IVERILOG_OUT)
+	@echo ">> 仿真完成，波形文件生成在: $(IVERILOG_WAVE)"
+
+
+
+iverilog_clr:
+	@rm -rf ./iverilog/hex/code-riscv32e-npc.hex
+	@rm -rf ./iverilog/src
+	@rm -rf ./iverilog/build
+	@rm -rf ./iverilog/wave

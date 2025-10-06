@@ -39,7 +39,9 @@ class Core extends Module {
 */
     wbu.io_pipe.out.ready := true.B
     val ready_r = RegNext(ifu.io_pipe.in.ready)
-    ifu.io_pipe.in.valid := RegEnable(true.B, ifu.io_pipe.in.valid, ifu.io_pipe.in.ready & ready_r)
+
+    ifu.io_pipe.in.valid := RegEnable(true.B, false.B, ifu.io_pipe.in.ready & ready_r)
+
     pipelineConnect(ifu.io_pipe.out, idu.io_pipe.in)
     pipelineConnect(idu.io_pipe.out, isu.io_pipe.in)
     pipelineConnect(isu.io_pipe.out, exu.io_pipe.in)
@@ -103,7 +105,7 @@ class Core extends Module {
     def pipelineConnect[T <: Data, T2 <: Data](prevOut: DecoupledIO[T], thisIn: DecoupledIO[T]) = {
         prevOut.ready := thisIn.ready
         thisIn.bits := RegEnable(prevOut.bits, prevOut.valid && thisIn.ready)
-        thisIn.valid := RegEnable(prevOut.valid, thisIn.ready);
+        thisIn.valid := RegEnable(prevOut.valid, false.B, thisIn.ready);
     }
 
     // def dataConflict(rs: UInt, rd: UInt) = (rs === rd)
