@@ -42,13 +42,3 @@ _default:
 	@echo "Please run 'make' under subprojects."
 
 .PHONY: .git_commit .clean_index _default
-
-push:
-	git checkout perf
-	git add .
-	git commit --allow-empty -am "nothing"
-	git checkout master
-	git merge perf
-	git push --all myself
-	git checkout perf
-	
