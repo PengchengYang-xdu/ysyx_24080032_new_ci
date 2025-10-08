@@ -104,21 +104,110 @@ run: $(BIN)
 # | |  \ V / | |___|  _ < | || |__| |_| | |_| |
 #|___|  \_/  |_____|_| \_\___|_____\___/ \____|
 
-IMG ?= dummy-riscv32e-npc.bin
-
 IVERILOG_DIR = ./iverilog
+
+IVERILOG_BUILD_DIR = $(IVERILOG_DIR)/build
+
 IVERILOG_TB_SRC = $(IVERILOG_DIR)/tb/tb_top.sv
 IVERILOG_MEM_SRC =  $(IVERILOG_DIR)/mem/axi4_memory.sv
+IVERILOG_V_SRC =  $(IVERILOG_DIR)/src/$(STUID).sv
+
+IVERILOG_BIN_SRC = $(IMG)
+IVERILOG_HEX_SRC = $(IVERILOG_DIR)/hex/code.hex
+IVERILOG_PY_SRC = $(IVERILOG_DIR)/hex/makehex.py
+
+IVERILOG_OUT = $(IVERILOG_BUILD_DIR)/top.vvp
 
 sim-iverilog:
+	@if [ -z "$(IMG)" ]; then \
+		echo "ERROR: IMG has to be fed"; \
+		exit 1; \
+	fi
+
 	@echo "INFO: ========================================"
-	@echo "INFO: ====修改cpu代码复位从0x80000000开始====="
+	@echo "INFO: ===========清除之前的仿真构建==========="
+	@echo "INFO: ========================================"
+	@rm -rf $(IVERILOG_BUILD_DIR)
+	@rm -rf $(IVERILOG_HEX_SRC)
+	@rm -rf $(IVERILOG_V_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: =======复制CPU代码到iverilog/src下======"
+	@echo "INFO: ========================================"
+	@cp $(OUTPUT_VERILOG_FILE) $(IVERILOG_V_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===========通过bin产生hex文件==========="
+	@echo "INFO: ========================================"
+	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
+	@python $(IVERILOG_PY_SRC) ../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: =============编译iverilog==============="
+	@echo "INFO: ========================================"
+	@mkdir -p $(dir $(IVERILOG_OUT))
+	@iverilog -g2012 -Wall -D__ICARUS__ -o $(IVERILOG_OUT) \
+		$(IVERILOG_TB_SRC) $(IVERILOG_MEM_SRC) $(IVERILOG_V_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===========开始仿真iverilog============="
+	@echo "INFO: ========================================"
+	@vvp $(IVERILOG_OUT)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===============仿真完成!================"
 	@echo "INFO: ========================================"
 
 
 
 
 
+sim-iverilog-netlist:
+	@if [ -z "$(IMG)" ]; then \
+		echo "ERROR: IMG has to be fed"; \
+		exit 1; \
+	fi
+	@if [ -z "$(NETLIST)" ]; then \
+		echo "ERROR: NETLIST has to be fed"; \
+		exit 1; \
+	fi
+	@if [ -z "$(CELLS)" ]; then \
+		echo "ERROR: CELLS has to be fed"; \
+		exit 1; \
+	fi
 
+	@echo "INFO: ========================================"
+	@echo "INFO: ===========清除之前的仿真构建==========="
+	@echo "INFO: ========================================"
+	@rm -rf $(IVERILOG_BUILD_DIR)
+	@rm -rf $(IVERILOG_HEX_SRC)
+	@rm -rf $(IVERILOG_V_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ======复制网表代码到iverilog/src下======"
+	@echo "INFO: ========================================"
+	@cp ../$(NETLIST) $(IVERILOG_V_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===========通过bin产生hex文件==========="
+	@echo "INFO: ========================================"
+	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
+	@python $(IVERILOG_PY_SRC) ../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: =============编译iverilog==============="
+	@echo "INFO: ========================================"
+	@mkdir -p $(dir $(IVERILOG_OUT))
+	@iverilog -g2012 -Wall -D__ICARUS__ -DNETLIST -o $(IVERILOG_OUT) \
+		$(IVERILOG_TB_SRC) $(IVERILOG_MEM_SRC) $(IVERILOG_V_SRC) ../$(CELLS)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===========开始仿真iverilog============="
+	@echo "INFO: ========================================"
+	@vvp $(IVERILOG_OUT)
+
+	@echo "INFO: ========================================"
+	@echo "INFO: ===============仿真完成!================"
+	@echo "INFO: ========================================"
 
 
