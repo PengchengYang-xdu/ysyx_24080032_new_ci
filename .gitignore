@@ -1,20 +1,20 @@
-*.*
-*
-!*/
-!/nemu/*
+# *.*
+# *
+# !*/
+# !/nemu/*
 # !/nexus-am/*
 # !/nanos-lite/*
 # !/navy-apps/*
-!/npc/*
-!/patch/*
+# !/npc/*
+# !/patch/*
 # !/npc-chisel/**
 # !/npc-chisel-soc/**
 # !/icachesim/**
 # !/ppa_opt/**
-!Makefile
-!README.md
-!.gitignore
-!init.sh
+# !Makefile
+# !README.md
+# !.gitignore
+# !init.sh
 # npc-chisel-soc/single_cycle_riscv32i/build/*.fst
 # npc-chisel-soc/single_cycle_riscv32i/out/mill-launcher/0.11.5.jar
 # npc-chisel/single_cycle_riscv32i/out/mill-launcher/0.12.8.jar
