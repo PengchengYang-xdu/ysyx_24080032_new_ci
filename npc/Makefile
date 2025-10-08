@@ -120,7 +120,7 @@ IVERILOG_PY_SRC = $(IVERILOG_DIR)/hex/makehex.py
 
 IVERILOG_OUT = $(IVERILOG_BUILD_DIR)/top.vvp
 
-sim-iverilog:
+sim-iverilog: verilog
 	@if [ -z "$(IMG)" ]; then \
 		echo "ERROR: IMG has to be fed"; \
 		exit 1; \
@@ -164,7 +164,7 @@ sim-iverilog:
 
 
 
-sim-iverilog-netlist:
+sim-iverilog-netlist: verilog
 	@if [ -z "$(IMG)" ]; then \
 		echo "ERROR: IMG has to be fed"; \
 		exit 1; \
