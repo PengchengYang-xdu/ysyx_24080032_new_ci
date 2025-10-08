@@ -1,3 +1,5 @@
+.PHONY: clean verilog run sim-iverilog sim-iverilog-netlist
+
 STUID := ysyx_24080032
 STUNAME = 杨鹏城
 
@@ -211,3 +213,5 @@ sim-iverilog-netlist:
 	@echo "INFO: ========================================"
 
 
+clean:
+	@rm -rf ./build
