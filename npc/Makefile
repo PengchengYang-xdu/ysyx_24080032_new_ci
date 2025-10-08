@@ -20,9 +20,9 @@ endif
 #   \ V / | |___|  _ < | || |__| |_| | |_| |
 #    \_/  |_____|_| \_\___|_____\___/ \____|
 
-VERILOG_BUILD_DIR = ./build
+VERILOG_BUILD_DIR = $(NPC_HOME)/build
 TEMP_VERILOG_DIR = $(VERILOG_BUILD_DIR)/verilog_obj
-FIRTOOL_DIR = ./
+FIRTOOL_DIR = $(NPC_HOME)/
 PRJ = playground
 MILLFLAG = --target-dir $(TEMP_VERILOG_DIR)
 
@@ -59,11 +59,11 @@ verilog:
 #    \_/  |_____|_| \_\___|_____/_/   \_\_| \___/|_| \_\
 
 TOPNAME = ysyxSoCFull
-VERILATOR_BUILD_DIR = ./build
+VERILATOR_BUILD_DIR = $(NPC_HOME)/build
 TEMP_VERILATOR_DIR = $(VERILATOR_BUILD_DIR)/verilator_obj
 BIN = $(VERILATOR_BUILD_DIR)/$(TOPNAME)
 
-SOC_DIR = ../ysyxSoC
+SOC_DIR = $(NPC_HOME)/../ysyxSoC
 
 VSRC = $(OUTPUT_VERILOG_FILE)
 ifeq ($(YSYXSOC), y)
@@ -106,7 +106,7 @@ run: $(BIN)
 # | |  \ V / | |___|  _ < | || |__| |_| | |_| |
 #|___|  \_/  |_____|_| \_\___|_____\___/ \____|
 
-IVERILOG_DIR = ./iverilog
+IVERILOG_DIR = $(NPC_HOME)/iverilog
 
 IVERILOG_BUILD_DIR = $(IVERILOG_DIR)/build
 
@@ -142,7 +142,7 @@ sim-iverilog:
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) ../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
@@ -188,20 +188,20 @@ sim-iverilog-netlist:
 	@echo "INFO: ========================================"
 	@echo "INFO: ======复制网表代码到iverilog/src下======"
 	@echo "INFO: ========================================"
-	@cp ../$(NETLIST) $(IVERILOG_V_SRC)
+	@cp $(NETLIST) $(IVERILOG_V_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) ../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_OUT))
 	@iverilog -g2012 -Wall -D__ICARUS__ -DNETLIST -o $(IVERILOG_OUT) \
-		$(IVERILOG_TB_SRC) $(IVERILOG_MEM_SRC) $(IVERILOG_V_SRC) ../$(CELLS)
+		$(IVERILOG_TB_SRC) $(IVERILOG_MEM_SRC) $(IVERILOG_V_SRC) $(CELLS)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: ===========开始仿真iverilog============="
@@ -214,4 +214,4 @@ sim-iverilog-netlist:
 
 
 clean:
-	@rm -rf ./build
+	@rm -rf $(NPC_HOME)/build
