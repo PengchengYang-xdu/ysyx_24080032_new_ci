@@ -12,10 +12,11 @@ extern char _pmem_start;
 #define npc_trap(code) asm volatile("mv a0, %0; ebreak" : :"r"(code))
 
 Area heap = RANGE(&_heap_start, PMEM_END);
-#ifndef MAINARGS
-#define MAINARGS ""
-#endif
-const char mainargs[] = MAINARGS;
+// #ifndef MAINARGS
+// #define MAINARGS ""
+// #endif
+// const char mainargs[] = MAINARGS;
+static const char mainargs[MAINARGS_MAX_LEN] = MAINARGS_PLACEHOLDER; // defined in CFLAGS
 
 void putch(char ch) {
   outb(SERIAL_PORT, ch);
