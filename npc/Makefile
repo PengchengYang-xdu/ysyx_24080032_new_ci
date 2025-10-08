@@ -47,9 +47,8 @@ INPUT_VERILOG_FILE = \
 verilog:
 	rm -rf $(VERILOG_BUILD_DIR)/$(STUID).sv
 	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR)
-	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
+	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) $(NPC_HOME)/mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
 	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE)
-	rm -rf $(TEMP_VERILOG_DIR)
 
 
 # __     _______ ____  ___ _        _  _____ ___  ____
@@ -127,13 +126,6 @@ sim-iverilog: verilog
 	fi
 
 	@echo "INFO: ========================================"
-	@echo "INFO: ===========清除之前的仿真构建==========="
-	@echo "INFO: ========================================"
-	@rm -rf $(IVERILOG_BUILD_DIR)
-	@rm -rf $(IVERILOG_HEX_SRC)
-	@rm -rf $(IVERILOG_V_SRC)
-
-	@echo "INFO: ========================================"
 	@echo "INFO: =======复制CPU代码到iverilog/src下======"
 	@echo "INFO: ========================================"
 	@cp $(OUTPUT_VERILOG_FILE) $(IVERILOG_V_SRC)
@@ -177,13 +169,6 @@ sim-iverilog-netlist: verilog
 		echo "ERROR: CELLS has to be fed"; \
 		exit 1; \
 	fi
-
-	@echo "INFO: ========================================"
-	@echo "INFO: ===========清除之前的仿真构建==========="
-	@echo "INFO: ========================================"
-	@rm -rf $(IVERILOG_BUILD_DIR)
-	@rm -rf $(IVERILOG_HEX_SRC)
-	@rm -rf $(IVERILOG_V_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: ======复制网表代码到iverilog/src下======"
