@@ -25,6 +25,6 @@
 # !/c_exp/*
 # !/digital_circuit_exp/*
 # !/ysyxSoC/*
-/ysyxSoC/*
-/rt-thread-am/*
-/npc/out/*
+/ysyxSoC/
+/rt-thread-am/
+/am-kernels/
