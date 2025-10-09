@@ -29,6 +29,7 @@
 /rt-thread-am/
 /am-kernels/
 /nvboard/
+/riscv-arch-test-am/
 
 /npc/Makefile_old
 /npc/build/

@@ -19,6 +19,7 @@ ifeq ($(YSYXSOC), y)
 NVBOARD = y
 else
 NVBOARD = n
+endif
 
 # __     _______ ____  ___ _     ___   ____
 # \ \   / / ____|  _ \|_ _| |   / _ \ / ___|
@@ -63,12 +64,6 @@ verilog:
 #   \ V / | |___|  _ < | || |___ / ___ \| || |_| |  _ <
 #    \_/  |_____|_| \_\___|_____/_/   \_\_| \___/|_| \_\
 
-#################
-#####NVBOARD#####
-#################
-NVBOARD_DIR = $(NPC_HOME)/../nvboard
-
-
 TOPNAME = ysyxSoCFull
 VERILATOR_BUILD_DIR = $(NPC_HOME)/build
 TEMP_VERILATOR_DIR = $(VERILATOR_BUILD_DIR)/verilator_obj
@@ -98,7 +93,29 @@ CFLAGS += -DNPCCONFIG_CI
 # CFLAGS += -DNPCCONFIG_DIFFTEST
 # CFLAGS += -DNPCCONFIG_LIGHTSSS
 
-$(BIN): $(CSRC) $(VSRC)
+
+#################
+#####NVBOARD#####
+#################
+NVBOARD_DIR = $(NPC_HOME)/../nvboard
+
+INC_PATH ?=
+
+include $(NVBOARD_DIR)/scripts/nvboard.mk
+
+NXDC_FILES = $(NPC_HOME)/nvboard/constr/$(TOPNAME).nxdc
+
+SRC_AUTO_BIND = $(abspath $(NVBOARD_DIR)/scripts/auto_bind.cpp)
+$(SRC_AUTO_BIND): $(NXDC_FILES)
+	python3 $(NVBOARD_DIR)/scripts/auto_pin_bind.py $^ $@
+
+ifeq ($(NVBOARD), y)
+CSRC += $(SRC_AUTO_BIND)
+CFLAGS += -DNV_BOARD $(addprefix -I, $(INC_PATH))
+endif
+
+
+$(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 	rm -rf $(TEMP_VERILATOR_DIR)
 	verilator $(VERIARG) \
 		$^ \
@@ -131,7 +148,7 @@ IVERILOG_PY_SRC = $(IVERILOG_DIR)/hex/makehex.py
 
 IVERILOG_OUT = $(IVERILOG_BUILD_DIR)/top.vvp
 
-sim-iverilog: verilog
+sim-iverilog:
 	@if [ -z "$(IMG)" ]; then \
 		echo "ERROR: IMG has to be fed"; \
 		exit 1; \
@@ -146,7 +163,7 @@ sim-iverilog: verilog
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(NPC_HOME)/../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
@@ -168,7 +185,7 @@ sim-iverilog: verilog
 
 
 
-sim-iverilog-netlist: verilog
+sim-iverilog-netlist:
 	@if [ -z "$(IMG)" ]; then \
 		echo "ERROR: IMG has to be fed"; \
 		exit 1; \
@@ -191,7 +208,7 @@ sim-iverilog-netlist: verilog
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(NPC_HOME)/../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
@@ -211,4 +228,4 @@ sim-iverilog-netlist: verilog
 
 
 clean:
-	@rm -rf $(NPC_HOME)/build
+	@rm -rf $(TEMP_VERILOG_DIR) $(TEMP_VERILATOR_DIR)
