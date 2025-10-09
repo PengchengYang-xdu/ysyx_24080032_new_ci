@@ -54,7 +54,7 @@ INPUT_VERILOG_FILE = \
 verilog:
 	rm -rf $(VERILOG_BUILD_DIR)/$(STUID).sv
 	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR)
-	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) $(NPC_HOME)/mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
+	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
 	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE)
 
 
@@ -163,7 +163,7 @@ sim-iverilog:
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) $(NPC_HOME)/../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
@@ -208,7 +208,7 @@ sim-iverilog-netlist:
 	@echo "INFO: ===========通过bin产生hex文件==========="
 	@echo "INFO: ========================================"
 	@mkdir -p $(dir $(IVERILOG_HEX_SRC))
-	@python $(IVERILOG_PY_SRC) $(NPC_HOME)/../$(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
+	@python $(IVERILOG_PY_SRC) $(IVERILOG_BIN_SRC) 33554432 > $(IVERILOG_HEX_SRC)
 
 	@echo "INFO: ========================================"
 	@echo "INFO: =============编译iverilog==============="
