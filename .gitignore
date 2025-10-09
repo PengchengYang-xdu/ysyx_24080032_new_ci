@@ -28,3 +28,7 @@
 /ysyxSoC/
 /rt-thread-am/
 /am-kernels/
+/nvboard/
+
+/npc/Makefile_old
+/npc/build/

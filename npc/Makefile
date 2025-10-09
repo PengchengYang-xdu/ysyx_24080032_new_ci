@@ -4,7 +4,6 @@ STUID := ysyx_24080032
 STUNAME = 杨鹏城
 
 YSYXSOC ?= n
-
 ifeq ($(ARCH), riscv32e-ysyxsoc)
 YSYXSOC = y
 else ifeq ($(ARCH), riscv32e-npc)
@@ -14,6 +13,13 @@ $(WARNING: ====================)
 $(WARNING: ====UNKNOWN ARCH====)
 $(WARNING: ====================)
 endif
+
+NVBOARD ?= y
+ifeq ($(YSYXSOC), y)
+NVBOARD = y
+else
+NVBOARD = n
+
 # __     _______ ____  ___ _     ___   ____
 # \ \   / / ____|  _ \|_ _| |   / _ \ / ___|
 #  \ \ / /|  _| | |_) || || |  | | | | |  _
@@ -57,6 +63,12 @@ verilog:
 #   \ V / | |___|  _ < | || |___ / ___ \| || |_| |  _ <
 #    \_/  |_____|_| \_\___|_____/_/   \_\_| \___/|_| \_\
 
+#################
+#####NVBOARD#####
+#################
+NVBOARD_DIR = $(NPC_HOME)/../nvboard
+
+
 TOPNAME = ysyxSoCFull
 VERILATOR_BUILD_DIR = $(NPC_HOME)/build
 TEMP_VERILATOR_DIR = $(VERILATOR_BUILD_DIR)/verilator_obj
@@ -71,7 +83,7 @@ VSRC += $(shell find $(abspath $(SOC_DIR)/perip) -name "*.sv" -or -name "*.v")
 endif
 CSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 
-VERIARG = --cc -MMD --build --trace-threads 2 --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 64 --autoflush
+VERIARG = --cc -MMD --build --trace-threads 2 --public-flat-rw -top $(TOPNAME) --trace-fst --no-timing --timescale "1ns/1ns" -I$(SOC_DIR)/perip/uart16550/rtl -I$(SOC_DIR)/perip/spi/rtl -O3 -j 16 --autoflush
 LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH = $(abspath ./include)
 INCFLAGS = $(addprefix -I, $(INC_PATH))

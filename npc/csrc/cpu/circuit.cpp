@@ -13,6 +13,9 @@ deigned by ypc
 #include "../monitor/sdb/sdb.h"
 
 #include <lightsss.h> // 确保路径正确
+
+uint64_t total_cyc = 0;
+
 int child_first_in = 0;
 
 word_t pre_pc, now_pc;
@@ -397,6 +400,8 @@ void single_cycle(){
     #ifdef NPCCONFIG_LIGHTSSS
     light_cycle_num++;
     #endif
+
+    total_cyc++;
 }
 
 
@@ -487,7 +492,7 @@ void cpu_exec(uint64_t n){
 
         get_reg();
 
-        PerfAnalysis();
+        // PerfAnalysis();
         // if(cycle_num > 100000000){
         //     close_wave(88);
         //     assert(0);
@@ -536,5 +541,6 @@ extern "C" void npc_trap(){
     #endif
 
     statistic();
+    printf("total cyc = %ld\n", total_cyc);
     exit(0);
 }

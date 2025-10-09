@@ -15,6 +15,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *);
 static void __am_timer_config(AM_TIMER_CONFIG_T *cfg) { cfg->present = true; cfg->has_rtc = true; }
 static void __am_input_config(AM_INPUT_CONFIG_T *cfg) { cfg->present = true;  }
 static void __am_uart_config(AM_INPUT_CONFIG_T *cfg) { cfg->present = true;  }
+
+
 static void __am_uart_rx(AM_UART_RX_T *cfg){
     uint8_t LSR;
     uint8_t DR;
@@ -30,6 +32,15 @@ static void __am_uart_rx(AM_UART_RX_T *cfg){
     }
 }
 
+static void __am_uart_tx(AM_UART_TX_T *cfg){
+    uint8_t LSR;
+    uint8_t DR;
+    LSR = inb(UART_BASE + UART_REG_LS);
+    DR = (LSR >> UART_LS_DR) & 1;
+    while(!DR);
+    outb(UART_BASE + UART_REG_RB, cfg -> data);
+}
+
 typedef void (*handler_t)(void *buf);
 static void *lut[128] = {
   [AM_TIMER_CONFIG] = __am_timer_config,
@@ -39,6 +50,7 @@ static void *lut[128] = {
   [AM_INPUT_KEYBRD] = __am_input_keybrd,
   [AM_UART_CONFIG]  = __am_uart_config,
   [AM_UART_RX]  = __am_uart_rx,
+  [AM_UART_TX]  = __am_uart_tx,
   [AM_GPU_CONFIG  ] = __am_gpu_config,
   [AM_GPU_FBDRAW  ] = __am_gpu_fbdraw,
   [AM_GPU_STATUS  ] = __am_gpu_status,
