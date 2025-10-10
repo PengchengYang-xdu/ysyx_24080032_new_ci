@@ -51,15 +51,21 @@ INPUT_VERILOG_FILE = \
 	ysyx_24080032_iCache.sv \
 	ysyx_24080032_Ebreak.sv
 
+# verilog:
+# 	@if [ -f $(VERILOG_BUILD_DIR)/$(STUID).sv ]; then \
+# 		echo "$(VERILOG_BUILD_DIR)/$(STUID).sv 已存在, 跳过生成..."; \
+# 	else \
+# 		echo "正在生成 Verilog 文件..."; \
+# 		mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
+# 		mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
+# 		cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
+# 	fi
+
 verilog:
-	@if [ -f $(VERILOG_BUILD_DIR)/$(STUID).sv ]; then \
-		echo "$(VERILOG_BUILD_DIR)/$(STUID).sv 已存在, 跳过生成..."; \
-	else \
-		echo "正在生成 Verilog 文件..."; \
-		mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
-		mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
-		cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
-	fi
+	echo "正在生成 Verilog 文件..."; \
+	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
+	mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
+	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
 
 
 # __     _______ ____  ___ _        _  _____ ___  ____
@@ -232,4 +238,5 @@ sim-iverilog-netlist:
 
 
 clean:
-	@:
+	rm -rf $(NPC_HOME)/build
+	rm -rf $(NPC_HOME)/out
