@@ -52,13 +52,14 @@ INPUT_VERILOG_FILE = \
 	ysyx_24080032_Ebreak.sv
 
 verilog:
-	rm -rf $(VERILOG_BUILD_DIR)/$(STUID).sv
-	rm -rf $(TEMP_VERILOG_DIR)
-	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR)
-	which mill
-	mill --version
-	mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
-	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE)
+	@if [ -f $(VERILOG_BUILD_DIR)/$(STUID).sv ]; then \
+		echo "$(VERILOG_BUILD_DIR)/$(STUID).sv 已存在, 跳过生成..."; \
+	else \
+		echo "正在生成 Verilog 文件..."; \
+		mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
+		mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
+		cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
+	fi
 
 
 # __     _______ ____  ___ _        _  _____ ___  ____
@@ -231,4 +232,4 @@ sim-iverilog-netlist:
 
 
 clean:
-	@rm -rf $(TEMP_VERILOG_DIR) $(TEMP_VERILATOR_DIR)
+	@:
