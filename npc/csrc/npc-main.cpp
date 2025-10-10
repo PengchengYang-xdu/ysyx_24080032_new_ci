@@ -27,10 +27,10 @@ void init_env_vars(void) {
 }
 
 int main(int argc, char *argv[]) {
-    init_env_vars();
     get_time();
     init_monitor(argc, argv);
     #ifdef NPCCONFIG_DUMPWAVE
+    init_env_vars();
     printf("now dumpwave\n");
     char wave_path[1024];
     snprintf(wave_path, sizeof(wave_path), "%s/build/wave_father.fst", npc_home_path);

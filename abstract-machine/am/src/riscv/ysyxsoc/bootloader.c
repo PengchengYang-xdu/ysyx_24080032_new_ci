@@ -133,7 +133,6 @@ void ssbl(volatile uint32_t *src){ // 修改参数类型
     }
 
     bss_clr();
-    printf("bootloader done\n");
     // _trm_init();
     asm volatile (
         "lui t0, %hi(_trm_init)\n"      // 获取 _trm_init 地址的高 20 位
