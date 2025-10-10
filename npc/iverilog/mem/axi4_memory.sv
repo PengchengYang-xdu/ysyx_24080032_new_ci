@@ -144,12 +144,12 @@ module axi4_memory #(
 
 
 
-		if (latched_raddr == (RTC_ADDR - 32'h30000000)) begin
+		if (latched_raddr == (RTC_ADDR)) begin
             mem_axi_rdata <= rtc_time[31:0];
             mem_axi_rvalid <= 1;
             latched_raddr_en = 0;
         end else
-        if (latched_raddr == (RTC_ADDR + 32'h4 - 32'h30000000)) begin
+        if (latched_raddr == (RTC_ADDR + 32'h4)) begin
             mem_axi_rdata <= rtc_time[63:32];
             mem_axi_rvalid <= 1;
             latched_raddr_en = 0;
@@ -175,7 +175,7 @@ module axi4_memory #(
 
 
 
-		if (latched_waddr == (SERIAL_PORT - 32'h30000000)) begin//目前只实现字符串
+		if (latched_waddr == (SERIAL_PORT)) begin//目前只实现字符串
 			$write("%c", latched_wdata[7:0]);
 			$fflush();
 

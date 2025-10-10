@@ -34,3 +34,4 @@
 /npc/Makefile_old
 /npc/build/
 /npc/out/
+# /npc/riscv32-nemu-interpreter-so_20250602

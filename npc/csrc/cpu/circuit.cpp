@@ -363,10 +363,12 @@ void single_cycle(){
     }
     #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
     #ifdef NPCCONFIG_LIGHTSSS
+        char wave_path[1024];
+        snprintf(wave_path, sizeof(wave_path), "%s/build/wave_child.fst", npc_home_path);
         if(lightsss.is_child() && dump_flag){
             if(child_first_in == 0){
                 child_first_in = 1;
-                init_wave("../../build/wave_child.fst");
+                init_wave(wave_path);
             }
             dump_wave();
             // printf("dump wave 0\n");

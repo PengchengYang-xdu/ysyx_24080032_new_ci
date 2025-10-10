@@ -150,10 +150,15 @@ ysyx_24080032 cpu (
     .io_slave_rlast    (/* unused */)
   );
 
+wire [31:0] araddr_shift;
+assign araddr_shift = auto_master_out_araddr >> 28;
+wire [31:0] awaddr_shift;
+assign awaddr_shift = auto_master_out_awaddr >> 28;
+
 wire [31:0] araddr_pro;
-assign araddr_pro = auto_master_out_araddr - 32'h30000000;
+assign araddr_pro = araddr_shift == 32'ha ? auto_master_out_araddr : (auto_master_out_araddr - (araddr_shift << 28));
 wire [31:0] awaddr_pro;
-assign awaddr_pro = auto_master_out_awaddr - 32'h30000000;
+assign awaddr_pro = awaddr_shift == 32'ha ? auto_master_out_awaddr : (auto_master_out_awaddr - (awaddr_shift << 28));
 
 axi4_memory #(
         .AXI_TEST   (0),

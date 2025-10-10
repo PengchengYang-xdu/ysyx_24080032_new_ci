@@ -108,7 +108,7 @@ void fsbl(){
     for (size_t i = 0; i < ssbl_remaining_bytes; ++i) {
         *char_dest++ = *char_src++;
     }
-    
+
     // printf("fsbl done\n");
     ssbl((volatile uint32_t *)char_src); // 传递当前src的char指针的4字节对齐版本
 }
@@ -133,6 +133,11 @@ void ssbl(volatile uint32_t *src){ // 修改参数类型
     }
 
     bss_clr();
-    // printf("bootloader done\n");
-    _trm_init();
+    printf("bootloader done\n");
+    // _trm_init();
+    asm volatile (
+        "lui t0, %hi(_trm_init)\n"      // 获取 _trm_init 地址的高 20 位
+        "addi t0, t0, %lo(_trm_init)\n" // 加上 _trm_init 地址的低 12 位，t0 寄存器现在存储了 _trm_init 的完整地址
+        "jalr ra, 0(t0)\n"              // 跳转并链接到 t0 寄存器指向的地址 (即 _trm_init)
+    );
 }

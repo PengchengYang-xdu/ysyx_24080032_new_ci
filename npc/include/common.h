@@ -40,7 +40,8 @@ typedef uint32_t paddr_t;
 #define SDRAM_SIZE 0x1fffffff
 #define SDRAM_BASE 0xa0000000
 
-
+extern const char *npc_home_path;  // 声明全局变量
+void init_env_vars(void);           // 初始化函数声明
 
 
 #endif

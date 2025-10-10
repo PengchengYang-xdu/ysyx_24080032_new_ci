@@ -54,7 +54,7 @@ INPUT_VERILOG_FILE = \
 verilog:
 	rm -rf $(VERILOG_BUILD_DIR)/$(STUID).sv
 	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR)
-	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
+	mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
 	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE)
 
 
