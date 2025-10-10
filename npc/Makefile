@@ -238,5 +238,4 @@ sim-iverilog-netlist:
 
 
 clean:
-	rm -rf $(NPC_HOME)/build
-	rm -rf $(NPC_HOME)/out
+	rm -rf $(NPC_HOME)/out $(TEMP_VERILATOR_DIR) $(TEMP_VERILOG_DIR)
