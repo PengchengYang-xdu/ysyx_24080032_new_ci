@@ -51,11 +51,21 @@ INPUT_VERILOG_FILE = \
 	ysyx_24080032_iCache.sv \
 	ysyx_24080032_Ebreak.sv
 
+# verilog:
+# 	@if [ -f $(VERILOG_BUILD_DIR)/$(STUID).sv ]; then \
+# 		echo "$(VERILOG_BUILD_DIR)/$(STUID).sv 已存在, 跳过生成..."; \
+# 	else \
+# 		echo "正在生成 Verilog 文件..."; \
+# 		mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
+# 		mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
+# 		cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
+# 	fi
+
 verilog:
-	rm -rf $(VERILOG_BUILD_DIR)/$(STUID).sv
-	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR)
-	CHISEL_FIRTOOL_PATH=$(FIRTOOL_DIR) mill -i $(PRJ).runMain Elaborate $(MILLFLAG)
-	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE)
+	echo "正在生成 Verilog 文件..."; \
+	mkdir -p $(VERILOG_BUILD_DIR) $(TEMP_VERILOG_DIR); \
+	mill -i $(PRJ).runMain Elaborate $(MILLFLAG); \
+	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
 
 
 # __     _______ ____  ___ _        _  _____ ___  ____
@@ -83,15 +93,15 @@ LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH = $(abspath ./include)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
-# CFLAGS += -DNPCCONFIG_CI
+CFLAGS += -DNPCCONFIG_CI
 
 # CFLAGS += -DNPCCONFIG_ITRACE
 # CFLAGS += -DNPCCONFIG_FTRACE
 # CFLAGS += -DNPCCONFIG_MTRACE
 # CFLAGS += -DNPCCONFIG_DUMPWAVE
 # CFLAGS += -DNPCCONFIG_WATCHPOINT
-CFLAGS += -DNPCCONFIG_DIFFTEST
-CFLAGS += -DNPCCONFIG_LIGHTSSS
+# CFLAGS += -DNPCCONFIG_DIFFTEST
+# CFLAGS += -DNPCCONFIG_LIGHTSSS
 
 
 #################
@@ -228,4 +238,4 @@ sim-iverilog-netlist:
 
 
 clean:
-	@rm -rf $(TEMP_VERILOG_DIR) $(TEMP_VERILATOR_DIR)
+	rm -rf $(NPC_HOME)/out $(TEMP_VERILATOR_DIR) $(TEMP_VERILOG_DIR)

@@ -37,9 +37,9 @@ SECTIONS {
 
 
     .text :
-    ALIGN_WITH_INPUT 
+    ALIGN_WITH_INPUT
     SUBALIGN(4)
-    {   
+    {
         _text_start = .;
         *(.text*)
         _text_end = .;
@@ -48,7 +48,7 @@ SECTIONS {
 
 
     .rodata :
-    ALIGN_WITH_INPUT 
+    ALIGN_WITH_INPUT
     SUBALIGN(4)
     {
         _rodata_start = .;
@@ -60,7 +60,7 @@ SECTIONS {
 /*data.extra*/
 
     .data :
-    ALIGN_WITH_INPUT 
+    ALIGN_WITH_INPUT
     SUBALIGN(4)
     {
         _data_start = .;
@@ -72,7 +72,7 @@ SECTIONS {
 /*bss.extra*/
 
     .bss :
-    ALIGN_WITH_INPUT 
+    ALIGN_WITH_INPUT
     SUBALIGN(4)
     {
         _bss_start = .;
@@ -90,9 +90,9 @@ SECTIONS {
 
     _heap_start = ALIGN(0x10);
     _heap_end = _heap_start + 2M;
-    
+
     _stack_top = ORIGIN(sram);
     . = _stack_top + LENGTH(sram) - 0x100;
     _stack_pointer = .;
-  
+
 }
