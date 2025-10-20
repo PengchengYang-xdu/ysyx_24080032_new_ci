@@ -1,7 +1,3 @@
-/***************************************************************************************
-deigned by ypc
-***************************************************************************************/
-
 #include <mem.h>
 #include <common.h>
 #include <circuit.h>
@@ -13,8 +9,6 @@ deigned by ypc
 
 extern bool is_skip_diff;
 static uint64_t timer = 0;
-
-
 
 extern uint64_t light_cycle_num;
 extern LightSSS lightsss;
@@ -40,9 +34,6 @@ static uint8_t *sdram_chip0 = NULL;
 static uint8_t *sdram_chip1 = NULL;
 static uint8_t *sdram_chip2 = NULL;
 static uint8_t *sdram_chip3 = NULL;
-
-
-
 
 
 
@@ -89,10 +80,6 @@ uint8_t* guest_to_host_sdram(paddr_t paddr, int id) {
         assert(0);
     }
 }
-
-
-
-
 
 
 
@@ -184,18 +171,18 @@ extern "C" void sdram_write(int id, int bank_addr, int row_addr, int col_addr, i
 	{
 	case 0b0001:{
 		*(uint8_t *)guest_to_host_sdram(addr_processed, id) = wdata;
-		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
 		break;}
     case 0b0010:{
 		*(uint8_t *)(guest_to_host_sdram(addr_processed, id) + 1) = wdata >> 8;
-		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
 		break;}
 	case 0b0011:{
 		*(uint16_t *)guest_to_host_sdram(addr_processed, id) = wdata;
-		// if(addr_processed == 0xa000023c) printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+		// printf("sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
 		break;}
 	default:{
-        // if(addr_processed == 0xa000023c) printf("default : sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
+        // printf("default : sdram_write addr = %#x , data = %#x ,wstrb = %d\n", addr_processed, wdata, wstrb);
 		break;}
 	}
 }
@@ -238,6 +225,7 @@ extern "C" int paddr_read(int addr, int is_pc_read) {
         display_pread(addr);
     }
     #endif
+    printf("NPC_read addr = %#x\n", addr);
     if(in_pmem(addr)){
         if(addr == RTC_ADDR || addr == RTC_ADDR + 4 || addr == SERIAL_PORT){
             is_skip_diff = true;
@@ -255,13 +243,6 @@ extern "C" int paddr_read(int addr, int is_pc_read) {
         else
             return pmem_read(addr);
     }
-    // if(addr != 0x00000000){
-    // out_of_bound(addr);
-    //     #ifdef NPCCONFIG_DUMPWAVE
-	//     dump_wave();
-	//     close_wave(3);
-	//     #endif
-    // }
     return 0;
 }
 
@@ -271,6 +252,7 @@ extern "C" void paddr_write(int addr, int data, char wmask) {
     printf("pc = 0x%x     ", PC);
     display_pwrite(addr, data);
     #endif
+    printf("NPC_write addr = %#x , data = %#x ,wstrb = %d\n", addr, data, wmask);
     if(in_pmem(addr)){
         if(addr == SERIAL_PORT){
             is_skip_diff = true;

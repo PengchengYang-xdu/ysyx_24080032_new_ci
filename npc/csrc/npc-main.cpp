@@ -1,7 +1,3 @@
-/***************************************************************************************
-deigned by ypc
-***************************************************************************************/
-
 #include <common.h>
 #include <circuit.h>
 #include <mem.h>
@@ -10,14 +6,12 @@ deigned by ypc
 #include <stdlib.h>
 
 #include <lightsss.h> // 确保路径正确
-
 extern LightSSS lightsss;
 
 void init_monitor(int, char *[]);
 void sdb_mainloop();
 
 const char *npc_home_path = NULL;
-
 void init_env_vars(void) {
     npc_home_path = getenv("NPC_HOME");
     if (npc_home_path == NULL) {
@@ -30,11 +24,10 @@ int main(int argc, char *argv[]) {
     get_time();
     init_monitor(argc, argv);
     #ifdef NPCCONFIG_DUMPWAVE
-    init_env_vars();
-    printf("now dumpwave\n");
-    char wave_path[1024];
-    snprintf(wave_path, sizeof(wave_path), "%s/build/wave_father.fst", npc_home_path);
-    init_wave(wave_path);
+        init_env_vars();
+        char wave_path[1024];
+        snprintf(wave_path, sizeof(wave_path), "%s/build/wave_father.fst", npc_home_path);
+        init_wave(wave_path);
     #endif
     Verilated::commandArgs(argc, argv);
     reset(10);

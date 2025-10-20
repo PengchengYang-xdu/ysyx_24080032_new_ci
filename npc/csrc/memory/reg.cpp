@@ -1,14 +1,9 @@
-/***************************************************************************************
-deigned by ypc
-***************************************************************************************/
-
 #include <circuit.h>
 #include <mem.h>
 #include <utils.h>
 
 uint32_t gpr[REGNUM];
 uint32_t csr[4];
-extern VysyxSoCFull *top;
 
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",

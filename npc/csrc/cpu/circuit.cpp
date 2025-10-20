@@ -344,8 +344,12 @@ uint64_t light_cycle_num = 0;
 
 
 
-
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
 VysyxSoCFull *top = init_top();
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+VNPC *top = init_top();
+#endif
 
 static uint8_t opcode;
 static uint8_t rd;

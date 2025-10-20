@@ -23,7 +23,12 @@ static void welcome() {
         "to record the trace. This may lead to a large log file. "
         "If it is not necessary, you can disable it in menuconfig");
   Log("Build time: %s, %s", __TIME__, __DATE__);
-  printf("Welcome to %s-ysyxsoc!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
+  #ifdef NPCCONFIG_TOP_IS_YSYXSOC
+    printf("Welcome to %s-ysyxsoc!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
+  #endif
+  #ifdef NPCCONFIG_TOP_IS_NPC
+    printf("Welcome to %s-npc!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
+  #endif
   printf("For help, type \"help\"\n");
 }
 
@@ -50,7 +55,12 @@ static long load_img() {
   fflush(stdout);
 
   fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(FLASH_BASE), size, 1, fp);
+  #ifdef NPCCONFIG_TOP_IS_YSYXSOC
+    int ret = fread(guest_to_host(FLASH_BASE), size, 1, fp);
+  #endif
+  #ifdef NPCCONFIG_TOP_IS_NPC
+    int ret = fread(guest_to_host(CONFIG_MBASE), size, 1, fp);
+  #endif
   assert(ret == 1);
 
   fclose(fp);

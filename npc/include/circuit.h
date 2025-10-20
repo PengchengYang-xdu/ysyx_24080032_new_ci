@@ -1,19 +1,36 @@
 #ifndef __CIRCUIT_H__
 #define __CIRCUIT_H__
 
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
 #include <VysyxSoCFull___024root.h>
+#include <VysyxSoCFull__Dpi.h>
+#include <VysyxSoCFull.h>
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+#include <VNPC___024root.h>
+#include <VNPC__Dpi.h>
+#include <VNPC.h>
+#endif
+
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 #include <verilated_fst_c.h>
 #include <svdpi.h>
-#include <VysyxSoCFull__Dpi.h>
-#include <VysyxSoCFull.h>
 #include <common.h>
 
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
 extern VysyxSoCFull *top;
 static inline VysyxSoCFull* init_top() {
     return new VysyxSoCFull("top");
 }
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+extern VNPC *top;
+static inline VNPC* init_top() {
+    return new VNPC("top");
+}
+#endif
+
 
 //circuit
 void single_cycle();
@@ -44,8 +61,12 @@ void close_wave(int i);
 #define INST_LOAD 0b0000011
 #define INST_CSR 0b1110011
 
-
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
 #define ISEBREAK top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__idu__DOT__ebreak__DOT__isEbreak
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+#define ISEBREAK top->rootp->NPC__DOT__u_core__DOT__idu__DOT__ebreak__DOT__isEbreak
+#endif
 
 
 #ifndef NPCCONFIG_CI
@@ -147,7 +168,7 @@ void close_wave(int i);
 
 
 
-#define PC top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__ifu__DOT__reg_pc
+#define PC 0
 #define INSTR  0
 #define VGPR ((uint32_t[32]){ \
     0, \

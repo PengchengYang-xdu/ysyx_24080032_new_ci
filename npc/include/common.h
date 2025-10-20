@@ -23,8 +23,15 @@ typedef uint32_t paddr_t;
 
 // #define CONFIG_MSIZE 0xf000000
 // #define CONFIG_MBASE 0x80000000
-#define CONFIG_MSIZE 0xfff
-#define CONFIG_MBASE 0x20000000
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
+    #define CONFIG_MSIZE 0xfff
+    #define CONFIG_MBASE 0x20000000
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+    #define CONFIG_MSIZE 0x0f000000
+    #define CONFIG_MBASE 0x80000000
+#endif
+
 #define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 
