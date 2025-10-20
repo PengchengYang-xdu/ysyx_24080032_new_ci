@@ -126,6 +126,7 @@ endif
 
 
 $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	rm -rf $(TEMP_VERILATOR_DIR)
 	verilator $(VERIARG) \
 		$^ \
