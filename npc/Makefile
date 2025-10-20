@@ -29,6 +29,8 @@ endif
 #  \ \ / /|  _| | |_) || || |  | | | | |  _
 #   \ V / | |___|  _ < | || |__| |_| | |_| |
 #    \_/  |_____|_| \_\___|_____\___/ \____|
+# make -C $(NPC_HOME) verilog将会在$(NPC_HOME)/build文件夹下产生一个用于接入soc的npc(ysyx_24080032.sv),
+# 复位是0x30000000
 
 VERILOG_BUILD_DIR = $(NPC_HOME)/build
 TEMP_VERILOG_DIR = $(VERILOG_BUILD_DIR)/verilog_obj
@@ -66,6 +68,9 @@ verilog:
 #  \ \ / /|  _| | |_) || || |     / _ \ | || | | | |_) |
 #   \ V / | |___|  _ < | || |___ / ___ \| || |_| |  _ <
 #    \_/  |_____|_| \_\___|_____/_/   \_\_| \___/|_| \_\
+# 在am目录下的各个测试中执行make ARCH=??? run 将会跳转到这里执行verilator的仿真,
+# 支持make ARCH=riscv32e-ysyxsoc run(将会接入ysyxSoC并执行verilator仿真) 顶层是ysyxSoCUFull
+# 支持make ARCH=riscv32e-npc run(将会直接对npc进行verilator仿真) 顶层是NPC
 
 ifeq ($(YSYXSOC), y)
 TOPNAME = ysyxSoCFull
@@ -141,7 +146,6 @@ endif
 
 $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	echo $(VSRC)
 	rm -rf $(TEMP_VERILATOR_DIR)
 	verilator $(VERIARG) \
 		$^ \

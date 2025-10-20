@@ -5,170 +5,145 @@ module NPC (
     input reset
 );
 
-    // --- Core IMEM/DMEM Wires ---
-    // Instruction Memory (IMEM) Wires
-    wire [31:0] imem_araddr;
-    wire        imem_arvalid;
-    wire        imem_arready;
-    wire [2:0]  imem_arsize;
-    wire [1:0]  imem_arburst;
-    wire [31:0] imem_rdata;
-    wire        imem_rvalid;
-    wire        imem_rready;
-    wire        imem_rlast;
 
-    // Data Memory (DMEM) Wires - AXI-Lite Read (AR/R)
-    wire [31:0] dmem_araddr;
-    wire        dmem_arvalid;
-    wire        dmem_arready;
-    wire [2:0]  dmem_arsize;
-    wire [31:0] dmem_rdata;
-    wire        dmem_rvalid;
-    wire        dmem_rready;
+wire        auto_master_out_awready;
+wire        auto_master_out_awvalid;
+wire [3:0]  auto_master_out_awid;//
+wire [31:0] auto_master_out_awaddr;
+wire [7:0]  auto_master_out_awlen;//
+wire [2:0]  auto_master_out_awsize;//
+wire [1:0]  auto_master_out_awburst;//
+wire        auto_master_out_wready;
+wire        auto_master_out_wvalid;
+wire [31:0] auto_master_out_wdata;
+wire [3:0]  auto_master_out_wstrb;
+wire        auto_master_out_wlast;//
+wire        auto_master_out_bready;
+wire        auto_master_out_bvalid;
+wire [3:0]  auto_master_out_bid;//
+wire [1:0]  auto_master_out_bresp;//
+wire        auto_master_out_arready;
+wire        auto_master_out_arvalid;
+wire [3:0]  auto_master_out_arid;//
+wire [31:0] auto_master_out_araddr;
+wire [7:0]  auto_master_out_arlen;//
+wire [2:0]  auto_master_out_arsize;//
+wire [1:0]  auto_master_out_arburst;//
+wire        auto_master_out_rready;
+wire        auto_master_out_rvalid;
+wire [3:0]  auto_master_out_rid;//
+wire [31:0] auto_master_out_rdata;
+wire [1:0]  auto_master_out_rresp;//
+wire        auto_master_out_rlast;//
 
-    // Data Memory (DMEM) Wires - AXI-Lite Write (AW/W/B)
-    wire [31:0] dmem_awaddr;
-    wire        dmem_awvalid;
-    wire        dmem_awready;
-    wire [2:0]  dmem_awsize;
-    wire [31:0] dmem_wdata;
-    wire [3:0]  dmem_wstrb;
-    wire        dmem_wvalid;
-    wire        dmem_wready;
-    wire        dmem_bvalid;
-    wire        dmem_bready;
+ysyx_24080032 cpu (
+    .clock                   (clock),
+    .reset                   (reset),
+    .io_interrupt            (1'h0),
+    .io_master_awready      (auto_master_out_awready),
+    .io_master_awvalid      (auto_master_out_awvalid),
+    .io_master_awid    (auto_master_out_awid),
+    .io_master_awaddr  (auto_master_out_awaddr),
+    .io_master_awlen   (auto_master_out_awlen),
+    .io_master_awsize  (auto_master_out_awsize),
+    .io_master_awburst (auto_master_out_awburst),
+    .io_master_wready       (auto_master_out_wready),
+    .io_master_wvalid       (auto_master_out_wvalid),
+    .io_master_wdata   (auto_master_out_wdata),
+    .io_master_wstrb   (auto_master_out_wstrb),
+    .io_master_wlast   (auto_master_out_wlast),
+    .io_master_bready       (auto_master_out_bready),
+    .io_master_bvalid       (auto_master_out_bvalid),
+    .io_master_bid     (4'b0000),
+    .io_master_bresp   (2'b00),
+    .io_master_arready      (auto_master_out_arready),
+    .io_master_arvalid      (auto_master_out_arvalid),
+    .io_master_arid    (auto_master_out_arid),
+    .io_master_araddr  (auto_master_out_araddr),
+    .io_master_arlen   (auto_master_out_arlen),
+    .io_master_arsize  (auto_master_out_arsize),
+    .io_master_arburst (auto_master_out_arburst),
+    .io_master_rready       (auto_master_out_rready),
+    .io_master_rvalid       (auto_master_out_rvalid),
+    .io_master_rid     (4'b0000),
+    .io_master_rdata   (auto_master_out_rdata),
+    .io_master_rresp   (2'b00),
+    .io_master_rlast   (1'b1),
+    .io_slave_awready       (/* unused */),
+    .io_slave_awvalid       (1'h0),
+    .io_slave_awid     (4'h0),
+    .io_slave_awaddr   (32'h0),
+    .io_slave_awlen    (8'h0),
+    .io_slave_awsize   (3'h0),
+    .io_slave_awburst  (2'h0),
+    .io_slave_wready        (/* unused */),
+    .io_slave_wvalid        (1'h0),
+    .io_slave_wdata    (32'h0),
+    .io_slave_wstrb    (4'h0),
+    .io_slave_wlast    (1'h0),
+    .io_slave_bready        (1'h0),
+    .io_slave_bvalid        (/* unused */),
+    .io_slave_bid      (/* unused */),
+    .io_slave_bresp    (/* unused */),
+    .io_slave_arready       (/* unused */),
+    .io_slave_arvalid       (1'h0),
+    .io_slave_arid     (4'h0),
+    .io_slave_araddr   (32'h0),
+    .io_slave_arlen    (8'h0),
+    .io_slave_arsize   (3'h0),
+    .io_slave_arburst  (2'h0),
+    .io_slave_rready        (1'h0),
+    .io_slave_rvalid        (/* unused */),
+    .io_slave_rid      (/* unused */),
+    .io_slave_rdata    (/* unused */),
+    .io_slave_rresp    (/* unused */),
+    .io_slave_rlast    (/* unused */)
+);
 
+wire [31:0] araddr_shift;
+assign araddr_shift = auto_master_out_araddr >> 28;
+wire [31:0] awaddr_shift;
+assign awaddr_shift = auto_master_out_awaddr >> 28;
 
-    // --- Mem 模块端口信号 Wires ---
-    // 由于 CPU 的 IMEM 和 DMEM 都要连接到 Mem，我们需要进行简单的 OR 逻辑合并。
+wire [31:0] araddr_pro;
+assign araddr_pro = araddr_shift == 32'ha ? auto_master_out_araddr : (auto_master_out_araddr - (araddr_shift << 28));
+wire [31:0] awaddr_pro;
+assign awaddr_pro = awaddr_shift == 32'ha ? auto_master_out_awaddr : (auto_master_out_awaddr - (awaddr_shift << 28));
 
-    // Mem AR/R Channel (合并 IMEM 和 DMEM 的读请求)
-    wire [31:0] mem_araddr;
-    wire        mem_arvalid;
-    wire        mem_arready;
-    wire [31:0] mem_rdata;
-    wire [1:0]  mem_rresp; // Mem 模块输出
-    wire        mem_rvalid;
-    wire        mem_rready;
+Mem #(
+        .AXI_TEST   (0),
+        .VERBOSE    (0)
+) u_Mem (
+        // 端口连接 (Port Connections by Name)
+        .clk             (clock),
 
-    // Mem AW/W/B Channel (只连接 DMEM 的写请求)
-    wire [31:0] mem_awaddr;
-    wire        mem_awvalid;
-    wire        mem_awready;
-    wire [31:0] mem_wdata;
-    wire [3:0]  mem_wstrb;
-    wire        mem_wvalid;
-    wire        mem_wready;
-    wire [1:0]  mem_bresp; // Mem 模块输出
-    wire        mem_bvalid;
-    wire        mem_bready;
+        // AW Channel
+        .mem_axi_awvalid (auto_master_out_awvalid),
+        .mem_axi_awready (auto_master_out_awready),
+        .mem_axi_awaddr  (awaddr_pro),
+        .mem_axi_awprot  (3'b000),
 
+        // W Channel
+        .mem_axi_wvalid  (auto_master_out_wvalid),
+        .mem_axi_wready  (auto_master_out_wready),
+        .mem_axi_wdata   (auto_master_out_wdata),
+        .mem_axi_wstrb   (auto_master_out_wstrb),
 
-    // --- 逻辑连接 (IMEM & DMEM -> Mem) ---
+        // B Channel
+        .mem_axi_bvalid  (auto_master_out_bvalid),
+        .mem_axi_bready  (auto_master_out_bready),
 
-    // 1. Mem Read Address Channel (AR)
-    // 假设 IMEM 和 DMEM 不会同时发起访问，或者使用简单的 OR 逻辑（实际系统需仲裁）
-    // 为了满足“只连接 Mem”的要求，这里假设 Mem 作为一个简单的统一总线。
-    assign mem_arvalid = imem_arvalid | dmem_arvalid;
+        // AR Channel
+        .mem_axi_arvalid (auto_master_out_arvalid),
+        .mem_axi_arready (auto_master_out_arready),
+        .mem_axi_araddr  (araddr_pro),
+        .mem_axi_arprot  (3'b100),
 
-    // Mux 地址：优先选择 IMEM 地址（通常指令取指比数据访问更重要）
-    assign mem_araddr  = imem_arvalid ? imem_araddr + 32'h50000000 : dmem_araddr;
+        // R Channel
+        .mem_axi_rvalid  (auto_master_out_rvalid),
+        .mem_axi_rready  (auto_master_out_rready),
+        .mem_axi_rdata   (auto_master_out_rdata)
+);
 
-    // 反馈 Ready 信号给 CPU
-    assign imem_arready = mem_arready & imem_arvalid; // 只有 mem_arvalid 是 IMEM 发出时，才连接
-    assign dmem_arready = mem_arready & dmem_arvalid;
-
-    // 2. Mem Read Data Channel (R)
-    // 反馈 Data/Valid/Ready 信号给 CPU (Demux)
-    assign imem_rdata   = mem_rdata;
-    assign imem_rvalid  = mem_rvalid & imem_arvalid; // 假设返回的数据是 IMEM 请求的
-    assign imem_rlast   = 1'b1; // 假设为单拍传输
-
-    assign dmem_rdata   = mem_rdata;
-    assign dmem_rvalid  = mem_rvalid & dmem_arvalid; // 假设返回的数据是 DMEM 请求的
-
-    // Mem 的 Rready 接收来自 IMEM 或 DMEM 的 ready 信号
-    assign mem_rready   = (imem_rready & imem_arvalid) | (dmem_rready & dmem_arvalid);
-
-
-    // 3. Mem Write Address/Data Channel (AW/W)
-    // DMEM 的写访问直接连接到 Mem (IMEM 只有读操作)
-    assign mem_awaddr   = dmem_awaddr;
-    assign mem_awvalid  = dmem_awvalid;
-    assign mem_wdata    = dmem_wdata;
-    assign mem_wstrb    = dmem_wstrb;
-    assign mem_wvalid   = dmem_wvalid;
-
-    // 反馈 Ready 信号给 CPU
-    assign dmem_awready = mem_awready;
-    assign dmem_wready  = mem_wready;
-
-    // 4. Mem Write Response Channel (B)
-    assign dmem_bvalid  = mem_bvalid;
-    assign mem_bready  = dmem_bready;
-
-
-    // --- 例化 CPU Core ---
-    ysyx_24080032_Core u_core (
-        .clock             (clock),
-        .reset             (reset),
-        // IMEM 接口
-        .io_imem_araddr    (imem_araddr),
-        .io_imem_arvalid   (imem_arvalid),
-        .io_imem_arready   (imem_arready),
-        .io_imem_arsize    (imem_arsize),
-        .io_imem_arburst   (imem_arburst),
-        .io_imem_rdata     (imem_rdata),
-        .io_imem_rvalid    (imem_rvalid),
-        .io_imem_rready    (imem_rready),
-        .io_imem_rlast     (imem_rlast),
-        // DMEM 接口
-        .io_dmem_araddr    (dmem_araddr),
-        .io_dmem_arvalid   (dmem_arvalid),
-        .io_dmem_arready   (dmem_arready),
-        .io_dmem_arsize    (dmem_arsize),
-        .io_dmem_rdata     (dmem_rdata),
-        .io_dmem_rvalid    (dmem_rvalid),
-        .io_dmem_rready    (dmem_rready),
-        .io_dmem_awaddr    (dmem_awaddr),
-        .io_dmem_awvalid   (dmem_awvalid),
-        .io_dmem_awready   (dmem_awready),
-        .io_dmem_awsize    (dmem_awsize),
-        .io_dmem_wdata     (dmem_wdata),
-        .io_dmem_wstrb     (dmem_wstrb),
-        .io_dmem_wvalid    (dmem_wvalid),
-        .io_dmem_wready    (dmem_wready),
-        .io_dmem_bvalid    (dmem_bvalid),
-        .io_dmem_bready    (dmem_bready)
-    );
-
-
-    // --- 例化 Mem 模块 ---
-    Mem u_mem (
-        .clk        (clock),
-        .rst        (reset),
-        // AR
-        .araddr     (mem_araddr),
-        .arvalid    (mem_arvalid),
-        .arready    (mem_arready),
-        // R
-        .rdata      (mem_rdata),
-        .rresp      (mem_rresp),
-        .rvalid     (mem_rvalid),
-        .rready     (mem_rready),
-        // AW
-        .awaddr     (mem_awaddr),
-        .awvalid    (mem_awvalid),
-        .awready    (mem_awready),
-        // W
-        .wdata      (mem_wdata),
-        .wstrb      (mem_wstrb),
-        .wvalid     (mem_wvalid),
-        .wready     (mem_wready),
-        // B
-        .bresp      (mem_bresp),
-        .bvalid     (mem_bvalid),
-        .bready     (mem_bready)
-    );
 
 endmodule

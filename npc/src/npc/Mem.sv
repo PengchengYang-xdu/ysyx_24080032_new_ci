@@ -1,251 +1,176 @@
-`define MEM_DELAY 0
+/* verilator lint_off MULTIDRIVEN */
+module Mem #(
+    parameter AXI_TEST = 0,
+	parameter VERBOSE = 0
+) (
+	input             clk,
+	input             mem_axi_awvalid,
+	output reg        mem_axi_awready,
+	input      [31:0] mem_axi_awaddr,
+	input      [ 2:0] mem_axi_awprot,
 
-module Mem(
-    input clk,
-    input rst,
-    //AR
-    input [31:0] araddr,
-    input arvalid,
-    output reg arready,
-    //R
-    output reg [31:0] rdata,
-    output reg [1:0] rresp,
-    output reg rvalid,
-    input rready,
-    //AW
-    input [31:0] awaddr,
-    input awvalid,
-    output reg awready,
-    //W
-    input [31:0] wdata,
-    input [3:0] wstrb,
-    input wvalid,
-    output reg wready,
-    //B
-    output reg [1:0] bresp,
-    output reg bvalid,
-    input bready
+	input             mem_axi_wvalid,
+	output reg        mem_axi_wready,
+	input      [31:0] mem_axi_wdata,
+	input      [ 3:0] mem_axi_wstrb,
+
+	output reg        mem_axi_bvalid,
+	input             mem_axi_bready,
+
+	input             mem_axi_arvalid,
+	output reg        mem_axi_arready,
+	input      [31:0] mem_axi_araddr,
+	input      [ 2:0] mem_axi_arprot,
+
+	output reg        mem_axi_rvalid,
+	input             mem_axi_rready,
+	output reg [31:0] mem_axi_rdata
 );
 
-import "DPI-C" function int paddr_read(int addr, int is_pc_read);
-import "DPI-C" function void paddr_write(int addr, int data, byte wmask);
+    import "DPI-C" function int paddr_read(int addr, int is_pc_read);
+    import "DPI-C" function void paddr_write(int addr, int data, byte wmask);
 
-/*-----------------------------delay process-----------------------------*/
-reg [3:0] lfsr;
-always @(posedge clk or posedge rst) begin
-    if (rst) begin
-        lfsr <= `MEM_DELAY;
-    end
-    else begin
-        lfsr <= {lfsr[2:0], lfsr[3] ^ lfsr[2]};
-    end
-end
+    parameter DEVICE_BASE     =                32'ha0000000;
+    parameter MMIO_BASE       =                32'ha0000000;
+    parameter SERIAL_PORT     = (DEVICE_BASE + 32'h00003f8);
+    parameter KBD_ADDR        = (DEVICE_BASE + 32'h0000060);
+    parameter RTC_ADDR        = (DEVICE_BASE + 32'h0000048);
+    parameter VGACTL_ADDR     = (DEVICE_BASE + 32'h0000100);
+    parameter AUDIO_ADDR      = (DEVICE_BASE + 32'h0000200);
+    parameter DISK_ADDR       = (DEVICE_BASE + 32'h0000300);
+    parameter FB_ADDR         = (MMIO_BASE   + 32'h1000000);
+    parameter AUDIO_SBUF_ADDR = (MMIO_BASE   + 32'h1200000);
 
-reg [3:0] r_delay_unit;
-reg [3:0] w_delay_unit;
+	initial begin
+		mem_axi_awready = 0;
+		mem_axi_wready = 0;
+		mem_axi_bvalid = 0;
+		mem_axi_arready = 0;
+		mem_axi_rvalid = 0;
+	end
 
+	reg latched_raddr_en = 0;
+	reg latched_waddr_en = 0;
+	reg latched_wdata_en = 0;
 
-/*-----------------------------read channel-----------------------------*/
-//state machine
-parameter sr_BeforeAXI_AR_Fire = 1'b0;
-parameter sr_BeforeAXI_R_Fire = 1'b1;
-reg cr_state, nr_state;
-wire AXI_AR_fire, AXI_R_fire;
-assign AXI_AR_fire = arvalid & arready;
-assign AXI_R_fire = rvalid & rready;
+	reg fast_raddr = 0;
+	reg fast_waddr = 0;
+	reg fast_wdata = 0;
 
-//first phase
-always @(posedge clk or posedge rst)begin
-    if(rst)
-        cr_state <= sr_BeforeAXI_AR_Fire;
-    else
-        cr_state <= nr_state;
-end
+	reg [31:0] latched_raddr;
+	reg [31:0] latched_waddr;
+	reg [31:0] latched_wdata;
+	reg [ 3:0] latched_wstrb;
+	reg        latched_rinsn;
 
-//second phase
-always@(*) begin
-    case(cr_state)
-        sr_BeforeAXI_AR_Fire: begin
-            nr_state = AXI_AR_fire ? sr_BeforeAXI_R_Fire : sr_BeforeAXI_AR_Fire;
-        end
-        sr_BeforeAXI_R_Fire: begin
-            nr_state = AXI_R_fire ? sr_BeforeAXI_AR_Fire : sr_BeforeAXI_R_Fire;
-        end
-        default: begin
-            nr_state = sr_BeforeAXI_AR_Fire;
-        end
-    endcase
-end
+	task handle_axi_arvalid; begin
+		mem_axi_arready <= 1;
+		latched_raddr = mem_axi_araddr;
+		latched_rinsn = mem_axi_arprot[2];
+		latched_raddr_en = 1;
+		fast_raddr <= 1;
+	end endtask
 
-//third phase
-always @(posedge clk or posedge rst) begin
-    if(rst) begin
-        arready <= 1'b0;
-        rdata <= 32'b0;
-        rresp <= 2'b0;
-        rvalid <= 1'b0;
-        r_delay_unit <= lfsr;
-    end
-    else begin
-        case(nr_state)
-            sr_BeforeAXI_AR_Fire: begin
-                arready <= 1'b1;
-                // rdata <= 32'b0;//rdata has to hold after sr_BeforeAXI_R_Fire state
-                rresp <= 2'b0;
-                rvalid <= 1'b0;
-                r_delay_unit <= lfsr;
-            end
-            sr_BeforeAXI_R_Fire: begin
-                arready <= 1'b0;
-                rresp <= 2'b0;
-                r_delay_unit <= r_delay_unit - 1;
-                if(r_delay_unit == 0) begin
-                    rdata <= paddr_read({araddr[31:2], 2'b00}, 0);
-                    rvalid <= 1'b1;
-                end
-                else begin
-                    rdata <= 32'b0;
-                    rvalid <= 1'b0;
-                end
-            end
-            default: begin
-                arready <= 1'b1;
-                rdata <= 32'b0;
-                rresp <= 2'b0;
-                rvalid <= 1'b0;
-                r_delay_unit <= lfsr;
-            end
-        endcase
-    end
-end
+	task handle_axi_awvalid; begin
+		mem_axi_awready <= 1;
+		latched_waddr = mem_axi_awaddr;
+		latched_waddr_en = 1;
+		fast_waddr <= 1;
+	end endtask
 
+	task handle_axi_wvalid; begin
+		mem_axi_wready <= 1;
+		latched_wdata = mem_axi_wdata;
+		latched_wstrb = mem_axi_wstrb;
+		latched_wdata_en = 1;
+		fast_wdata <= 1;
+	end endtask
 
+	task handle_axi_rvalid; begin
+		if (latched_raddr >> 28 == 0) begin
+			mem_axi_rdata <= paddr_read((latched_raddr + 32'h80000000) >> 2 << 2, 0);
+			mem_axi_rvalid <= 1;
+			latched_raddr_en = 0;
+        end else
+		if (latched_raddr >> 28 == 32'ha) begin
+            mem_axi_rdata <= paddr_read(latched_raddr >> 2 << 2, 0);
+            mem_axi_rvalid <= 1;
+            latched_raddr_en = 0;
+		end else begin
+			$display("OUT-OF-BOUNDS MEMORY READ FROM %08x", latched_raddr);
+			$finish;
+		end
+	end endtask
 
+	task handle_axi_bvalid; begin
+		if (latched_waddr >> 28 == 0) begin
+			paddr_write((latched_waddr + 32'h80000000) >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
+		end else
+		if (latched_waddr >> 28 == 32'ha) begin
+			paddr_write(latched_waddr >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
+		end else begin
+			$display("OUT-OF-BOUNDS MEMORY WRITE TO %08x", latched_waddr);
+			$finish;
+		end
+		mem_axi_bvalid <= 1;
+		latched_waddr_en = 0;
+		latched_wdata_en = 0;
+	end endtask
 
+	always @(negedge clk) begin
+		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr)) handle_axi_arvalid;
+		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr)) handle_axi_awvalid;
+		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata)) handle_axi_wvalid;
+		if (!mem_axi_rvalid && latched_raddr_en) handle_axi_rvalid;
+		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en) handle_axi_bvalid;
+	end
 
+	always @(posedge clk) begin
+		mem_axi_arready <= 0;
+		mem_axi_awready <= 0;
+		mem_axi_wready <= 0;
 
+		fast_raddr <= 0;
+		fast_waddr <= 0;
+		fast_wdata <= 0;
 
+		if (mem_axi_rvalid && mem_axi_rready) begin
+			mem_axi_rvalid <= 0;
+		end
 
+		if (mem_axi_bvalid && mem_axi_bready) begin
+			mem_axi_bvalid <= 0;
+		end
 
+		if (mem_axi_arvalid && mem_axi_arready && !fast_raddr) begin
+			latched_raddr = mem_axi_araddr;
+			latched_rinsn = mem_axi_arprot[2];
+			latched_raddr_en = 1;
+		end
 
+		if (mem_axi_awvalid && mem_axi_awready && !fast_waddr) begin
+			latched_waddr = mem_axi_awaddr;
+			latched_waddr_en = 1;
+		end
 
+		if (mem_axi_wvalid && mem_axi_wready && !fast_wdata) begin
+			latched_wdata = mem_axi_wdata;
+			latched_wstrb = mem_axi_wstrb;
+			latched_wdata_en = 1;
+		end
 
+		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr)) handle_axi_arvalid;
+		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr)) handle_axi_awvalid;
+		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata)) handle_axi_wvalid;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*-----------------------------read channel-----------------------------*/
-//state machine
-parameter s_BeforeAXI_AWW_Fire = 1'b0;
-parameter s_BeforeAXI_B_Fire = 1'b1;
-reg cw_state, nw_state;
-wire AXI_AWW_fire, AXI_B_fire;
-assign AXI_AWW_fire = (awvalid & awready) & (wvalid & wready);
-assign AXI_B_fire = bvalid & bready;
-
-//first phase
-always @(posedge clk or posedge rst)begin
-    if(rst)
-        cw_state <= s_BeforeAXI_AWW_Fire;
-    else
-        cw_state <= nw_state;
-end
-
-//second phase
-always@(*) begin
-    case(cw_state)
-        s_BeforeAXI_AWW_Fire: begin
-            nw_state = AXI_AWW_fire ? s_BeforeAXI_B_Fire : s_BeforeAXI_AWW_Fire;
-        end
-        s_BeforeAXI_B_Fire: begin
-            nw_state = AXI_B_fire ? s_BeforeAXI_AWW_Fire : s_BeforeAXI_B_Fire;
-        end
-        default: begin
-            nw_state = s_BeforeAXI_AWW_Fire;
-        end
-    endcase
-end
-
-//third phase
-always @(posedge clk or posedge rst) begin
-    if(rst) begin
-        awready <= 1'b0;
-        wready <= 1'b0;
-        bresp <= 2'b0;
-        bvalid <= 1'b0;
-        w_delay_unit <= lfsr;
-    end
-    else begin
-        case(nw_state)
-            s_BeforeAXI_AWW_Fire: begin
-                awready <= 1'b1;
-                wready <= 1'b1;
-                bresp <= 2'b0;
-                bvalid <= 1'b0;
-                w_delay_unit <= lfsr;
-            end
-            s_BeforeAXI_B_Fire: begin
-                awready <= 1'b0;
-                wready <= 1'b0;
-                bresp <= 2'b0;
-                w_delay_unit <= w_delay_unit - 1;
-                if(w_delay_unit == 0) begin
-                    paddr_write({araddr[31:2], 2'b00}, wdata, {{4'b0000}, wstrb});
-                    bvalid <= 1'b1;
-                end
-                else begin
-                    bvalid <= 1'b0;
-                end
-            end
-            default: begin
-                awready <= 1'b1;
-                wready <= 1'b1;
-                bresp <= 2'b0;
-                bvalid <= 1'b0;
-                w_delay_unit <= lfsr;
-            end
-        endcase
-    end
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
+		if (!mem_axi_rvalid && latched_raddr_en) handle_axi_rvalid;
+		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en) handle_axi_bvalid;
+	end
 
 
 
 
 
 endmodule
+
+/* verilator lint_on MULTIDRIVEN */

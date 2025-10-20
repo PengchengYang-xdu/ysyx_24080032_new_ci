@@ -225,7 +225,7 @@ extern "C" int paddr_read(int addr, int is_pc_read) {
         display_pread(addr);
     }
     #endif
-    printf("NPC_read addr = %#x\n", addr);
+    // printf("NPC_read addr = %#x, data = %#x\n", addr, pmem_read(addr));
     if(in_pmem(addr)){
         if(addr == RTC_ADDR || addr == RTC_ADDR + 4 || addr == SERIAL_PORT){
             is_skip_diff = true;
@@ -247,14 +247,14 @@ extern "C" int paddr_read(int addr, int is_pc_read) {
 }
 
 extern "C" void paddr_write(int addr, int data, char wmask) {
-    // printf("paddr write now  addr = %#x, data = %#x\n", addr, data);
     #ifdef NPCCONFIG_MTRACE
     printf("pc = 0x%x     ", PC);
     display_pwrite(addr, data);
     #endif
-    printf("NPC_write addr = %#x , data = %#x ,wstrb = %d\n", addr, data, wmask);
+    // printf("NPC_write addr = %#x , data = %#x ,wstrb = %d\n", addr, data, wmask);
     if(in_pmem(addr)){
         if(addr == SERIAL_PORT){
+            // printf("now is uart, write %x\n", data);
             is_skip_diff = true;
             fflush(stdout);//fuck this code! I'v been fixing this bug for a longlong time!
             putchar((char)data);

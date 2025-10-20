@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <lightsss.h> // 确保路径正确
+#include <lightsss.h>
 extern LightSSS lightsss;
 
 void init_monitor(int, char *[]);

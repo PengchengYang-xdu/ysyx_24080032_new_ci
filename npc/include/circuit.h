@@ -65,7 +65,7 @@ void close_wave(int i);
 #define ISEBREAK top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__idu__DOT__ebreak__DOT__isEbreak
 #endif
 #ifdef NPCCONFIG_TOP_IS_NPC
-#define ISEBREAK top->rootp->NPC__DOT__u_core__DOT__idu__DOT__ebreak__DOT__isEbreak
+#define ISEBREAK top->rootp->NPC__DOT__cpu__DOT__core__DOT__idu__DOT__ebreak__DOT__isEbreak
 #endif
 
 
@@ -166,9 +166,13 @@ void close_wave(int i);
 
 
 
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
+    #define PC top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__ifu__DOT__reg_pc
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+    #define PC top->rootp->NPC__DOT__cpu__DOT__core__DOT__ifu__DOT__reg_pc
+#endif
 
-
-#define PC 0
 #define INSTR  0
 #define VGPR ((uint32_t[32]){ \
     0, \
