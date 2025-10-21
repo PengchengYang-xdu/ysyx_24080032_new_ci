@@ -17,7 +17,7 @@ $(WARNING: ====UNKNOWN ARCH====)
 $(WARNING: ====================)
 endif
 
-NVBOARD ?= y
+NVBOARD ?= n
 ifeq ($(YSYXSOC), y)
 NVBOARD = y
 else

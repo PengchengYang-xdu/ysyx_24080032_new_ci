@@ -107,7 +107,7 @@ module Mem #(
 			paddr_write((latched_waddr + 32'h80000000) >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
 		end else
 		if (latched_waddr >> 28 == 32'ha) begin
-			paddr_write(latched_waddr >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
+			paddr_write(latched_waddr, latched_wdata, {4'b0000, latched_wstrb});
 		end else begin
 			$display("OUT-OF-BOUNDS MEMORY WRITE TO %08x", latched_waddr);
 			$finish;

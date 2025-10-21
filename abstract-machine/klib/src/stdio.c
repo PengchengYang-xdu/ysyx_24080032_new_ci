@@ -38,7 +38,7 @@ static int vsprintf_internal(char *out, size_t n, const char *fmt, va_list ap) {
   const char *p = fmt;
   char *out_start = out;
   size_t remaining = n;
-  
+
   while (*p) {
     if (*p == '%') {
       p++;
@@ -146,11 +146,11 @@ static int vsprintf_internal(char *out, size_t n, const char *fmt, va_list ap) {
     }
     p++;
   }
-  
+
   if (remaining > 0) {
     *out = '\0';
   }
-  
+
   return out - out_start;
 }
 

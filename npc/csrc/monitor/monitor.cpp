@@ -114,10 +114,15 @@ void init_monitor(int argc, char *argv[]) {
   init_log(log_file);
 
   /* Initialize memory. */
+  #ifdef NPCCONFIG_TOP_IS_YSYXSOC
   init_mem();
   init_flash();
   init_psram();
   init_sdram();
+  #endif
+  #ifdef NPCCONFIG_TOP_IS_NPC
+  init_mem();
+  #endif
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();

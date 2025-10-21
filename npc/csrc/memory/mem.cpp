@@ -254,17 +254,15 @@ extern "C" void paddr_write(int addr, int data, char wmask) {
     // printf("NPC_write addr = %#x , data = %#x ,wstrb = %d\n", addr, data, wmask);
     if(in_pmem(addr)){
         if(addr == SERIAL_PORT){
-            // printf("now is uart, write %x\n", data);
             is_skip_diff = true;
             fflush(stdout);//fuck this code! I'v been fixing this bug for a longlong time!
             putchar((char)data);
             return;
         }
         else{
-            for (int i = 0,j = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (wmask & (1 << i)){
-                    pmem_write(addr + i, (data >> (j * 8)) & 0xFF);
-                    j++;
+                    pmem_write(addr + i, (data >> (i * 8)) & 0xFF);
                 }
             }
             return;

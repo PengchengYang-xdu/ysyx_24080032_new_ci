@@ -28,7 +28,7 @@ typedef uint32_t paddr_t;
     #define CONFIG_MBASE 0x20000000
 #endif
 #ifdef NPCCONFIG_TOP_IS_NPC
-    #define CONFIG_MSIZE 0x0fffffff
+    #define CONFIG_MSIZE 0x07ffffff
     #define CONFIG_MBASE 0x80000000
 #endif
 
