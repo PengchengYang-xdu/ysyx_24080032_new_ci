@@ -2,19 +2,17 @@
 #include <mem.h>
 #include <utils.h>
 
-uint32_t gpr[REGNUM];
+uint32_t gpr[REAL_REGNUM];
 uint32_t csr[4];
 
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
-  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
-  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
-  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5"
 };
 
 void get_reg(){
   int i;
-  for(i = 0; i < REGNUM; i++)
+  for(i = 0; i < REAL_REGNUM; i++)
     gpr[i] = VGPR[i];
 
     csr[0] = VCSR[0];
@@ -24,7 +22,7 @@ void get_reg(){
 }
 
 void isa_reg_display() {
-  for(int i = 0; i < REGNUM; i ++)
+  for(int i = 0; i < REAL_REGNUM; i ++)
     printf("reg %s ---> 0x%x\n", regs[i], gpr[i]);
   printf("\n");
   printf("csr-mstatus   --->  0x%x\n", csr[0]);
@@ -35,7 +33,7 @@ void isa_reg_display() {
 
 word_t isa_reg_str2val(const char *s, bool *success) {
   *success = false;
-  for(int i = 0; i < REGNUM; i ++)
+  for(int i = 0; i < REAL_REGNUM; i ++)
     if(strcmp(s, regs[i]) == 0){
       *success = true;
       return gpr[i];

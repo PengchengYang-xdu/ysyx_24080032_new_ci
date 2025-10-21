@@ -1,4 +1,5 @@
 #include <circuit.h>
+
 static VerilatedFstC *tfp = nullptr;
 static VerilatedContext* contextp = nullptr;
 
@@ -18,6 +19,5 @@ void dump_wave(){
 }
 
 void close_wave(int i){
-	printf("close wave code = %d\n", i);
     tfp -> close();
 }

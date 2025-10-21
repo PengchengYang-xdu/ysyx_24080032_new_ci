@@ -13,8 +13,11 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include <common.h>
+#include <stdint.h>
+#include <stddef.h>
 #include <sys/time.h>
+#include <stdlib.h>
+
 static uint64_t boot_time = 0;
 
 static uint64_t get_time_internal() {
@@ -26,10 +29,7 @@ static uint64_t get_time_internal() {
 
 uint64_t get_time() {
   if (boot_time == 0) boot_time = get_time_internal();
-  //printf("boot = %llu\n",boot_time);
   uint64_t now = get_time_internal();
-  //printf("now = %llu\n",now);
-  //printf("now - boottime = %llu\n",now - boot_time);
   return now - boot_time;
 }
 

@@ -29,6 +29,8 @@ NPCFLAGS += -l $(shell dirname $(IMAGE).elf)/npc-log.txt
 NPCFLAGS += -b
 NPCFLAGS += -e $(IMAGE).elf
 
+NPCFLAGS += -d $(NPC_HOME)/riscv32-nemu-interpreter-so_20251021
+
 # .PHONY: $(AM_HOME)/am/src/riscv/npc/trm.c
 
 image: $(IMAGE).elf

@@ -1,8 +1,5 @@
 /* verilator lint_off MULTIDRIVEN */
-module Mem #(
-    parameter AXI_TEST = 0,
-	parameter VERBOSE = 0
-) (
+module Mem (
 	input             clk,
 	input             mem_axi_awvalid,
 	output reg        mem_axi_awready,

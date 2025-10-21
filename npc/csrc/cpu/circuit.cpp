@@ -1,6 +1,3 @@
-/***************************************************************************************
-deigned by ypc
-***************************************************************************************/
 #include <stdio.h>
 #include <stdint.h>
 
@@ -9,16 +6,10 @@ deigned by ypc
 #include <mem.h>
 #include <common.h>
 #include <utils.h>
-#include <debug.h>
 #include "../monitor/sdb/sdb.h"
 
 #include <lightsss.h> // 确保路径正确
-
-uint64_t total_cyc = 0;
-
-int child_first_in = 0;
-
-word_t pre_pc, now_pc;
+#define FORK_INTERVAL 5000 // 示例：每 10,000 个周期 fork 一次
 
 /*temp val*/
 unsigned long long int cyc_start_time = 0;//ifu req new inst
@@ -91,11 +82,6 @@ void PerfAnalysis(){
     if(CYC_END){
         cyc_end_time = cycle_num;
     }
-
-
-
-
-
     if(EV_IFU_GETINST_FIRE){
         ev_ifu_getinst_cnt++;
         ifu_getinst_flag = 1;
@@ -136,11 +122,6 @@ void PerfAnalysis(){
             cyc_exu_fshcal_cnt += cycle_num - pre_cycle_num_exu_fshcal;
             pre_cycle_num_exu_fshcal = 0;
     }
-
-
-
-
-
     if(INST_VALID && IS_JUMP){
         ev_is_jump_cnt++;
         jump_flag = 1;
@@ -181,11 +162,6 @@ void PerfAnalysis(){
         if(csr_flag   )   {csr_flag = 0; cyc_is_csr_cnt += (cyc_end_time - pre_cycle_num_csr); pre_cycle_num_csr = 0;}
         if(other_flag )   {other_flag = 0; cyc_is_other_cnt += (cyc_end_time - pre_cycle_num_other); pre_cycle_num_other = 0;}
     }
-
-
-
-
-
     if(EV_ICACHE_FIRE){
         icache_hit_flag = 1;
         icache_miss_flag = 1;
@@ -325,9 +301,6 @@ static void save2csv(const char *filename){
             (double)ev_iCache_hit_cnt * 100 / ev_ifu_getinst_cnt, \
             (double)cyc_iCache_hit_cnt / (double)ev_iCache_hit_cnt + (1 - (double)ev_iCache_hit_cnt / (double)ev_ifu_getinst_cnt) * ((double)cyc_iCache_miss_cnt / (double)ev_iCache_miss_cnt));
 
-
-
-
     fclose(file);
 }
 
@@ -335,12 +308,16 @@ static void save2csv(const char *filename){
 
 
 
-#define FORK_INTERVAL 5000 // 示例：每 10,000 个周期 fork 一次
+
+
+
+
+uint64_t total_cyc = 0;
+int child_first_in = 0;
+word_t pre_pc, now_pc;
 
 LightSSS lightsss;
 uint64_t light_cycle_num = 0;
-
-
 
 
 
@@ -355,57 +332,56 @@ static uint8_t opcode;
 static uint8_t rd;
 static uint8_t src1;
 
-int dump_flag = 1;
-
 void difftest_step();
 extern "C" void npc_trap();
 void single_cycle(){
+
     top->clock = 0;
     top->eval();
-    if(DUMP_FLAG){
-        dump_flag = 1;
-    }
-    #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
-    #ifdef NPCCONFIG_LIGHTSSS
-        char wave_path[1024];
-        snprintf(wave_path, sizeof(wave_path), "%s/build/wave_child.fst", npc_home_path);
-        if(lightsss.is_child() && dump_flag){
-            if(child_first_in == 0){
-                child_first_in = 1;
-                init_wave(wave_path);
-            }
-            dump_wave();
-            // printf("dump wave 0\n");
-        }
-    #else
-        if(dump_flag)
-            dump_wave();
-    #endif
-    #endif
 
-    #ifdef NPCCONFIG_ITRACE
+#if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
+#ifdef NPCCONFIG_LIGHTSSS
+    char wave_path[1024];
+    snprintf(wave_path, sizeof(wave_path), "%s/build/wave_child.fst", npc_home_path);
+    if(lightsss.is_child()){
+        if(child_first_in == 0){
+            child_first_in = 1;
+            init_wave(wave_path);
+            printf("============LIGHTSSS初始化成功!============\n");
+        }
+        dump_wave();
+    }
+#else
+    dump_wave();
+#endif
+#endif
+
+
+#ifdef NPCCONFIG_ITRACE
     if(top->reset == 0 && DIFFVALID == 1)
         itrace_init(PC, INSTR);
-    #endif
+#endif
+
 
     top->clock = 1;
     top->eval();
     if(ISEBREAK == 1) npc_trap();
-    #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
-    #ifdef NPCCONFIG_LIGHTSSS
-        if(lightsss.is_child() && dump_flag){
-            dump_wave();
-            // printf("dump wave 1\n");
-        }
-    #else
-        if(dump_flag)
-            dump_wave();
-    #endif
-    #endif
 
-    #ifdef NPCCONFIG_LIGHTSSS
+
+#if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
+#ifdef NPCCONFIG_LIGHTSSS
+        if(lightsss.is_child()){
+            dump_wave();
+        }
+#else
+        dump_wave();
+#endif
+#endif
+
+
+#ifdef NPCCONFIG_LIGHTSSS
     light_cycle_num++;
-    #endif
+#endif
 
     total_cyc++;
 }
@@ -420,31 +396,18 @@ void reset(int i) {
     top->reset = 0;
 }
 
-static void statistic() {
-    // save2csv("../../build/perf.md");
-}
-
-void assert_fail_msg() {
-    #ifdef NPCCONFIG_ITRACE
-    itrace_init(PC, INSTR);
-    display_inst();
-    #endif
-//   isa_reg_display();
-    statistic();
-}
-
 
 static void trace_and_difftest(){
 
-    #ifdef NPCCONFIG_DIFFTEST
+#ifdef NPCCONFIG_DIFFTEST
     difftest_step();
-    #endif
+#endif
 
-    #ifdef NPCCONFIG_WATCHPOINT
+#ifdef NPCCONFIG_WATCHPOINT
     wp_difftest();
-    #endif
+#endif
 
-    #ifdef NPCCONFIG_FTRACE
+#ifdef NPCCONFIG_FTRACE
     opcode = BITS(INSTR, 6, 0);
     rd = BITS(INSTR, 11, 7);
     if(opcode == JAL && rd == 0b00001){
@@ -459,7 +422,7 @@ static void trace_and_difftest(){
             display_ret_func(PC);
         }
     }
-    #endif
+ #endif
 
 }
 
@@ -479,59 +442,50 @@ void cpu_exec(uint64_t n){
 
 
 
-        #ifdef NPCCONFIG_LIGHTSSS
-        if (light_cycle_num % FORK_INTERVAL == 0 && !lightsss.is_child()) {
-            int fork_ret = lightsss.do_fork();
-            if (fork_ret == FORK_ERROR) {
-                // 处理 fork 错误
-                printf("LightSSS fork error!\n");
-                assert(0);
-            }
-            // 如果 fork_ret 是 FORK_OK，说明是父进程，继续执行
+#ifdef NPCCONFIG_LIGHTSSS
+    if (light_cycle_num % FORK_INTERVAL == 0 && !lightsss.is_child()) {
+        int fork_ret = lightsss.do_fork();
+        if (fork_ret == FORK_ERROR) {
+            // 处理 fork 错误
+            printf("LightSSS fork error!\n");
+            assert(0);
         }
-        #endif
+    }
+#endif
 
+    exec_once();
+    get_reg();
 
-        pre_pc = PC;
-        exec_once();
-        now_pc = PC;
+#ifdef NPCCONFIG_PERF
+    PerfAnalysis();
+#endif
 
-        get_reg();
+#ifdef NPCCONFIG_DIFFTEST
+    if(DIFFVALID){
+        trace_and_difftest();
+    }
+#endif
 
-        // PerfAnalysis();
-        // if(cycle_num > 100000000){
-        //     close_wave(88);
-        //     assert(0);
-        // }
-
-
-
-        // if(pre_pc != now_pc){
-        //     trace_and_difftest();
-        // }
-        if(DIFFVALID){
-            trace_and_difftest();
-        }
-
-
-        n--;
+    n--;
     }
 }
 
 extern "C" void npc_trap(){
-    #if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
-    #ifdef NPCCONFIG_DUMPWAVE
+#if defined(NPCCONFIG_DUMPWAVE) || defined(NPCCONFIG_LIGHTSSS)
+#ifdef NPCCONFIG_DUMPWAVE
+    dump_wave();
+    close_wave(1);
+    printf("=====================波形正常退出, 查看father波形=====================\n");
+#else
+    if(lightsss.is_child()){
         dump_wave();
         close_wave(1);
-    #else
-        if(lightsss.is_child()){
-            dump_wave();
-            close_wave(1);
-        }else{
-            lightsss.wakeup_child(light_cycle_num);
-        }
-    #endif
-    #endif
+        printf("=====================波形正常退出, 查看child波形=====================\n");
+    }else{
+        lightsss.wakeup_child(light_cycle_num);
+    }
+#endif
+#endif
     bool success;
     int code = isa_reg_str2val("a0",&success);
     if(code == 0){
@@ -541,12 +495,16 @@ extern "C" void npc_trap(){
         printf("\033[1;31mHIT BAD TRAP\033[0m at pc = 0x%x\nexit code = %d\n",PC, code);
     }
 
-    #ifdef NPCCONFIG_ITRACE
+#ifdef NPCCONFIG_ITRACE
     itrace_init(PC, INSTR);
     display_inst();
-    #endif
+#endif
 
-    statistic();
+#ifdef NPCCONFIG_PERF
+    char perf_path[1024];
+    snprintf(perf_path, sizeof(perf_path), "%s/build/perf.md", npc_home_path);
+    save2csv(perf_path)
+#endif
     printf("total cyc = %ld\n", total_cyc);
     exit(0);
 }

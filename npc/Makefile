@@ -100,22 +100,31 @@ LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH = $(abspath ./include)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
+
+
+ifneq ($(findstring -DNPCCONFIG_DIFFTEST,$(CFLAGS)), -DNPCCONFIG_DIFFTEST)
 CFLAGS += -DNPCCONFIG_CI
+endif
 
+ifneq ($(findstring -DNPCCONFIG_DUMPWAVE,$(CFLAGS)),)
+ifneq ($(findstring -DNPCCONFIG_LIGHTSSS,$(CFLAGS)),)
+$(error "不能同时定义 -DNPCCONFIG_DUMPWAVE 和 -DNPCCONFIG_LIGHTSSS")
+endif
+endif
 
-
-
-
+# CFLAGS += -DNPCCONFIG_PERF
 
 
 # CFLAGS += -DNPCCONFIG_ITRACE
 # CFLAGS += -DNPCCONFIG_FTRACE
 # CFLAGS += -DNPCCONFIG_MTRACE
-# CFLAGS += -DNPCCONFIG_DUMPWAVE
 # CFLAGS += -DNPCCONFIG_WATCHPOINT
-# CFLAGS += -DNPCCONFIG_DIFFTEST
+
+# CFLAGS += -DNPCCONFIG_DUMPWAVE
 # CFLAGS += -DNPCCONFIG_LIGHTSSS
 
+# 开启difftest需要打开chisel设计文件的val DIFFTEST = true, 注意开启了difftest将取消定义ci
+CFLAGS += -DNPCCONFIG_DIFFTEST
 
 
 
@@ -169,7 +178,7 @@ IVERILOG_DIR = $(NPC_HOME)/iverilog
 IVERILOG_BUILD_DIR = $(IVERILOG_DIR)/build
 
 IVERILOG_TB_SRC = $(IVERILOG_DIR)/tb/tb_top.sv
-IVERILOG_MEM_SRC =  $(IVERILOG_DIR)/mem/axi4_memory.sv
+IVERILOG_MEM_SRC =  $(IVERILOG_DIR)/mem/Mem.sv
 IVERILOG_V_SRC =  $(IVERILOG_DIR)/src/$(STUID).sv
 
 IVERILOG_BIN_SRC = $(IMG)

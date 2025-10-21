@@ -21,34 +21,24 @@ typedef uint32_t paddr_t;
 #define FMT_WORD "0x%08x"
 #define FMT_PADDR "0x%08x"
 
-// #define CONFIG_MSIZE 0xf000000
-// #define CONFIG_MBASE 0x80000000
-#ifdef NPCCONFIG_TOP_IS_YSYXSOC
-    #define CONFIG_MSIZE 0xfff
-    #define CONFIG_MBASE 0x20000000
-#endif
-#ifdef NPCCONFIG_TOP_IS_NPC
-    #define CONFIG_MSIZE 0x07ffffff
-    #define CONFIG_MBASE 0x80000000
-#endif
 
-#define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
-#define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
-
-
-
-
+/*YSYXSOC的外设地址*/
 #define FLASH_SIZE 0xfffffff
 #define FLASH_BASE 0x30000000
-
-#define PSRAM_SIZE 0x1fffffff
-#define PSRAM_BASE 0x80000000
 
 #define SDRAM_SIZE 0x1fffffff
 #define SDRAM_BASE 0xa0000000
 
-extern const char *npc_home_path;  // 声明全局变量
-void init_env_vars(void);           // 初始化函数声明
+/*NPC的外设地址*/
+#define CONFIG_MSIZE 0x0fffffff
+#define CONFIG_MBASE 0x80000000
 
+
+/*只是为了通过YSYXSOC实现的一些其他内存外设编译, 因为ysyxSoC文件夹中调用了相关函数*/
+#define MROM_SIZE 0xfff
+#define MROM_BASE 0x20000000
+
+#define PSRAM_SIZE 0x1fffffff
+#define PSRAM_BASE 0x80000000
 
 #endif

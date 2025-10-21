@@ -37,10 +37,7 @@ void single_cycle();
 void cpu_exec(uint64_t n);
 void reset(int i);
 
-//wave
-void init_wave(const char* wave_path);
-void dump_wave();
-void close_wave(int i);
+
 
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
@@ -115,7 +112,6 @@ void close_wave(int i);
 })
 
 #define DIFFVALID top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__wbu__DOT__diffvalid
-#define DUMP_FLAG top->rootp->ysyxSoCFull__DOT__asic__DOT__lkeyboard__DOT__mps2__DOT__io_in_psel
 
 //PerfAnalysis
 #define CYC_START (top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__ifu__DOT__io_pipe_out_valid & top->rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__core__DOT__ifu__DOT__io_pipe_out_ready)
@@ -216,7 +212,6 @@ void close_wave(int i);
 })
 
 #define DIFFVALID 0
-#define DUMP_FLAG 0
 
 //PerfAnalysis
 #define CYC_START 0
