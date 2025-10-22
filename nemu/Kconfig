@@ -212,6 +212,7 @@ config WATCHPOINT
 
 #added by yangpengcheng begin
 config NPC_SO
+  depends on TARGET_SHARE
   bool "if ON this is NPC so"
   default n
 #added by yangpengcheng end
