@@ -36,6 +36,19 @@ endif
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # __     _______ ____  ___ _     ___   ____
 # \ \   / / ____|  _ \|_ _| |   / _ \ / ___|
 #  \ \ / /|  _| | |_) || || |  | | | | |  _
@@ -85,6 +98,22 @@ verilog:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # __     _______ ____  ___ _        _  _____ ___  ____
 # \ \   / / ____|  _ \|_ _| |      / \|_   _/ _ \|  _ \
 #  \ \ / /|  _| | |_) || || |     / _ \ | || | | | |_) |
@@ -93,8 +122,6 @@ verilog:
 # 在am目录下的各个测试中执行make ARCH=??? run 将会跳转到这里执行verilator的仿真,
 # 支持make ARCH=riscv32e-ysyxsoc run(将会接入ysyxSoC并执行verilator仿真) 顶层是ysyxSoCUFull,
 # 支持make ARCH=riscv32e-npc run(将会直接对npc进行verilator仿真) 顶层是NPC.
-# 为了保持一致性, ysyxsoc和npc的硬件代码(chisel和verilog)都是从0x30000000取指,
-# 特殊地, 对于npc, 在$(NPC_HOME)/src/npc/NPC.sv中对地址进行了处理, 以适配在am环境中从0x80000000取指
 # 注意如果debug要开启lightsss, 请关闭nvboard显示, 并打开ysyxsoc中串口的打印函数, 因为nvboard对于多子线程会产生显示出错问题
 
 ifeq ($(YSYXSOC), y)
@@ -143,7 +170,7 @@ CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 # CFLAGS += -DNPCCONFIG_LIGHTSSS
 
 # 开启difftest需要打开chisel设计文件的val DIFFTEST = true, 注意开启了difftest将取消定义ci
-CFLAGS += -DNPCCONFIG_DIFFTEST
+# CFLAGS += -DNPCCONFIG_DIFFTEST
 
 
 
@@ -196,6 +223,25 @@ $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 
 run: $(BIN)
 	@$(BIN) $(ARGS) $(IMG)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -312,3 +358,7 @@ sim-iverilog-netlist:
 
 clean:
 	rm -rf $(NPC_HOME)/out $(TEMP_VERILATOR_DIR) $(TEMP_VERILOG_DIR)
+
+
+
+
