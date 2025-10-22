@@ -362,3 +362,5 @@ clean:
 
 
 
+# 提交ci的时候记得./abstract-machine/scripts/isa/riscv.mk的编译工具riscv64-unknown-linux-gnu-     -->     riscv64-linux-gnu-
+# 提交ci的时候记得关闭./npc/src/main/common/Config.scala中的DIFFTEST=false
