@@ -108,9 +108,15 @@ bool in_mmio(paddr_t addr) {
   return addr - MMIO_BASE <= MMIO_SIZE;
 }
 
+#ifdef CONFIG_NPC_SO
+#define CONFIG_NPC_SO_EXPAND || (addr >> 28 == 0xa)
+#else
+#define CONFIG_NPC_SO_EXPAND
+#endif
+
 
 bool in_dev(paddr_t addr) {
-    return in_uart(addr) || in_clint(addr) || in_gpio(addr) || in_spi(addr) || in_ps2(addr) || in_vga(addr) || in_mmio(addr);
+    return in_uart(addr) || in_clint(addr) || in_gpio(addr) || in_spi(addr) || in_ps2(addr) || in_vga(addr) || in_mmio(addr) CONFIG_NPC_SO_EXPAND;
 }
 
 

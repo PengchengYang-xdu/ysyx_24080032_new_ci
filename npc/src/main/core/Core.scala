@@ -108,49 +108,5 @@ class Core extends Module {
         thisIn.valid := RegEnable(prevOut.valid, false.B, thisIn.ready);
     }
 
-    // def dataConflict(rs: UInt, rd: UInt) = (rs === rd)
-    // def dataConflictWithStage(stage_left: IDU, stage_right_is_working: Bool, rd: UInt, is_w: Bool) = {
-    //     val rs1 = stage_left.io.gpr_rs1_addr
-    //     val rs2 = stage_left.io.gpr_rs2_addr
-    //     val is_working = stage_right_is_working
-    //     val rs1_is_zero = rs1 === 0.U
-    //     val rs2_is_zero = rs2 === 0.U
-    //     val rs1_is_read = stage_left.io.gpr_rs1_is_read
-    //     val rs2_is_read = stage_left.io.gpr_rs2_is_read
 
-    //     val stage_left_valid_r = RegNext(stage_left.io_pipe.in.valid)
-    //     ((rs1_is_read && ~rs1_is_zero && dataConflict(rs1, rd)) || (rs2_is_read && ~rs2_is_zero && dataConflict(rs2, rd))) && is_working && is_w && stage_left_valid_r
-    // }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-object StageConnect {
-  def apply[T <: Data](left: DecoupledIO[T], right: DecoupledIO[T]) = {
-    val arch = "multi"
-    if      (arch == "single")   { right.bits := left.bits }
-    else if (arch == "multi")    { right :<>= left }
-    else if (arch == "pipeline") { right :<>= RegEnable(left, left.fire) }
-    else if (arch == "ooo")      { right :<>= Queue(left, 16) }
-  }
 }

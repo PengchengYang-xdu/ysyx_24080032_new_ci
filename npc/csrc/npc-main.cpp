@@ -1,15 +1,12 @@
-/***************************************************************************************
-deigned by ypc
-***************************************************************************************/
-
+#include <wave.h>
 #include <common.h>
 #include <circuit.h>
 #include <mem.h>
 #include <utils.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <lightsss.h> // 确保路径正确
+#include <timer.h>
+#include <lightsss.h>
 
 extern LightSSS lightsss;
 
@@ -17,7 +14,6 @@ void init_monitor(int, char *[]);
 void sdb_mainloop();
 
 const char *npc_home_path = NULL;
-
 void init_env_vars(void) {
     npc_home_path = getenv("NPC_HOME");
     if (npc_home_path == NULL) {
@@ -26,21 +22,22 @@ void init_env_vars(void) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    get_time();
-    init_monitor(argc, argv);
-    #ifdef NPCCONFIG_DUMPWAVE
+int main(int argc, char *argv[]) {\
+    /*初始化一些东西*/
     init_env_vars();
-    printf("now dumpwave\n");
+    get_time();
+#ifdef NPCCONFIG_DUMPWAVE
     char wave_path[1024];
     snprintf(wave_path, sizeof(wave_path), "%s/build/wave_father.fst", npc_home_path);
     init_wave(wave_path);
-    #endif
+#endif
+    init_monitor(argc, argv);
+
     Verilated::commandArgs(argc, argv);
     reset(10);
     sdb_mainloop();
     close_wave(0);
-    #ifdef NPCCONFIG_LIGHTSSS
-        lightsss.do_clear(); // 在正常退出时清理子进程
-    #endif
+#ifdef NPCCONFIG_LIGHTSSS
+    lightsss.do_clear(); // 在正常退出时清理子进程
+#endif
 }

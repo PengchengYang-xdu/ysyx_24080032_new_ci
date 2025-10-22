@@ -1,48 +1,9 @@
-module tb_top();
+`timescale 1ns / 1ps
 
-reg clock = 1;
-reg reset = 1;
-
-always #5 clock = ~clock;
-
-initial begin
-		repeat (100) @(posedge clock);
-		reset <= 0;
-end
-
-initial begin
-	// $dumpfile("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/npc-chisel-soc/single_cycle_riscv32i/iverilog/wave/top.vcd");
-	// $dumpvars(0, tb_top);
-	// repeat (1000000) @(posedge clock);
-	// $display("TIMEOUT");
-	// $finish;
-end
-
-
-reg [1023:0] hex_file;
-initial begin
-    hex_file = "./iverilog/hex/code.hex";
-    $readmemh(hex_file, u_Mem.memory);
-end
-
-
-
-
-// 检测退出
-`ifndef NETLIST
-always @(posedge clock) begin
-    if(cpu.core.wbu.io_pipe_out_valid && cpu.core.idu.ebreak.isEbreak) begin
-        if(cpu.core.isu.gpr_ext.Memory[10] == 32'h0) begin
-            $display("hit good trap!");
-            $finish();
-        end
-        else begin
-            $display("hit bad trap!");
-            $finish();
-        end
-    end
-end
-`endif
+module NPC (
+    input clock,
+    input reset
+);
 
 
 wire        auto_master_out_awready;
@@ -139,22 +100,12 @@ ysyx_24080032 cpu (
     .io_slave_rlast                 (/* unused */               )
 );
 
-wire [31:0] araddr_shift;
-assign araddr_shift = auto_master_out_araddr >> 28;
-wire [31:0] awaddr_shift;
-assign awaddr_shift = auto_master_out_awaddr >> 28;
-
-wire [31:0] araddr_pro;
-assign araddr_pro = araddr_shift == 32'ha ? auto_master_out_araddr : (auto_master_out_araddr - (araddr_shift << 28));
-wire [31:0] awaddr_pro;
-assign awaddr_pro = awaddr_shift == 32'ha ? auto_master_out_awaddr : (auto_master_out_awaddr - (awaddr_shift << 28));
-
 Mem u_Mem (
         .clk                            (clock                     ),
         // AW Channel
         .mem_axi_awvalid                (auto_master_out_awvalid   ),
         .mem_axi_awready                (auto_master_out_awready   ),
-        .mem_axi_awaddr                 (awaddr_pro                ),
+        .mem_axi_awaddr                 (auto_master_out_awaddr    ),
         .mem_axi_awprot                 (3'b000                    ),
 
         // W Channel
@@ -170,7 +121,7 @@ Mem u_Mem (
         // AR Channel
         .mem_axi_arvalid                (auto_master_out_arvalid   ),
         .mem_axi_arready                (auto_master_out_arready   ),
-        .mem_axi_araddr                 (araddr_pro                ),
+        .mem_axi_araddr                 (auto_master_out_araddr    ),
         .mem_axi_arprot                 (3'b100                    ),
 
         // R Channel
@@ -178,5 +129,6 @@ Mem u_Mem (
         .mem_axi_rready                 (auto_master_out_rready    ),
         .mem_axi_rdata                  (auto_master_out_rdata     )
 );
+
 
 endmodule

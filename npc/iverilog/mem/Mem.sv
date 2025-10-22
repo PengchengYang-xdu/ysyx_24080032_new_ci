@@ -1,9 +1,5 @@
-module axi4_memory #(
-    parameter AXI_TEST = 0,
-	parameter VERBOSE = 0
-) (
-	/* verilator lint_off MULTIDRIVEN */
-
+/* verilator lint_off MULTIDRIVEN */
+module Mem (
 	input             clk,
 	input             mem_axi_awvalid,
 	output reg        mem_axi_awready,
@@ -42,7 +38,6 @@ module axi4_memory #(
     reg [63:0] counter;
     reg [63:0] rtc_time;
 
-
     initial begin
         counter <= 64'h0;
         rtc_time <= 64'h0;
@@ -54,17 +49,9 @@ module axi4_memory #(
             rtc_time <= rtc_time + 64'h1;
     end
 
-
-
     parameter MEM_SIZE = 1024*128*1024;
 
-
-	reg [31:0]   memory [0:MEM_SIZE/4-1] /* verilator public */;
-
-	reg verbose;
-	initial verbose = $test$plusargs("verbose") || VERBOSE;
-    reg axi_test;
-	initial axi_test = $test$plusargs("axi_test") || AXI_TEST;
+	reg [31:0] memory [0:MEM_SIZE/4-1];
 
 	initial begin
 		mem_axi_awready = 0;
@@ -72,28 +59,6 @@ module axi4_memory #(
 		mem_axi_bvalid = 0;
 		mem_axi_arready = 0;
 		mem_axi_rvalid = 0;
-	end
-
-    reg [63:0] xorshift64_state = 64'd88172645463325252;
-
-	task xorshift64_next;
-		begin
-			// see page 4 of Marsaglia, George (July 2003). "Xorshift RNGs". Journal of Statistical Software 8 (14).
-			xorshift64_state = xorshift64_state ^ (xorshift64_state << 13);
-			xorshift64_state = xorshift64_state ^ (xorshift64_state >>  7);
-			xorshift64_state = xorshift64_state ^ (xorshift64_state << 17);
-		end
-	endtask
-
-	reg [2:0] fast_axi_transaction = ~0;
-	reg [4:0] async_axi_transaction = ~0;
-	reg [4:0] delay_axi_transaction = 0;
-
-	always @(posedge clk) begin
-		if (axi_test) begin
-				xorshift64_next;
-				{fast_axi_transaction, async_axi_transaction, delay_axi_transaction} <= xorshift64_state;
-		end
 	end
 
 	reg latched_raddr_en = 0;
@@ -134,16 +99,11 @@ module axi4_memory #(
 	end endtask
 
 	task handle_axi_rvalid; begin
-		if (verbose)
-			$display("RD: ADDR=%08x DATA=%08x%s", latched_raddr, memory[latched_raddr >> 2], latched_rinsn ? " INSN" : "");
 		if (latched_raddr < MEM_SIZE) begin
 			mem_axi_rdata <= memory[latched_raddr >> 2];
 			mem_axi_rvalid <= 1;
 			latched_raddr_en = 0;
         end else
-
-
-
 		if (latched_raddr == (RTC_ADDR)) begin
             mem_axi_rdata <= rtc_time[31:0];
             mem_axi_rvalid <= 1;
@@ -153,10 +113,6 @@ module axi4_memory #(
             mem_axi_rdata <= rtc_time[63:32];
             mem_axi_rvalid <= 1;
             latched_raddr_en = 0;
-
-
-
-
 		end else begin
 			$display("OUT-OF-BOUNDS MEMORY READ FROM %08x", latched_raddr);
 			$finish;
@@ -164,24 +120,15 @@ module axi4_memory #(
 	end endtask
 
 	task handle_axi_bvalid; begin
-		if (verbose)
-			$display("WR: ADDR=%08x DATA=%08x STRB=%04b", latched_waddr, latched_wdata, latched_wstrb);
 		if (latched_waddr < MEM_SIZE) begin
 			if (latched_wstrb[0]) memory[latched_waddr >> 2][ 7: 0] <= latched_wdata[ 7: 0];
 			if (latched_wstrb[1]) memory[latched_waddr >> 2][15: 8] <= latched_wdata[15: 8];
 			if (latched_wstrb[2]) memory[latched_waddr >> 2][23:16] <= latched_wdata[23:16];
 			if (latched_wstrb[3]) memory[latched_waddr >> 2][31:24] <= latched_wdata[31:24];
 		end else
-
-
-
 		if (latched_waddr == (SERIAL_PORT)) begin//目前只实现字符串
 			$write("%c", latched_wdata[7:0]);
 			$fflush();
-
-
-
-
 		end else begin
 			$display("OUT-OF-BOUNDS MEMORY WRITE TO %08x", latched_waddr);
 			$finish;
@@ -192,11 +139,11 @@ module axi4_memory #(
 	end endtask
 
 	always @(negedge clk) begin
-		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr) && async_axi_transaction[0]) handle_axi_arvalid;
-		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr) && async_axi_transaction[1]) handle_axi_awvalid;
-		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata) && async_axi_transaction[2]) handle_axi_wvalid;
-		if (!mem_axi_rvalid && latched_raddr_en && async_axi_transaction[3]) handle_axi_rvalid;
-		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en && async_axi_transaction[4]) handle_axi_bvalid;
+		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr)) handle_axi_arvalid;
+		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr)) handle_axi_awvalid;
+		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata)) handle_axi_wvalid;
+		if (!mem_axi_rvalid && latched_raddr_en) handle_axi_rvalid;
+		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en) handle_axi_bvalid;
 	end
 
 	always @(posedge clk) begin
@@ -233,16 +180,12 @@ module axi4_memory #(
 			latched_wdata_en = 1;
 		end
 
-		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr) && !delay_axi_transaction[0]) handle_axi_arvalid;
-		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr) && !delay_axi_transaction[1]) handle_axi_awvalid;
-		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata) && !delay_axi_transaction[2]) handle_axi_wvalid;
+		if (mem_axi_arvalid && !(latched_raddr_en || fast_raddr)) handle_axi_arvalid;
+		if (mem_axi_awvalid && !(latched_waddr_en || fast_waddr)) handle_axi_awvalid;
+		if (mem_axi_wvalid  && !(latched_wdata_en || fast_wdata)) handle_axi_wvalid;
 
-		if (!mem_axi_rvalid && latched_raddr_en && !delay_axi_transaction[3]) handle_axi_rvalid;
-		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en && !delay_axi_transaction[4]) handle_axi_bvalid;
+		if (!mem_axi_rvalid && latched_raddr_en) handle_axi_rvalid;
+		if (!mem_axi_bvalid && latched_waddr_en && latched_wdata_en) handle_axi_bvalid;
 	end
-
-
-
-
-
 endmodule
+/* verilator lint_on MULTIDRIVEN */

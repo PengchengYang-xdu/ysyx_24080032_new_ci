@@ -100,7 +100,7 @@ static bool make_token(char *e) {
         int substr_len = pmatch.rm_eo;
 
         position += substr_len;
-        
+
         if(rules[i].token_type == TK_NOTYPE) break;//if recognize blank then break;
 
         tokens[nr_token].type = rules[i].token_type;//if not blank then store;
@@ -203,8 +203,8 @@ int find_major(int p, int q){
 }
 
 static word_t deref(paddr_t addr){
-  if(in_pmem(addr))
-        return *(uint32_t *)guest_to_host(addr); 
+  if((addr >= CONFIG_MBASE && addr <= CONFIG_MBASE + CONFIG_MSIZE) || addr == RTC_ADDR || addr == RTC_ADDR + 4 || addr == SERIAL_PORT)
+        return *(uint32_t *)guest_to_host(addr);
   return 0;
 }
 
@@ -226,7 +226,7 @@ static word_t calculate_binary(word_t val1, int op, word_t val2, bool *ok) {
     case '+': return val1 + val2;
     case '-': return val1 - val2;
     case '*': return val1 * val2;
-    case '/': 
+    case '/':
       if (val2 == 0) {
         *ok = false;
         return 0;
