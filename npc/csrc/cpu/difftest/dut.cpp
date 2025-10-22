@@ -1,18 +1,25 @@
 #include <dlfcn.h>
 #include <mem.h>
+#include <wave.h>
 #include <common.h>
 #include <circuit.h>
 #include <utils.h>
-#include <lightsss.h> // 确保路径正确
+#include <lightsss.h>
 
 extern uint64_t light_cycle_num;
 extern LightSSS lightsss;
 
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
 word_t ref_pre_pc = 0x30000000;
 word_t comp_pc = 0x30000000;
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+word_t ref_pre_pc = 0x80000000;
+word_t comp_pc = 0x80000000;
+#endif
 
 struct CPU_state {
-    word_t gpr[REAL_REGNUM];
+    word_t gpr[REGNUM];
     word_t pc;
     word_t csr[4];
 };
@@ -34,6 +41,7 @@ enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 
 void init_difftest(char *ref_so_file, long img_size) {
     if(ref_so_file == NULL) return;
+    printf("==============ref文件是 %s================\n", ref_so_file);
 
     void *handle;
     handle = dlopen(ref_so_file, RTLD_LAZY);
@@ -58,11 +66,17 @@ void init_difftest(char *ref_so_file, long img_size) {
     assert(ref_difftest_skip);
 
     ref_difftest_init();
-    ref_difftest_memcpy(0x30000000, (void *)guest_to_host(0x30000000), img_size, DIFFTEST_TO_REF);
-    //get dut reg into CPU_state struct
+#ifdef NPCCONFIG_TOP_IS_YSYXSOC
+    ref_difftest_memcpy(FLASH_BASE, (void *)guest_to_host(FLASH_BASE), img_size, DIFFTEST_TO_REF);
     CPU_state dut_r;
-    dut_r.pc = 0x30000000;
-    for(int i = 0;i < REAL_REGNUM;i++)
+    dut_r.pc = FLASH_BASE;
+#endif
+#ifdef NPCCONFIG_TOP_IS_NPC
+    ref_difftest_memcpy(CONFIG_MBASE, (void *)guest_to_host(CONFIG_MBASE), img_size, DIFFTEST_TO_REF);
+    CPU_state dut_r;
+    dut_r.pc = CONFIG_MBASE;
+#endif
+    for(int i = 0;i < REGNUM;i++)
       dut_r.gpr[i] = gpr[i];
     dut_r.csr[0] = 0x1800;
     for(int i = 1;i < 4;i++)
@@ -80,6 +94,7 @@ bool static checkregs(struct CPU_state *ref_r){
     int i;
 
     if(comp_pc != PC) flag = false;
+
     if(INSTR == 0) flag = false;
 
     for(i = 0;i < REAL_REGNUM; i++){
@@ -127,6 +142,7 @@ void difftest_step() {
     CPU_state ref_r;
     ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+
     ref_pre_pc = ref_r.pc;
 
     is_skip_diff = ref_difftest_skip();

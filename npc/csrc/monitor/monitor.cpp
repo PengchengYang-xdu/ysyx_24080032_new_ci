@@ -57,6 +57,7 @@ static long load_img() {
 #endif
     assert(ret == 1);
     fclose(fp);
+    printf("============加载IMG完毕============\n");
     return size;
 }
 
@@ -109,10 +110,10 @@ void init_monitor(int argc, char *argv[]) {
     long img_size = load_img();
 
     /*初始化difftest*/
-    #ifdef NPCCONFIG_DIFFTEST
+#ifdef NPCCONFIG_DIFFTEST
     init_difftest(diff_so_file, img_size);
     printf("============DIFFTEST初始化成功!============\n");
-    #endif
+#endif
     init_disasm("riscv32-pc-linux-gnu");
 
     /*初始化sdb*/

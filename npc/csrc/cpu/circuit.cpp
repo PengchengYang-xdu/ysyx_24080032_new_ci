@@ -3,6 +3,7 @@
 
 
 #include <circuit.h>
+#include <wave.h>
 #include <mem.h>
 #include <common.h>
 #include <utils.h>
@@ -11,6 +12,7 @@
 #include <lightsss.h> // 确保路径正确
 #define FORK_INTERVAL 5000 // 示例：每 10,000 个周期 fork 一次
 
+#ifdef NPCCONFIG_PERF
 /*temp val*/
 unsigned long long int cyc_start_time = 0;//ifu req new inst
 unsigned long long int cyc_end_time = 0;//wbu out fire
@@ -304,7 +306,7 @@ static void save2csv(const char *filename){
     fclose(file);
 }
 
-
+#endif
 
 
 
@@ -429,9 +431,9 @@ static void trace_and_difftest(){
 
 
 static void exec_once(){
-    #ifdef NV_BOARD
+#ifdef NV_BOARD
     nvboard_update();
-    #endif
+#endif
     single_cycle();
 }
 

@@ -84,8 +84,8 @@ module Mem (
 	end endtask
 
 	task handle_axi_rvalid; begin
-		if (latched_raddr >> 28 == 0) begin
-			mem_axi_rdata <= paddr_read((latched_raddr + 32'h80000000) >> 2 << 2, 0);
+		if (latched_raddr >> 28 == 32'h8) begin
+			mem_axi_rdata <= paddr_read((latched_raddr) >> 2 << 2, 0);
 			mem_axi_rvalid <= 1;
 			latched_raddr_en = 0;
         end else
@@ -100,8 +100,8 @@ module Mem (
 	end endtask
 
 	task handle_axi_bvalid; begin
-		if (latched_waddr >> 28 == 0) begin
-			paddr_write((latched_waddr + 32'h80000000) >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
+		if (latched_waddr >> 28 == 32'h8) begin
+			paddr_write((latched_waddr) >> 2 << 2, latched_wdata, {4'b0000, latched_wstrb});
 		end else
 		if (latched_waddr >> 28 == 32'ha) begin
 			paddr_write(latched_waddr, latched_wdata, {4'b0000, latched_wstrb});

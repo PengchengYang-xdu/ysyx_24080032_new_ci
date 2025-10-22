@@ -1,6 +1,7 @@
 #include <mem.h>
 #include <common.h>
 #include <circuit.h>
+#include <wave.h>
 #include <timer.h>
 #include <utils.h>
 #include <device.h>

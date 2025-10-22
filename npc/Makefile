@@ -24,6 +24,18 @@ else
 NVBOARD = n
 endif
 
+
+
+
+
+
+
+
+
+
+
+
+
 # __     _______ ____  ___ _     ___   ____
 # \ \   / / ____|  _ \|_ _| |   / _ \ / ___|
 #  \ \ / /|  _| | |_) || || |  | | | | |  _
@@ -63,14 +75,26 @@ verilog:
 	cat $(addprefix $(TEMP_VERILOG_DIR)/, $(INPUT_VERILOG_FILE)) > $(OUTPUT_VERILOG_FILE); \
 
 
+
+
+
+
+
+
+
+
+
+
 # __     _______ ____  ___ _        _  _____ ___  ____
 # \ \   / / ____|  _ \|_ _| |      / \|_   _/ _ \|  _ \
 #  \ \ / /|  _| | |_) || || |     / _ \ | || | | | |_) |
 #   \ V / | |___|  _ < | || |___ / ___ \| || |_| |  _ <
 #    \_/  |_____|_| \_\___|_____/_/   \_\_| \___/|_| \_\
 # 在am目录下的各个测试中执行make ARCH=??? run 将会跳转到这里执行verilator的仿真,
-# 支持make ARCH=riscv32e-ysyxsoc run(将会接入ysyxSoC并执行verilator仿真) 顶层是ysyxSoCUFull
-# 支持make ARCH=riscv32e-npc run(将会直接对npc进行verilator仿真) 顶层是NPC
+# 支持make ARCH=riscv32e-ysyxsoc run(将会接入ysyxSoC并执行verilator仿真) 顶层是ysyxSoCUFull,
+# 支持make ARCH=riscv32e-npc run(将会直接对npc进行verilator仿真) 顶层是NPC.
+# 为了保持一致性, ysyxsoc和npc的硬件代码(chisel和verilog)都是从0x30000000取指,
+# 特殊地, 对于npc, 在$(NPC_HOME)/src/npc/NPC.sv中对地址进行了处理, 以适配在am环境中从0x80000000取指
 
 ifeq ($(YSYXSOC), y)
 TOPNAME = ysyxSoCFull
@@ -86,12 +110,16 @@ BIN = $(VERILATOR_BUILD_DIR)/$(TOPNAME)
 
 SOC_DIR = $(NPC_HOME)/../ysyxSoC
 
-VSRC = $(OUTPUT_VERILOG_FILE)
 ifeq ($(YSYXSOC), y)
+VSRC = $(OUTPUT_VERILOG_FILE)
 VSRC += $(shell find $(abspath $(SOC_DIR)/build) -name "*.sv" -or -name "*.v")
 VSRC += $(shell find $(abspath $(SOC_DIR)/perip) -name "*.sv" -or -name "*.v")
 else ifeq ($(NPC), y)
-VSRC += $(shell find $(abspath $(NPC_HOME)/src/npc) -name "*.sv" -or -name "*.v")
+# 如果是npc的verilator仿真, 那么复位值改成0x80000000
+$(shell cp $(OUTPUT_VERILOG_FILE) $(NPC_HOME)/src/npc/)
+$(shell sed -i "s/reg_pc <= 32'h30000000/reg_pc <= 32'h80000000/" \
+	$(NPC_HOME)/src/npc/$(STUID).sv)
+VSRC := $(shell find $(abspath $(NPC_HOME)/src/npc) -name "*.sv" -or -name "*.v")
 endif
 CSRC = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 
@@ -100,6 +128,24 @@ LDFLAGS += -lSDL2 -lSDL2_image $(shell llvm-config --libs) -lreadline -ldl -pie
 INC_PATH = $(abspath ./include)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
+
+
+
+# CFLAGS += -DNPCCONFIG_PERF
+
+# CFLAGS += -DNPCCONFIG_ITRACE
+# CFLAGS += -DNPCCONFIG_FTRACE
+# CFLAGS += -DNPCCONFIG_MTRACE
+# CFLAGS += -DNPCCONFIG_WATCHPOINT
+
+# CFLAGS += -DNPCCONFIG_DUMPWAVE
+CFLAGS += -DNPCCONFIG_LIGHTSSS
+
+# 开启difftest需要打开chisel设计文件的val DIFFTEST = true, 注意开启了difftest将取消定义ci
+CFLAGS += -DNPCCONFIG_DIFFTEST
+
+
+
 
 
 ifneq ($(findstring -DNPCCONFIG_DIFFTEST,$(CFLAGS)), -DNPCCONFIG_DIFFTEST)
@@ -111,22 +157,6 @@ ifneq ($(findstring -DNPCCONFIG_LIGHTSSS,$(CFLAGS)),)
 $(error "不能同时定义 -DNPCCONFIG_DUMPWAVE 和 -DNPCCONFIG_LIGHTSSS")
 endif
 endif
-
-# CFLAGS += -DNPCCONFIG_PERF
-
-
-# CFLAGS += -DNPCCONFIG_ITRACE
-# CFLAGS += -DNPCCONFIG_FTRACE
-# CFLAGS += -DNPCCONFIG_MTRACE
-# CFLAGS += -DNPCCONFIG_WATCHPOINT
-
-# CFLAGS += -DNPCCONFIG_DUMPWAVE
-# CFLAGS += -DNPCCONFIG_LIGHTSSS
-
-# 开启difftest需要打开chisel设计文件的val DIFFTEST = true, 注意开启了difftest将取消定义ci
-CFLAGS += -DNPCCONFIG_DIFFTEST
-
-
 
 
 
@@ -156,6 +186,7 @@ endif
 $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	rm -rf $(TEMP_VERILATOR_DIR)
+	rm -rf $(BIN)
 	verilator $(VERIARG) \
 		$^ \
 		$(addprefix -LDFLAGS , $(LDFLAGS)) \
@@ -164,6 +195,18 @@ $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 
 run: $(BIN)
 	@$(BIN) $(ARGS) $(IMG)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

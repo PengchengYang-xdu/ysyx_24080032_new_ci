@@ -108,5 +108,5 @@ class Core extends Module {
         thisIn.valid := RegEnable(prevOut.valid, false.B, thisIn.ready);
     }
 
-}
 
+}
