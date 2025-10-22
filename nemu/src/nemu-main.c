@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
-#ifdef NPC_SO
+#ifdef CONFIG_NPC_SO
     printf("this is NPC SO\n");
 #endif
   /* Start engine. */
