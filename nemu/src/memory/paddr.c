@@ -14,7 +14,9 @@
 ***************************************************************************************/
 // #define CONFIG_TARGET_SHARE
 #include <ysyxsoc.h>
+#include <npc.h>
 #include "../ysyxsoc/include/ysyxsoc_mem.h"
+#include "../npc/include/npc_mem.h"
 #include <memory/host.h>
 #include <memory/paddr.h>
 #include <device/mmio.h>
@@ -43,6 +45,10 @@ uint8_t* guest_to_host(paddr_t paddr) {
         ptr = sdram + paddr - SDRAM_BASE;
     else if(in_psram(paddr))//write and read psram
         ptr = psram + paddr - PSRAM_BASE;
+#ifdef CONFIG_NPC_SO
+    else if(in_npc_mem(paddr))
+        ptr = npc_mem + paddr - NPC_MEM_BASE;
+#endif
     return ptr;
 }
 
@@ -88,6 +94,7 @@ void init_mem() {
 word_t paddr_read(paddr_t addr, int len) {
     // printf("read_now, addr = 0x%x\n", addr);
 #ifdef CONFIG_TARGET_SHARE
+#ifndef CONFIG_NPC_SO
   if (in_dev(addr)) {dev_skip = true; return 0;}
 
   if (in_mrom(addr)) return pmem_read(addr, len);
@@ -95,6 +102,10 @@ word_t paddr_read(paddr_t addr, int len) {
   if (in_flash(addr)) return pmem_read(addr, len);
   if (in_sdram(addr)) return pmem_read(addr, len);
   if (in_psram(addr)) return pmem_read(addr, len);
+#else
+  if (in_npc_dev(addr)) {dev_skip = true; return 0;}
+  if (in_npc_mem(addr)) return pmem_read(addr, len);
+#endif
 #elif CONFIG_ICACHESIM
     if (in_dev(addr)) return soc2nemu_read(addr, len);
 
@@ -120,12 +131,17 @@ word_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, word_t data) {
     // printf("write_now, addr = 0x%x\n", addr);
 #ifdef CONFIG_TARGET_SHARE
+#ifndef CONFIG_NPC_SO
   if (in_dev(addr)) {dev_skip = true; return;}
 
   if (in_sram(addr)) { pmem_write(addr, len, data); return; }
   if (in_flash(addr)) { pmem_write(addr, len, data); return; }
   if (in_sdram(addr)) { pmem_write(addr, len, data); return; }
   if (in_psram(addr)) { pmem_write(addr, len, data); return; }
+#else
+  if (in_npc_dev(addr)) {dev_skip = true; return;}
+  if (in_npc_mem(addr)) { pmem_write(addr, len, data); return; }
+#endif
 #elif CONFIG_ICACHESIM
   if (in_dev(addr)) { soc2nemu_write(addr, len, data); return;}
 

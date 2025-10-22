@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 #endif
 
 #ifdef CONFIG_NPC_SO
-    printf("this is NPC SO\n");
+    printf("你打开SHARED LIB选项了吗, 要产生NPC_SO需要同时打开NPC_SO以及SHARED LIB\n");
 #endif
   /* Start engine. */
   engine_start();
