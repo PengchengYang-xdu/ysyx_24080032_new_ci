@@ -114,6 +114,12 @@ void init_monitor(int argc, char *argv[]) {
     init_difftest(diff_so_file, img_size);
     printf("============DIFFTEST初始化成功!============\n");
 #endif
+#ifdef NPCCONFIG_LIGHTSSS
+    printf("============LIGHTSSS初始化成功!============\n");
+#endif
+#ifdef NPCCONFIG_DUMPWAVE
+    printf("============DUMPWAVE初始化成功!============\n");
+#endif
     init_disasm("riscv32-pc-linux-gnu");
 
     /*初始化sdb*/
