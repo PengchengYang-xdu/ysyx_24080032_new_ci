@@ -46,8 +46,12 @@ uint8_t* guest_to_host(paddr_t paddr) {
     else if(in_psram(paddr))//write and read psram
         ptr = psram + paddr - PSRAM_BASE;
 #ifdef CONFIG_NPC_SO
+#ifndef CONFIG_TARGET_SHARE
+    exit(1);
+#else
     else if(in_npc_mem(paddr))
         ptr = npc_mem + paddr - NPC_MEM_BASE;
+#endif
 #endif
     return ptr;
 }
