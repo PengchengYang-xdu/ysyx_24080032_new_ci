@@ -18,9 +18,7 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <ysyxsoc.h>
-#include <npc.h>
 #include "../ysyxsoc/include/ysyxsoc_mem.h"
-#include "../npc/include/npc_mem.h"
 
 
 void init_rand();
@@ -128,12 +126,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize memory. */
   init_mem();
-
-#ifndef CONFIG_NPC_SO
   init_ysyxsoc_mem();//attention: have to init_ysyxsoc_mem() in ref.c difftest_init(), otherwise nemu as ref cannot work in ysyxsoc
-#else
-  init_npc_mem();//这是用于生成npc的ref用的
-#endif
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());

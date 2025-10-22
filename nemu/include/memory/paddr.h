@@ -18,7 +18,6 @@
 
 #include <common.h>
 #include "../../src/ysyxsoc/include/ysyxsoc_mem.h"
-#include "../../src/npc/include/npc_mem.h"
 
 #define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
