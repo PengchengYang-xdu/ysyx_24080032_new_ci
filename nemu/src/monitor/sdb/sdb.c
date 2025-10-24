@@ -216,7 +216,7 @@ void sdb_mainloop() {
 }
 
 void test_expr() {
-  FILE *fp = fopen("/home/yangpengcheng/ysyx/ysyx/ysyx-workbench/nemu/tools/gen-expr/input", "r");
+  FILE *fp = fopen("../../../tools/gen-expr/input", "r");
   if (fp == NULL) perror("test_expr error");
 
   char *e = NULL;
@@ -229,9 +229,9 @@ void test_expr() {
     if(fscanf(fp, "%u ", &correct_res) == -1) break;
     read = getline(&e, &len, fp);
     e[read-1] = '\0';
-    
+
     word_t res = expr(e, &success);
-    
+
     assert(success);
     if (res != correct_res) {
       puts(e);
