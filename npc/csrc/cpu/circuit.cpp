@@ -10,7 +10,7 @@
 #include "../monitor/sdb/sdb.h"
 
 #include <lightsss.h> // 确保路径正确
-#define FORK_INTERVAL 5000 // 示例：每 10,000 个周期 fork 一次
+#define FORK_INTERVAL 500 // 示例：每 10,00 个周期 fork 一次
 
 #ifdef NPCCONFIG_PERF
 /*temp val*/

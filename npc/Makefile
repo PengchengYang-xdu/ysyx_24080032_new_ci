@@ -221,7 +221,7 @@ $(BIN): $(CSRC) $(VSRC) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) \
 		--Mdir $(TEMP_VERILATOR_DIR) --exe -o $(abspath $(BIN))
 
-run: $(BIN)
+run: clean $(BIN)
 	@$(BIN) $(ARGS) $(IMG)
 
 
@@ -357,7 +357,7 @@ sim-iverilog-netlist:
 
 
 clean:
-	rm -rf $(NPC_HOME)/out $(TEMP_VERILATOR_DIR) $(TEMP_VERILOG_DIR)
+	rm -rf $(NPC_HOME)/out $(TEMP_VERILATOR_DIR) $(TEMP_VERILOG_DIR) $(NPC_HOME)/build/NPC $(NPC_HOME)/build/ysyxSoCFull $(NPC_HOME)/build/*.fst
 
 
 
