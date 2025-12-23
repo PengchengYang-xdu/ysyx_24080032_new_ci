@@ -1,7 +1,7 @@
-From 629b8fccd5e47f1409db3a1916696ebec8fe4426 Mon Sep 17 00:00:00 2001
+From 093a733bf2e22112fc5849c4a4d9f42f8268317c Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Thu, 9 Oct 2025 17:06:28 +0800
-Subject: [PATCH 6/8] fix uart double
+Subject: [PATCH 5/7] fix uart double
 
 ---
  perip/uart16550/rtl/uart_tfifo.v | 4 ++--

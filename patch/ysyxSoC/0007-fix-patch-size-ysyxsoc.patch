@@ -1,7 +1,7 @@
-From d99adba7aa30f1fa5aaf3b30de8b8b12fb7a67a9 Mon Sep 17 00:00:00 2001
+From ffbf216e0342cb49d2a46e5d8a2350582232a127 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Tue, 23 Dec 2025 19:33:02 +0800
-Subject: [PATCH 8/8] fix patch size ysyxsoc
+Subject: [PATCH 7/7] fix patch size ysyxsoc
 
 ---
  .gitignore | 1 +
