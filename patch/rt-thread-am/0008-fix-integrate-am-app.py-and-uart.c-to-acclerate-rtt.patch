@@ -1,7 +1,7 @@
 From 1e4654a1cb1d177b18eac02f9ec6350c6061827f Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Tue, 23 Dec 2025 20:13:47 +0800
-Subject: [PATCH 8/8] fix integrate-am-app.py and uart.c to acclerate rtt
+Subject: [PATCH 8/9] fix integrate-am-app.py and uart.c to acclerate rtt
 
 ---
  bsp/abstract-machine/integrate-am-apps.py | 6 +++---

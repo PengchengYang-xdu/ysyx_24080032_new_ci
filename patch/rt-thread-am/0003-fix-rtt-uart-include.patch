@@ -1,7 +1,7 @@
 From 440a8ffba324efae986cd0dd630fb8ba7c276ba2 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Wed, 8 Oct 2025 22:26:32 +0800
-Subject: [PATCH 3/8] fix rtt uart include
+Subject: [PATCH 3/9] fix rtt uart include
 
 ---
  bsp/abstract-machine/src/uart.c | 1 +

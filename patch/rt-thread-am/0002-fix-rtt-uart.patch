@@ -1,7 +1,7 @@
 From 9bdd2b46a325799051d4e6ae4312e6310b830015 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Wed, 8 Oct 2025 21:57:33 +0800
-Subject: [PATCH 2/8] fix rtt uart
+Subject: [PATCH 2/9] fix rtt uart
 
 ---
  bsp/abstract-machine/src/uart.c | 9 +++++----

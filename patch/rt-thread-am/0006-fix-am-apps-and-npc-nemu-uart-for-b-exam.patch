@@ -1,7 +1,7 @@
 From 73f8fd5645f3ab291256f0e4b0068937e401b5e5 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Thu, 23 Oct 2025 11:04:04 +0800
-Subject: [PATCH 6/8] fix am apps and npc nemu uart for b exam
+Subject: [PATCH 6/9] fix am apps and npc nemu uart for b exam
 
 ---
  bsp/abstract-machine/integrate-am-apps.py |  6 +++---
