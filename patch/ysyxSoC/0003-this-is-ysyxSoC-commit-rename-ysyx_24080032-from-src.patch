@@ -1,7 +1,7 @@
-From ce1b22d62e274f80ac5ef58160f510613d6382d9 Mon Sep 17 00:00:00 2001
+From e95effd526071c29ec949c3c49933c06fdc7bffc Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Tue, 7 Oct 2025 14:28:44 +0800
-Subject: [PATCH 3/7] this is ysyxSoC commit rename ysyx_24080032 from src
+Subject: [PATCH 3/8] this is ysyxSoC commit rename ysyx_24080032 from src
  instead makefile
 
 ---

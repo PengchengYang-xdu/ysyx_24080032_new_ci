@@ -1,7 +1,7 @@
-From 291d4e7acbce5c38ded10dbefe6dbb2d29380130 Mon Sep 17 00:00:00 2001
+From eaa290dd812a903e20924872b4d8208bbe4a6e87 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Fri, 10 Oct 2025 16:32:11 +0800
-Subject: [PATCH 7/7] fix delayer
+Subject: [PATCH 7/8] fix delayer
 
 ---
  src/amba/APBDelayer.scala  |  54 +++++++--------

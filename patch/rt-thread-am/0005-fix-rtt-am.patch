@@ -1,7 +1,7 @@
-From 735087850a42d2d3a1fd34487f63c483699d89fd Mon Sep 17 00:00:00 2001
+From abc54b341395c474843454e7af1035f93c172725 Mon Sep 17 00:00:00 2001
 From: PengchengYang-xdu <24241214835@stu.xidian.edu.cn>
 Date: Thu, 9 Oct 2025 16:15:35 +0800
-Subject: [PATCH 5/6] fix rtt am
+Subject: [PATCH 5/8] fix rtt am
 
 ---
  bsp/abstract-machine/Makefile             |   2 +-
